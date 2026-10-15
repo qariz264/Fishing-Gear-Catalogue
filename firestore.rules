@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default catch-all deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'stephenkariuki955@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && exists(/databases/$(database)/documents/admins/$(request.auth.token.email)))
+      );
+    }
+
+    function isAuthorizedAdminWrite() {
+      return isAdmin() || (
+        (request.resource != null && request.resource.data.adminKey == '0987654321NelsonFishing') ||
+        (resource != null && resource.data.adminKey == '0987654321NelsonFishing')
+      );
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Admin authorization collection
+    match /admins/{adminId} {
+      allow read: if isAuthorizedAdminWrite() || isSignedIn();
+      allow write: if isAuthorizedAdminWrite() || (isSignedIn() && request.auth.token.email == 'stephenkariuki955@gmail.com');
+    }
+
+    // Products: public can browse; authorized admins can write
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
+
+    // Blogs: public can read articles; authorized admins can write
+    match /blogs/{blogId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
+
+    // Events: public can read events; authorized admins can write
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
+
+    // Training: public can read training programs; authorized admins can write
+    match /training/{trainingId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
+
+    // Fishing Spots: public can read fishing spots; authorized admins can write
+    match /fishingSpots/{spotId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
+  }
+}

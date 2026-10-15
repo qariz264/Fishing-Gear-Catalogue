@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /fishing-spots
+Allow: /blogs
+Allow: /events
+Allow: /training
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*

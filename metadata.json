@@ -1,0 +1,6 @@
+{
+  "name": "FishWithNelson - Premium Fishing Gear Catalogue",
+  "description": "Premium fishing gear catalogue for FishWithNelson. Browse rods, reels, lures, hooks, and nets, and order directly via WhatsApp for personalized availability, pricing, and delivery in Nairobi & countrywide Kenya.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

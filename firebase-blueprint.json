@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Fishing equipment item in the catalogue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "brand": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "subcategory": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "imageUrl": { "type": "string", "maxLength": 1000000 },
+        "published": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category"]
+    },
+    "Blog": {
+      "title": "Blog",
+      "description": "Fishing article or guide",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "slug": { "type": "string", "maxLength": 200 },
+        "excerpt": { "type": "string", "maxLength": 600 },
+        "content": { "type": "string", "maxLength": 50000 },
+        "author": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "coverImageUrl": { "type": "string", "maxLength": 1000000 },
+        "published": { "type": "boolean" },
+        "publishedAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "slug"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Fishing tournament, meetup, or expo",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "imageUrl": { "type": "string", "maxLength": 1000000 },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "location": { "type": "string", "maxLength": 250 },
+        "contactInstructions": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["upcoming", "completed", "cancelled"] },
+        "published": { "type": "boolean" },
+        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "startDate"]
+    },
+    "Training": {
+      "title": "Training",
+      "description": "Fishing class, masterclass, or technique workshop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "category": { "type": "string", "maxLength": 100 },
+        "learningObjectives": { "type": "string", "maxLength": 2000 },
+        "imageUrl": { "type": "string", "maxLength": 1000000 },
+        "venue": { "type": "string", "maxLength": 250 },
+        "schedule": { "type": "string", "maxLength": 500 },
+        "duration": { "type": "string", "maxLength": 100 },
+        "requirements": { "type": "string", "maxLength": 1000 },
+        "contactInstructions": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["upcoming", "ongoing", "completed"] },
+        "published": { "type": "boolean" },
+        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title"]
+    },
+    "FishingSpot": {
+      "title": "FishingSpot",
+      "description": "Verified angling destination and fishing spot guide",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "region": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "imageUrl": { "type": "string", "maxLength": 1000000 },
+        "fishingType": { "type": "string", "maxLength": 200 },
+        "accessInstructions": { "type": "string", "maxLength": 2000 },
+        "facilities": { "type": "string", "maxLength": 1000 },
+        "mapLink": { "type": "string", "maxLength": 1000 },
+        "safetyGuidance": { "type": "string", "maxLength": 2000 },
+        "published": { "type": "boolean" },
+        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "region"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Authorized administrator record",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "superadmin"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Public gear catalogue and admin inventory"
+    },
+    "/blogs/{blogId}": {
+      "schema": "Blog",
+      "description": "Blog articles and fishing stories"
+    },
+    "/events/{eventId}": {
+      "schema": "Event",
+      "description": "Fishing tournaments and community meetups"
+    },
+    "/training/{trainingId}": {
+      "schema": "Training",
+      "description": "Angling classes and technique workshops"
+    },
+    "/fishingSpots/{spotId}": {
+      "schema": "FishingSpot",
+      "description": "Verified Kenya fishing spots and waters"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Authorized administrators list"
+    }
+  }
+}

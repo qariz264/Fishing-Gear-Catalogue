@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { Header } from '../components/Header';
@@ -7,7 +8,7 @@ import { CategoryFilterBar } from '../components/CategoryFilterBar';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetailModal } from '../components/ProductDetailModal';
 import { Footer } from '../components/Footer';
-import { Search, ShoppingBag, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { Search, ShoppingBag, MessageSquare } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
 import {
   getStoredProducts,
@@ -16,6 +17,7 @@ import {
 import { useCart } from '../context/CartContext';
 
 export const PublicCataloguePage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All Equipment');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -42,6 +44,27 @@ export const PublicCataloguePage: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
+
+  // Automatically select and open product modal when deep-linked via URL (e.g. ?product=rod-1)
+  useEffect(() => {
+    const productId = searchParams.get('product') || searchParams.get('p');
+    if (productId && products.length > 0) {
+      const match = products.find((p) => p.id === productId);
+      if (match) {
+        setSelectedProduct(match);
+      }
+    }
+  }, [searchParams, products]);
+
+  const handleCloseDetailModal = () => {
+    setSelectedProduct(null);
+    if (searchParams.has('product') || searchParams.has('p')) {
+      const next = new URLSearchParams(searchParams);
+      next.delete('product');
+      next.delete('p');
+      setSearchParams(next, { replace: true });
+    }
+  };
 
   // Compute dynamic categories based on available inventory
   const categoriesList = useMemo(() => {
@@ -179,7 +202,7 @@ export const PublicCataloguePage: React.FC = () => {
       {/* Product Detail Modal */}
       <ProductDetailModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={handleCloseDetailModal}
         onAddToCart={(p, qty, v) => addToCart(p, qty, v)}
         inCartCount={selectedProduct ? getInCartCount(selectedProduct.id) : 0}
       />

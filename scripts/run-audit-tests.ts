@@ -41,6 +41,15 @@ assert(
   'Single product WhatsApp enquiry accurately includes product name'
 );
 assert(
+  singleUrl.includes(encodeURIComponent('?product=' + sampleProduct.id)) ||
+    singleUrl.includes(encodeURIComponent('product=' + sampleProduct.id)),
+  'Single product WhatsApp enquiry is accompanied by product reference link'
+);
+assert(
+  singleUrl.includes(encodeURIComponent('FISHING WITH NELSON')),
+  'Single product WhatsApp enquiry branding is Fishing With Nelson'
+);
+assert(
   singleUrl.includes('availability') && singleUrl.includes('delivery'),
   'Single product WhatsApp enquiry requests seller availability and delivery confirmation'
 );
@@ -59,6 +68,11 @@ const cartUrl = buildCartWhatsAppUrl(mockCartItems, {
 assert(
   cartUrl.includes('wa.me/254702782946'),
   'Cart WhatsApp URL uses wa.me/254702782946'
+);
+assert(
+  cartUrl.includes(encodeURIComponent('?product=' + PRODUCTS[0].id)) &&
+    cartUrl.includes(encodeURIComponent('?product=' + PRODUCTS[1].id)),
+  'Cart WhatsApp order accompanies each item with its specific product link'
 );
 assert(
   cartUrl.includes('John%20Fisher'),

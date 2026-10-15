@@ -101,7 +101,7 @@ export const Footer: React.FC<FooterProps> = () => {
               <span>Shop Address</span>
             </div>
             <div className="text-slate-300 space-y-1 leading-relaxed">
-              <p className="font-semibold text-white">FishWithNelson</p>
+              <p className="font-semibold text-white">Fishing With Nelson</p>
               <p>Rumwe Building, 1st Floor, Room 3AB,</p>
               <p>Mfangano Street,</p>
               <p>Nairobi, Kenya.</p>
@@ -172,7 +172,7 @@ export const Footer: React.FC<FooterProps> = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-          <div>© {new Date().getFullYear()} FishWithNelson. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Fishing With Nelson. All rights reserved.</div>
           <div className="flex items-center gap-4">
             <span>Rumwe Building, Mfangano St, Nairobi</span>
             <span>·</span>

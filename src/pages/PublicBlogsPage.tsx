@@ -6,12 +6,22 @@ import { BlogItem } from '../types/admin';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { BookOpen, Calendar, User, Search, Tag, ArrowRight } from 'lucide-react';
+import { setPageSeo } from '../utils/seo';
 
 export const PublicBlogsPage: React.FC = () => {
   const [blogs, setBlogs] = useState<BlogItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Fishing Blog & Angling Guides - Fishing With Nelson Kenya',
+      description:
+        'In-depth fishing guides, tackle recommendations, bait selection, seasonal angling tips, and stories from Kenyan waters.',
+      canonicalPath: '/blogs',
+    });
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(

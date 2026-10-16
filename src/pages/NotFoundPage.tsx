@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { Compass, ArrowLeft, ShoppingBag, MapPin, BookOpen } from 'lucide-react';
+import { setPageSeo } from '../utils/seo';
 
 export const NotFoundPage: React.FC = () => {
+  useEffect(() => {
+    setPageSeo({
+      title: 'Page Not Found - Fishing With Nelson',
+      description: 'The requested page was not found.',
+      noindex: true,
+    });
+  }, []);
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-amber-500/20 selection:text-amber-900">
       <Header />

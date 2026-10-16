@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Logo } from '../../components/Logo';
 import { Lock, User, Key, AlertCircle, ArrowLeft, Loader2 } from 'lucide-react';
+import { setPageSeo } from '../../utils/seo';
 
 export const AdminLoginPage: React.FC = () => {
   const { currentUser, isAdmin, loading, error, loginWithCredentials, clearError } = useAdminAuth();
@@ -11,6 +12,13 @@ export const AdminLoginPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Admin Login - Fishing With Nelson',
+      noindex: true,
+    });
+  }, []);
 
   const destination = (location.state as any)?.from || '/admin';
 

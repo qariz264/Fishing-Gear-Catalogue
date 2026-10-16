@@ -6,10 +6,20 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { Calendar, MapPin, Clock, MessageSquare, AlertCircle, CheckCircle, Trophy } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
+import { setPageSeo } from '../utils/seo';
 
 export const PublicEventsPage: React.FC = () => {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Angling Events & Tournaments - Fishing With Nelson Kenya',
+      description:
+        'Upcoming and past fishing competitions, bass derbies, casting days, and community gatherings organized by Fishing With Nelson in Kenya.',
+      canonicalPath: '/events',
+    });
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(

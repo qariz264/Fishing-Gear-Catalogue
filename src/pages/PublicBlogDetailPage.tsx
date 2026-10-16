@@ -7,12 +7,24 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { ArrowLeft, Calendar, User, Tag, Share2, MessageSquare } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
+import { setPageSeo } from '../utils/seo';
 
 export const PublicBlogDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [blog, setBlog] = useState<BlogItem | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (blog) {
+      setPageSeo({
+        title: `${blog.title} | Fishing With Nelson Kenya`,
+        description: blog.excerpt || blog.content.slice(0, 150),
+        canonicalPath: `/blogs/${blog.slug || blog.id}`,
+        ogImage: blog.coverImageUrl,
+      });
+    }
+  }, [blog]);
 
   useEffect(() => {
     async function loadArticle() {

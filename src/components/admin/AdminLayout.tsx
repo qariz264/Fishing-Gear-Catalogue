@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { Logo } from '../Logo';
+import { setPageSeo } from '../../utils/seo';
 import {
   LayoutDashboard,
   Package,
@@ -20,6 +21,13 @@ export const AdminLayout: React.FC = () => {
   const { currentUser, logout } = useAdminAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Admin Console - Fishing With Nelson',
+      noindex: true,
+    });
+  }, []);
 
   const handleLogout = async () => {
     await logout();

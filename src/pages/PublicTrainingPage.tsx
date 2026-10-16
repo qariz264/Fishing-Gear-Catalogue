@@ -6,10 +6,20 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { GraduationCap, MapPin, Clock, CheckCircle2, MessageSquare, BookOpen } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
+import { setPageSeo } from '../utils/seo';
 
 export const PublicTrainingPage: React.FC = () => {
   const [trainings, setTrainings] = useState<TrainingItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Fishing Training & Angling Clinics Kenya | Fishing With Nelson',
+      description:
+        'Professional angling training in Kenya covering casting techniques, lure selection, knots and rigging, boat safety, and fish handling.',
+      canonicalPath: '/training',
+    });
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(

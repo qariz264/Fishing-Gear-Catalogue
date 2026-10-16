@@ -15,12 +15,22 @@ import {
   Waves,
 } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
+import { setPageSeo } from '../utils/seo';
 
 export const PublicFishingSpotsPage: React.FC = () => {
   const [spots, setSpots] = useState<FishingSpotItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpot, setSelectedSpot] = useState<FishingSpotItem | null>(null);
+
+  useEffect(() => {
+    setPageSeo({
+      title: 'Kenya Fishing Spots Guide - Lakes, Rivers & Marine | Fishing With Nelson',
+      description:
+        'Explore verified fishing spots across Kenya including Lake Naivasha, Aberdare trout streams, and Indian Ocean coastal waters with access tips and target species.',
+      canonicalPath: '/fishing-spots',
+    });
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(

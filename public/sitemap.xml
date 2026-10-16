@@ -1,167 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Primary Pages -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Public Navigation Pages -->
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/</loc>
+    <loc>https://fishingwithnelson.co.ke/</loc>
     <lastmod>2026-10-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/fishing-spots</loc>
-    <lastmod>2026-10-16</lastmod>
+    <loc>https://fishingwithnelson.co.ke/fishing-spots</loc>
+    <lastmod>2026-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/events</loc>
+    <loc>https://fishingwithnelson.co.ke/events</loc>
     <lastmod>2026-10-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/training</loc>
-    <lastmod>2026-10-16</lastmod>
+    <loc>https://fishingwithnelson.co.ke/training</loc>
+    <lastmod>2026-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/blogs</loc>
-    <lastmod>2026-10-16</lastmod>
+    <loc>https://fishingwithnelson.co.ke/blogs</loc>
+    <lastmod>2026-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Deep-linked Equipment Catalogue Products -->
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-1</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-1</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-2</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-2</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-3</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-3</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-4</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-4</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-5</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-5</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-6</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=rod-6</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-1</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=reel-1</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-2</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=reel-2</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-3</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=reel-3</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-4</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=reel-4</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-5</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=reel-5</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-1</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=lure-1</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-2</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=lure-2</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-3</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=lure-3</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-4</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=lure-4</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-5</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=lure-5</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=hook-1</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=hook-1</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=hook-2</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=hook-2</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=hook-3</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=hook-3</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=net-1</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=net-1</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=net-2</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://fishingwithnelson.co.ke/?product=net-2</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 </urlset>

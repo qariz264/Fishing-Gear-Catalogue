@@ -22,7 +22,7 @@ export function getProductReferenceUrl(productId: string): string {
   } catch {
     // fallback if window is unavailable
   }
-  return `https://fishingwithnelson.com/?product=${encodeURIComponent(productId)}`;
+  return `https://fishingwithnelson.co.ke/?product=${encodeURIComponent(productId)}`;
 }
 
 /**

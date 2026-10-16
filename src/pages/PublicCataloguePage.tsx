@@ -16,6 +16,8 @@ import {
 } from '../utils/productStorage';
 import { useCart } from '../context/CartContext';
 
+import { setPageSeo } from '../utils/seo';
+
 export const PublicCataloguePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,6 +46,27 @@ export const PublicCataloguePage: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
+
+  // Manage dynamic canonical metadata for homepage and individual product views
+  useEffect(() => {
+    if (selectedProduct) {
+      setPageSeo({
+        title: `${selectedProduct.name} | Fishing With Nelson Kenya`,
+        description: selectedProduct.description
+          ? `${selectedProduct.description.slice(0, 150)} - Order via WhatsApp from Fishing With Nelson Kenya.`
+          : `Order ${selectedProduct.name} from Fishing With Nelson in Nairobi, Kenya via WhatsApp.`,
+        canonicalPath: `/?product=${encodeURIComponent(selectedProduct.id)}`,
+        ogImage: selectedProduct.imageUrl,
+      });
+    } else {
+      setPageSeo({
+        title: 'Fishing With Nelson - Premium Fishing Gear, Spots & Training Kenya',
+        description:
+          "Fishing With Nelson is Kenya's premier fishing gear catalogue, angling spot guide, and training clinic. Browse quality rods, reels, lures, and terminal tackle with personalized advice and countrywide delivery.",
+        canonicalPath: '/',
+      });
+    }
+  }, [selectedProduct]);
 
   // Automatically select and open product modal when deep-linked via URL (e.g. ?product=rod-1)
   useEffect(() => {

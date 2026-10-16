@@ -1,0 +1,16 @@
+{
+  "name": "Fishing With Nelson",
+  "short_name": "FishWithNelson",
+  "description": "Kenya's premier fishing gear catalogue, angling spot guides, and training clinics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

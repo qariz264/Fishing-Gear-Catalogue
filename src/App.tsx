@@ -5,14 +5,28 @@ import { CartProvider, useCart } from './context/CartContext';
 import { CartDrawer } from './components/CartDrawer';
 import { Loader2 } from 'lucide-react';
 
-// Customer-facing pages (loaded for customers)
+// Core Catalogue landing page is loaded directly for instant 0ms first render
 import { PublicCataloguePage } from './pages/PublicCataloguePage';
-import { PublicFishingSpotsPage } from './pages/PublicFishingSpotsPage';
-import { PublicBlogsPage } from './pages/PublicBlogsPage';
-import { PublicBlogDetailPage } from './pages/PublicBlogDetailPage';
-import { PublicEventsPage } from './pages/PublicEventsPage';
-import { PublicTrainingPage } from './pages/PublicTrainingPage';
-import { NotFoundPage } from './pages/NotFoundPage';
+
+// Lazy-loaded secondary public routes to optimize initial bundle size & load speed
+const PublicFishingSpotsPage = lazy(() =>
+  import('./pages/PublicFishingSpotsPage').then((m) => ({ default: m.PublicFishingSpotsPage }))
+);
+const PublicBlogsPage = lazy(() =>
+  import('./pages/PublicBlogsPage').then((m) => ({ default: m.PublicBlogsPage }))
+);
+const PublicBlogDetailPage = lazy(() =>
+  import('./pages/PublicBlogDetailPage').then((m) => ({ default: m.PublicBlogDetailPage }))
+);
+const PublicEventsPage = lazy(() =>
+  import('./pages/PublicEventsPage').then((m) => ({ default: m.PublicEventsPage }))
+);
+const PublicTrainingPage = lazy(() =>
+  import('./pages/PublicTrainingPage').then((m) => ({ default: m.PublicTrainingPage }))
+);
+const NotFoundPage = lazy(() =>
+  import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
+);
 
 // Lazy-loaded Admin dashboard pages & layout (code-split to minimize customer bundle)
 const AdminLoginPage = lazy(() =>
@@ -43,7 +57,17 @@ const AdminFishingSpotsPage = lazy(() =>
   import('./pages/admin/AdminFishingSpotsPage').then((m) => ({ default: m.AdminFishingSpotsPage }))
 );
 
-// Minimalist fallback during async chunk load
+// Fast, unobtrusive fallback loader for public routes
+const PublicChunkFallback: React.FC = () => (
+  <div className="min-h-[50vh] flex flex-col items-center justify-center p-12 text-slate-500">
+    <Loader2 className="w-6 h-6 text-amber-600 animate-spin mb-3" />
+    <span className="text-xs font-mono font-medium text-slate-500 tracking-wide">
+      Loading Fishing With Nelson...
+    </span>
+  </div>
+);
+
+// Admin portal fallback during chunk load
 const AdminChunkFallback: React.FC = () => (
   <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-300">
     <Loader2 className="w-8 h-8 text-amber-500 animate-spin mb-3" />
@@ -82,13 +106,50 @@ export default function App() {
       <AdminAuthProvider>
         <CartProvider>
           <Routes>
-            {/* Customer-Facing Public Routes */}
+            {/* Direct Instant Load Route */}
             <Route path="/" element={<PublicCataloguePage />} />
-            <Route path="/fishing-spots" element={<PublicFishingSpotsPage />} />
-            <Route path="/blogs" element={<PublicBlogsPage />} />
-            <Route path="/blogs/:slug" element={<PublicBlogDetailPage />} />
-            <Route path="/events" element={<PublicEventsPage />} />
-            <Route path="/training" element={<PublicTrainingPage />} />
+
+            {/* Code-split Public Secondary Routes with Fast Fallback */}
+            <Route
+              path="/fishing-spots"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicFishingSpotsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/blogs"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicBlogsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/blogs/:slug"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicBlogDetailPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicEventsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/training"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicTrainingPage />
+                </Suspense>
+              }
+            />
 
             {/* Admin Authentication Route (Lazy-loaded) */}
             <Route
@@ -120,7 +181,14 @@ export default function App() {
             </Route>
 
             {/* Dedicated 404 Route */}
-            <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path="*"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <NotFoundPage />
+                </Suspense>
+              }
+            />
           </Routes>
 
           {/* Slide-over Cart Drawer accessible across all customer views */}

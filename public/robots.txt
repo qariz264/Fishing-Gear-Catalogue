@@ -1,9 +1,16 @@
+# Robots.txt for Fishing With Nelson (Kenya)
+# Directs Googlebot, Bingbot, and web crawlers to public sections while protecting admin areas
+
 User-agent: *
 Allow: /
 Allow: /fishing-spots
 Allow: /blogs
+Allow: /blogs/*
 Allow: /events
 Allow: /training
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/*
+
+# Google Search Console XML Sitemap
+Sitemap: https://www.fishingwithnelson.co.ke/sitemap.xml

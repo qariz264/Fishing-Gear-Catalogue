@@ -7,6 +7,7 @@ export interface ProductItem {
   category: string;
   subcategory: string;
   description: string;
+  price?: number;
   imageUrl?: string;
   storagePath?: string;
   specs: ProductSpec[];
@@ -25,6 +26,7 @@ export interface BlogItem {
   author: string;
   category: string;
   coverImageUrl?: string;
+  images?: string[];
   storagePath?: string;
   tags?: string[];
   published: boolean;
@@ -38,6 +40,7 @@ export interface EventItem {
   title: string;
   description: string;
   imageUrl?: string;
+  images?: string[];
   storagePath?: string;
   startDate: string;
   endDate?: string;

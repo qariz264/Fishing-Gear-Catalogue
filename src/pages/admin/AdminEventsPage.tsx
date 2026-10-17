@@ -10,6 +10,7 @@ import {
 import { db } from '../../firebase';
 import { EventItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
+import { AdminMultiImageUploader } from '../../components/admin/AdminMultiImageUploader';
 import { AdminAlert, AdminAlertMessage } from '../../components/admin/AdminAlert';
 import { ADMIN_KEY } from '../../utils/adminConstants';
 import { sanitizeFirestorePayload } from '../../utils/sanitizeFirestore';
@@ -25,6 +26,7 @@ import {
   Clock,
   X,
   Loader2,
+  ImageIcon,
 } from 'lucide-react';
 
 export const AdminEventsPage: React.FC = () => {
@@ -41,6 +43,7 @@ export const AdminEventsPage: React.FC = () => {
     title: string;
     description: string;
     imageUrl: string;
+    images: string[];
     storagePath: string;
     startDate: string;
     endDate: string;
@@ -52,6 +55,7 @@ export const AdminEventsPage: React.FC = () => {
     title: '',
     description: '',
     imageUrl: '',
+    images: [],
     storagePath: '',
     startDate: '',
     endDate: '',
@@ -99,6 +103,7 @@ export const AdminEventsPage: React.FC = () => {
       title: '',
       description: '',
       imageUrl: '',
+      images: [],
       storagePath: '',
       startDate: new Date().toISOString().split('T')[0],
       endDate: '',
@@ -113,10 +118,15 @@ export const AdminEventsPage: React.FC = () => {
   const openEditModal = (item: EventItem) => {
     setEditingEvent(item);
     setModalError(null);
+    const existingImages = item.images && Array.isArray(item.images) && item.images.length > 0
+      ? item.images
+      : (item.imageUrl ? [item.imageUrl] : []);
+
     setFormData({
       title: item.title || '',
       description: item.description || '',
-      imageUrl: item.imageUrl || '',
+      imageUrl: item.imageUrl || existingImages[0] || '',
+      images: existingImages,
       storagePath: item.storagePath || '',
       startDate: item.startDate || '',
       endDate: item.endDate || '',
@@ -148,11 +158,14 @@ export const AdminEventsPage: React.FC = () => {
 
     setIsSaving(true);
     const id = editingEvent ? editingEvent.id : `event-${Date.now()}`;
+    const primaryImg = formData.images.length > 0 ? formData.images[0] : (formData.imageUrl || '');
+
     const rawPayload: Record<string, any> = {
       id,
       title: trimmedTitle,
       description: formData.description.trim(),
-      imageUrl: formData.imageUrl || '',
+      imageUrl: primaryImg,
+      images: formData.images,
       storagePath: formData.storagePath || '',
       startDate: trimmedDate,
       location: trimmedLocation,
@@ -311,6 +324,13 @@ export const AdminEventsPage: React.FC = () => {
                     </span>
                   </div>
 
+                  {item.images && item.images.length > 1 && (
+                    <span className="absolute bottom-2.5 right-2.5 bg-slate-950/85 text-emerald-300 text-[10px] font-mono px-2 py-0.5 rounded-md flex items-center gap-1 border border-emerald-500/30">
+                      <ImageIcon className="w-3 h-3 text-amber-400" />
+                      <span>{item.images.length} Photos</span>
+                    </span>
+                  )}
+
                   <button
                     onClick={() => togglePublish(item)}
                     className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1 shadow-xs ${
@@ -406,18 +426,19 @@ export const AdminEventsPage: React.FC = () => {
               {/* In-modal error feedback */}
               <AdminAlert message={modalError} onDismiss={() => setModalError(null)} />
 
-              <AdminImageUploader
-                currentImageUrl={formData.imageUrl}
-                currentStoragePath={formData.storagePath}
+              <AdminMultiImageUploader
+                images={formData.images}
+                onChange={(imgs) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    images: imgs,
+                    imageUrl: imgs[0] || '',
+                  }))
+                }
                 folder="events"
-                onImageUploaded={(url, path) =>
-                  setFormData((prev) => ({ ...prev, imageUrl: url, storagePath: path }))
-                }
-                onImageRemoved={() =>
-                  setFormData((prev) => ({ ...prev, imageUrl: '', storagePath: '' }))
-                }
-                label="Event Poster / Photograph"
-                aspectHint="Event flyer or venue image"
+                label="Event Posters & Photo Gallery"
+                aspectHint="Upload event flyers, tournament posters, and venue photos. The first image will be the primary poster."
+                maxImages={12}
               />
 
               <div>

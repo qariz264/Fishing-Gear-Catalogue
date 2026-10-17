@@ -10,6 +10,7 @@ import {
 import { db } from '../../firebase';
 import { BlogItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
+import { AdminMultiImageUploader } from '../../components/admin/AdminMultiImageUploader';
 import { AdminAlert, AdminAlertMessage } from '../../components/admin/AdminAlert';
 import { ADMIN_KEY } from '../../utils/adminConstants';
 import { sanitizeFirestorePayload } from '../../utils/sanitizeFirestore';
@@ -26,6 +27,7 @@ import {
   Calendar,
   User,
   Tag,
+  ImageIcon,
 } from 'lucide-react';
 
 export const AdminBlogsPage: React.FC = () => {
@@ -49,6 +51,7 @@ export const AdminBlogsPage: React.FC = () => {
     author: string;
     category: string;
     coverImageUrl: string;
+    images: string[];
     storagePath: string;
     tags: string;
     published: boolean;
@@ -60,6 +63,7 @@ export const AdminBlogsPage: React.FC = () => {
     author: 'Nelson Kariuki',
     category: 'Fishing Techniques',
     coverImageUrl: '',
+    images: [],
     storagePath: '',
     tags: 'Bass, Kenya, Lures',
     published: true,
@@ -124,6 +128,7 @@ export const AdminBlogsPage: React.FC = () => {
       author: 'Nelson Kariuki',
       category: 'Fishing Techniques',
       coverImageUrl: '',
+      images: [],
       storagePath: '',
       tags: 'Bass, Kenya, Lures',
       published: true,
@@ -134,6 +139,10 @@ export const AdminBlogsPage: React.FC = () => {
   const openEditModal = (item: BlogItem) => {
     setEditingBlog(item);
     setModalError(null);
+    const existingImages = item.images && Array.isArray(item.images) && item.images.length > 0
+      ? item.images
+      : (item.coverImageUrl ? [item.coverImageUrl] : []);
+
     setFormData({
       title: item.title || '',
       slug: item.slug || '',
@@ -141,7 +150,8 @@ export const AdminBlogsPage: React.FC = () => {
       content: item.content || '',
       author: item.author || 'Nelson Kariuki',
       category: item.category || 'Fishing Techniques',
-      coverImageUrl: item.coverImageUrl || '',
+      coverImageUrl: item.coverImageUrl || existingImages[0] || '',
+      images: existingImages,
       storagePath: item.storagePath || '',
       tags: item.tags ? item.tags.join(', ') : '',
       published: item.published === true,
@@ -167,6 +177,8 @@ export const AdminBlogsPage: React.FC = () => {
       .map((t) => t.trim())
       .filter(Boolean);
 
+    const primaryCover = formData.images.length > 0 ? formData.images[0] : (formData.coverImageUrl || '');
+
     const rawPayload: Record<string, any> = {
       id,
       title: trimmedTitle,
@@ -175,7 +187,8 @@ export const AdminBlogsPage: React.FC = () => {
       content: formData.content.trim(),
       author: formData.author.trim() || 'Nelson Kariuki',
       category: formData.category.trim() || 'General',
-      coverImageUrl: formData.coverImageUrl || '',
+      coverImageUrl: primaryCover,
+      images: formData.images,
       storagePath: formData.storagePath || '',
       tags: tagList,
       published: formData.published,
@@ -351,6 +364,13 @@ export const AdminBlogsPage: React.FC = () => {
                     </span>
                   </div>
 
+                  {item.images && item.images.length > 1 && (
+                    <span className="absolute bottom-2.5 right-2.5 bg-slate-950/85 text-amber-300 text-[10px] font-mono px-2 py-0.5 rounded-md flex items-center gap-1 border border-amber-500/30">
+                      <ImageIcon className="w-3 h-3 text-amber-400" />
+                      <span>{item.images.length} Photos</span>
+                    </span>
+                  )}
+
                   <button
                     onClick={() => togglePublish(item)}
                     className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1 shadow-xs ${
@@ -452,18 +472,19 @@ export const AdminBlogsPage: React.FC = () => {
               {/* In-modal feedback */}
               <AdminAlert message={modalError} onDismiss={() => setModalError(null)} />
 
-              <AdminImageUploader
-                currentImageUrl={formData.coverImageUrl}
-                currentStoragePath={formData.storagePath}
+              <AdminMultiImageUploader
+                images={formData.images}
+                onChange={(imgs) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    images: imgs,
+                    coverImageUrl: imgs[0] || '',
+                  }))
+                }
                 folder="blogs"
-                onImageUploaded={(url, path) =>
-                  setFormData((prev) => ({ ...prev, coverImageUrl: url, storagePath: path }))
-                }
-                onImageRemoved={() =>
-                  setFormData((prev) => ({ ...prev, coverImageUrl: '', storagePath: '' }))
-                }
-                label="Article Cover Image (Stored in Firebase Storage)"
-                aspectHint="Recommended: 16:9 banner"
+                label="Article Photo Gallery & Cover Image"
+                aspectHint="Upload multiple photos. The first image will be displayed as the main article cover."
+                maxImages={12}
               />
 
               <div>

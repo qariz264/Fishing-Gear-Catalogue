@@ -70,6 +70,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               ))}
             </div>
           )}
+
+          {/* Price Below Product */}
+          <div className="mt-2.5 mb-2 pt-2 border-t border-slate-100 flex items-baseline justify-between">
+            <span className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-wide">
+              Price
+            </span>
+            <span className="text-sm sm:text-base font-extrabold text-slate-950 font-mono">
+              {product.price && product.price > 0
+                ? `KSh ${product.price.toLocaleString()}`
+                : '0 KSh'}
+            </span>
+          </div>
         </div>
 
         {/* Action Buttons */}

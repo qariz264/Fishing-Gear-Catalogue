@@ -16,6 +16,7 @@ export interface Product {
   brand: string;
   category: string;
   subcategory: string;
+  price?: number;
   imageUrl?: string;
   badge?: string;
   description: string;

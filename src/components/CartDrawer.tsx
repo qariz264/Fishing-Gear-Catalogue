@@ -27,6 +27,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   if (!isOpen) return null;
 
   const totalItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalCartAmount = items.reduce(
+    (sum, item) => sum + (item.product.price ? Number(item.product.price) * item.quantity : 0),
+    0
+  );
 
   const whatsappUrl = buildCartWhatsAppUrl(items, {
     name: customerName,
@@ -98,6 +102,20 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         </h4>
                         <div className="text-[11px] text-slate-500 truncate">
                           {item.product.brand} · {item.product.subcategory}
+                        </div>
+
+                        {/* Price & Subtotal */}
+                        <div className="flex items-baseline justify-between text-xs mt-1.5 pt-1 border-t border-slate-100">
+                          <span className="text-[11px] font-mono text-slate-500">
+                            {item.product.price && item.product.price > 0
+                              ? `KSh ${item.product.price.toLocaleString()}`
+                              : '0 KSh'}
+                          </span>
+                          <span className="text-xs font-mono font-bold text-slate-900">
+                            {item.product.price && item.product.price > 0
+                              ? `KSh ${(item.product.price * item.quantity).toLocaleString()}`
+                              : '0 KSh'}
+                          </span>
                         </div>
 
                         {/* Quantity Controls */}
@@ -181,7 +199,21 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
         {/* Drawer Footer */}
         {items.length > 0 && (
-          <div className="p-6 border-t border-slate-100 bg-white space-y-2">
+          <div className="p-6 border-t border-slate-100 bg-white space-y-3">
+            <div className="flex items-baseline justify-between">
+              <div>
+                <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide block">
+                  Estimated Total
+                </span>
+                <span className="text-[10px] text-slate-400">
+                  Exact total confirmed with Nelson on WhatsApp
+                </span>
+              </div>
+              <span className="text-base font-extrabold text-slate-950 font-mono">
+                {totalCartAmount > 0 ? `KSh ${totalCartAmount.toLocaleString()}` : '0 KSh'}
+              </span>
+            </div>
+
             <a
               href={whatsappUrl}
               target="_blank"

@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { BlogItem } from '../types/admin';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
-import { BookOpen, Calendar, User, Search, Tag, ArrowRight } from 'lucide-react';
+import { BookOpen, Calendar, User, Search, Tag, ArrowRight, ImageIcon } from 'lucide-react';
 import { setPageSeo } from '../utils/seo';
 
 export const PublicBlogsPage: React.FC = () => {
@@ -152,12 +152,18 @@ export const PublicBlogsPage: React.FC = () => {
               >
                 <div>
                   {blog.coverImageUrl && (
-                    <div className="h-48 w-full bg-slate-100 overflow-hidden">
+                    <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
                       <img
                         src={blog.coverImageUrl}
                         alt={blog.title}
                         className="w-full h-full object-cover"
                       />
+                      {blog.images && blog.images.length > 1 && (
+                        <span className="absolute bottom-2.5 right-2.5 bg-slate-950/80 text-white text-[10px] font-mono font-medium px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-xs border border-white/10 shadow-xs">
+                          <ImageIcon className="w-3 h-3 text-amber-400" />
+                          <span>{blog.images.length} Photos</span>
+                        </span>
+                      )}
                     </div>
                   )}
 

@@ -83,6 +83,7 @@ export function getStoredProducts(): Product[] {
 
   return INITIAL_PRODUCTS.map((p) => ({
     ...p,
+    price: p.price !== undefined ? Number(p.price) : 0,
     imageUrl: '',
   }));
 }
@@ -120,6 +121,7 @@ export function subscribeToProducts(
         productsFromDb.push({
           ...data,
           id: d.id,
+          price: data.price !== undefined ? Number(data.price) : 0,
         });
       });
 

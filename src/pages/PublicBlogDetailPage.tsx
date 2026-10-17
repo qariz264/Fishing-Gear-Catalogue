@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { BlogItem } from '../types/admin';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
-import { ArrowLeft, Calendar, User, Tag, Share2, MessageSquare } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, User, Tag, Share2, MessageSquare, ImageIcon, X } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
 import { setPageSeo } from '../utils/seo';
 
@@ -13,7 +13,16 @@ export const PublicBlogDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [blog, setBlog] = useState<BlogItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPhotoIdx, setSelectedPhotoIdx] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  const galleryImages = blog
+    ? blog.images && Array.isArray(blog.images) && blog.images.length > 0
+      ? blog.images
+      : blog.coverImageUrl
+      ? [blog.coverImageUrl]
+      : []
+    : [];
 
   useEffect(() => {
     if (blog) {
@@ -151,6 +160,44 @@ export const PublicBlogDetailPage: React.FC = () => {
                 {blog.content}
               </div>
 
+              {/* Photo Gallery Grid (if multiple photos) */}
+              {galleryImages.length > 1 && (
+                <div className="pt-6 border-t border-slate-100 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-amber-600" />
+                      <h3 className="text-sm font-bold text-slate-900">
+                        Article Photo Gallery ({galleryImages.length} photos)
+                      </h3>
+                    </div>
+                    <span className="text-[11px] text-slate-500 font-mono">
+                      Click any photo to enlarge
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {galleryImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => setSelectedPhotoIdx(idx)}
+                        className="group relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-950 cursor-pointer shadow-2xs hover:shadow-md transition-all"
+                      >
+                        <img
+                          src={img}
+                          alt={`${blog.title} - photo ${idx + 1}`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <span className="text-[11px] font-semibold text-white bg-slate-950/80 px-2.5 py-1 rounded-lg">
+                            Enlarge
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Tags */}
               {blog.tags && blog.tags.length > 0 && (
                 <div className="pt-6 border-t border-slate-100 flex items-center gap-2 flex-wrap">
@@ -186,6 +233,67 @@ export const PublicBlogDetailPage: React.FC = () => {
               </div>
             </div>
           </article>
+        )}
+
+        {/* Fullscreen Photo Lightbox Modal */}
+        {selectedPhotoIdx !== null && galleryImages[selectedPhotoIdx] && (
+          <div
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xs flex items-center justify-center p-4"
+            onClick={() => setSelectedPhotoIdx(null)}
+          >
+            <div
+              className="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedPhotoIdx(null)}
+                className="absolute -top-10 right-0 p-2 text-white/80 hover:text-white rounded-lg transition-colors"
+                title="Close"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl flex items-center justify-center max-h-[80vh]">
+                <img
+                  src={galleryImages[selectedPhotoIdx]}
+                  alt={`Photo ${selectedPhotoIdx + 1}`}
+                  className="max-h-[80vh] w-auto max-w-full object-contain"
+                />
+
+                {/* Prev / Next controls */}
+                {galleryImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setSelectedPhotoIdx(
+                          (selectedPhotoIdx - 1 + galleryImages.length) % galleryImages.length
+                        )
+                      }
+                      className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white transition-colors"
+                      title="Previous photo"
+                    >
+                      <ArrowLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        setSelectedPhotoIdx((selectedPhotoIdx + 1) % galleryImages.length)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white transition-colors"
+                      title="Next photo"
+                    >
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Photo Counter */}
+              <div className="mt-3 text-xs text-slate-400 font-mono">
+                Photo {selectedPhotoIdx + 1} of {galleryImages.length}
+              </div>
+            </div>
+          </div>
         )}
       </main>
 

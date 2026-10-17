@@ -50,12 +50,14 @@ export function buildCartWhatsAppUrl(
   if (customerDetails?.location?.trim()) {
     text += `*Delivery Destination:* ${customerDetails.location.trim()}\n`;
   }
-  text += `\n*Selected Fishing Equipment:*\n`;
-
   items.forEach((item, index) => {
     const num = index + 1;
     const productLink = getProductReferenceUrl(item.product.id);
+    const priceDisplay = item.product.price && item.product.price > 0
+      ? `KSh ${item.product.price.toLocaleString()}`
+      : '0 KSh';
     text += `${num}. *${item.quantity}x* ${item.product.name}\n`;
+    text += `   - Price: ${priceDisplay}\n`;
     text += `   - Link: ${productLink}\n`;
     text += `   - Category: ${item.product.category}${item.product.subcategory ? ` (${item.product.subcategory})` : ''}\n`;
     if (item.selectedVariant) {
@@ -88,6 +90,10 @@ export function buildSingleProductWhatsAppUrl(
   let text = `*PRODUCT INQUIRY — FISHING WITH NELSON*\n\n`;
   text += `Hello Nelson, I would like to inquire about this equipment from your catalogue:\n\n`;
   text += `*Product:* ${product.name}\n`;
+  const priceDisplay = product.price && product.price > 0
+    ? `KSh ${product.price.toLocaleString()}`
+    : '0 KSh';
+  text += `*Price:* ${priceDisplay}\n`;
   text += `*Link:* ${productLink}\n`;
   text += `*Brand:* ${product.brand}\n`;
   text += `*Category:* ${product.category}\n`;

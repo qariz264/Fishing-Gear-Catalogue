@@ -37,6 +37,12 @@ export const AdminProductsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Price Management State
+  const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
+  const [quickPriceInput, setQuickPriceInput] = useState<string>('0');
+  const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
+  const [priceFilter, setPriceFilter] = useState<'all' | 'priced' | 'unpriced'>('all');
+
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
@@ -49,6 +55,7 @@ export const AdminProductsPage: React.FC = () => {
     category: string;
     subcategory: string;
     description: string;
+    price: number;
     imageUrl: string;
     storagePath: string;
     specs: ProductSpec[];
@@ -60,6 +67,7 @@ export const AdminProductsPage: React.FC = () => {
     category: 'Fishing Rods',
     subcategory: '',
     description: '',
+    price: 0,
     imageUrl: '',
     storagePath: '',
     specs: [{ label: 'Specification', value: '' }],
@@ -109,6 +117,7 @@ export const AdminProductsPage: React.FC = () => {
       category: 'Fishing Rods',
       subcategory: '',
       description: '',
+      price: 0,
       imageUrl: '',
       storagePath: '',
       specs: [
@@ -130,6 +139,7 @@ export const AdminProductsPage: React.FC = () => {
       category: item.category || 'Fishing Rods',
       subcategory: item.subcategory || '',
       description: item.description || '',
+      price: item.price !== undefined ? Math.max(0, Number(item.price)) : 0,
       imageUrl: item.imageUrl || '',
       storagePath: item.storagePath || '',
       specs: item.specs && item.specs.length > 0 ? item.specs : [{ label: 'Specification', value: '' }],
@@ -159,6 +169,7 @@ export const AdminProductsPage: React.FC = () => {
       category: formData.category.trim() || 'Fishing Gear',
       subcategory: formData.subcategory.trim() || 'Tackle',
       description: formData.description.trim(),
+      price: Math.max(0, Math.round(Number(formData.price) || 0)),
       imageUrl: formData.imageUrl || '',
       storagePath: formData.storagePath || '',
       specs: cleanSpecs,
@@ -214,9 +225,50 @@ export const AdminProductsPage: React.FC = () => {
     }
   };
 
+  // Quick Inline Price Save
+  const handleSaveQuickPrice = async (item: ProductItem, newPrice: number) => {
+    try {
+      setIsUpdatingPrice(true);
+      const sanitizedPrice = Math.max(0, Math.round(newPrice));
+      await setDoc(
+        doc(db, 'products', item.id),
+        {
+          price: sanitizedPrice,
+          updatedAt: new Date().toISOString(),
+          adminKey: ADMIN_KEY,
+        },
+        { merge: true }
+      );
+      setEditingPriceId(null);
+      setStatusAlert({
+        type: 'success',
+        text: `Price for "${item.name}" updated to ${
+          sanitizedPrice > 0 ? `KSh ${sanitizedPrice.toLocaleString()}` : '0 KSh'
+        }.`,
+      });
+    } catch (err: any) {
+      console.error('Error updating price:', err);
+      setStatusAlert({
+        type: 'error',
+        text: `Failed to update price: ${err?.message || err}`,
+      });
+    } finally {
+      setIsUpdatingPrice(false);
+    }
+  };
+
+  const unpricedCount = products.filter((p) => !p.price || Number(p.price) === 0).length;
+  const pricedCount = products.filter((p) => p.price && Number(p.price) > 0).length;
+
   // Filter products
   const filtered = products.filter((p) => {
     if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
+
+    // Price filter
+    const productPrice = p.price !== undefined && p.price !== null ? Number(p.price) : 0;
+    if (priceFilter === 'priced' && productPrice <= 0) return false;
+    if (priceFilter === 'unpriced' && productPrice > 0) return false;
+
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchName = (p.name || '').toLowerCase().includes(q);
@@ -290,6 +342,63 @@ export const AdminProductsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Price Status Quick Filter Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-1 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wide">
+            Filter by Price:
+          </span>
+          <div className="flex bg-slate-900 border border-slate-800 rounded-lg p-0.5">
+            <button
+              type="button"
+              onClick={() => setPriceFilter('all')}
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                priceFilter === 'all'
+                  ? 'bg-amber-600 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              All Items ({products.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setPriceFilter('priced')}
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                priceFilter === 'priced'
+                  ? 'bg-emerald-600 text-white font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Priced ({pricedCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setPriceFilter('unpriced')}
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                priceFilter === 'unpriced'
+                  ? 'bg-amber-500 text-slate-950 font-bold'
+                  : 'text-amber-400 hover:text-amber-300'
+              }`}
+            >
+              <span>Needs Price / 0 KSh</span>
+              <span className="px-1.5 py-0.2 bg-slate-950/60 rounded-full font-mono text-[10px]">
+                {unpricedCount}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {unpricedCount > 0 && priceFilter !== 'unpriced' && (
+          <button
+            type="button"
+            onClick={() => setPriceFilter('unpriced')}
+            className="text-[11px] text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>Notice: {unpricedCount} item{unpricedCount > 1 ? 's have' : ' has'} default 0 KSh price. Click to adjust.</span>
+          </button>
+        )}
+      </div>
+
       {/* Product List */}
       {loading ? (
         <div className="py-20 flex flex-col items-center justify-center text-slate-400 space-y-2">
@@ -319,6 +428,7 @@ export const AdminProductsPage: React.FC = () => {
                   <th className="py-3.5 px-4">Item & Photo</th>
                   <th className="py-3.5 px-4">Category</th>
                   <th className="py-3.5 px-4">Brand</th>
+                  <th className="py-3.5 px-4 text-right">Price</th>
                   <th className="py-3.5 px-4 text-center">Status</th>
                   <th className="py-3.5 px-4 text-center">Featured</th>
                   <th className="py-3.5 px-4 text-right">Actions</th>
@@ -359,6 +469,75 @@ export const AdminProductsPage: React.FC = () => {
                     {/* Brand */}
                     <td className="py-3 px-4 whitespace-nowrap text-slate-300 font-medium">
                       {item.brand}
+                    </td>
+
+                    {/* Price with Inline Quick Editor */}
+                    <td className="py-3 px-4 text-right whitespace-nowrap font-mono text-xs font-semibold">
+                      {editingPriceId === item.id ? (
+                        <div className="inline-flex items-center gap-1.5 justify-end">
+                          <span className="text-[11px] text-slate-400 font-mono">KSh</span>
+                          <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            autoFocus
+                            value={quickPriceInput}
+                            onChange={(e) => setQuickPriceInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleSaveQuickPrice(item, Number(quickPriceInput) || 0);
+                              } else if (e.key === 'Escape') {
+                                setEditingPriceId(null);
+                              }
+                            }}
+                            className="w-24 px-2 py-1 bg-slate-950 border border-amber-500 rounded text-right text-white font-mono text-xs focus:outline-hidden"
+                          />
+                          <button
+                            type="button"
+                            disabled={isUpdatingPrice}
+                            onClick={() => handleSaveQuickPrice(item, Number(quickPriceInput) || 0)}
+                            className="p-1 text-emerald-400 hover:text-emerald-300 bg-emerald-950/60 border border-emerald-800 rounded transition-colors"
+                            title="Save price (Enter)"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditingPriceId(null)}
+                            className="p-1 text-slate-400 hover:text-white bg-slate-800 rounded transition-colors"
+                            title="Cancel (Esc)"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-end gap-2 group/price">
+                          <span
+                            onClick={() => {
+                              setEditingPriceId(item.id);
+                              setQuickPriceInput(String(item.price !== undefined ? Number(item.price) : 0));
+                            }}
+                            className={`cursor-pointer hover:underline ${
+                              item.price && item.price > 0 ? 'text-amber-400' : 'text-slate-500'
+                            }`}
+                            title="Click to adjust price"
+                          >
+                            {item.price && item.price > 0 ? `KSh ${item.price.toLocaleString()}` : '0 KSh'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingPriceId(item.id);
+                              setQuickPriceInput(String(item.price !== undefined ? Number(item.price) : 0));
+                            }}
+                            className="p-1 rounded text-slate-500 hover:text-amber-300 hover:bg-slate-800 transition-colors"
+                            title="Quick adjust price"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      )}
                     </td>
 
                     {/* Published status */}
@@ -540,6 +719,58 @@ export const AdminProductsPage: React.FC = () => {
                     placeholder="e.g. Lipless Crankbaits, Front Drag Spinners"
                     className="w-full text-xs px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-hidden focus:border-amber-500"
                   />
+                </div>
+              </div>
+
+              {/* Selling Price Section - Clearly configurable during upload or editing */}
+              <div className="bg-slate-950/80 border border-amber-500/40 rounded-xl p-4 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>Item Selling Price (KSh) *</span>
+                  </label>
+                  <span className="text-[11px] font-mono text-slate-400">
+                    {formData.price > 0 ? `KSh ${formData.price.toLocaleString()}` : '0 KSh (Default)'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-normal">
+                  Set the item price here during photo upload. For already uploaded items, the default is 0 KSh, and you can adjust to any amount at any time.
+                </p>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span className="text-amber-400 font-mono text-xs font-bold">KSh</span>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formData.price}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        price: Math.max(0, parseInt(e.target.value, 10) || 0),
+                      })
+                    }
+                    placeholder="0"
+                    className="w-full text-sm pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-white font-mono font-bold focus:outline-hidden focus:border-amber-500"
+                  />
+                </div>
+                {/* Quick Presets */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  <span className="text-[10px] text-slate-500 font-mono">Quick Presets:</span>
+                  {[0, 500, 1000, 1500, 2500, 3500, 5000, 7500, 10000, 15000].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, price: preset }))}
+                      className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
+                        formData.price === preset
+                          ? 'bg-amber-600 text-white font-bold'
+                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                      }`}
+                    >
+                      {preset === 0 ? '0 KSh' : preset.toLocaleString()}
+                    </button>
+                  ))}
                 </div>
               </div>
 

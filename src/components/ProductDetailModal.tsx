@@ -69,6 +69,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <h2 className="text-lg font-bold text-slate-900 tracking-tight leading-snug">
                   {product.name}
                 </h2>
+                <div className="mt-2 flex items-baseline gap-2 py-1 px-2.5 bg-amber-50/80 rounded-lg border border-amber-200/60 inline-flex">
+                  <span className="text-[11px] font-mono text-amber-900 font-semibold uppercase tracking-wide">Price:</span>
+                  <span className="text-base font-extrabold text-amber-950 font-mono">
+                    {product.price && product.price > 0
+                      ? `KSh ${product.price.toLocaleString()}`
+                      : '0 KSh'}
+                  </span>
+                </div>
               </div>
 
               {product.description && (

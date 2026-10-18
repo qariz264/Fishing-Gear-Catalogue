@@ -10,7 +10,7 @@ import {
 import { db } from '../../firebase';
 import { ProductItem } from '../../types/admin';
 import { ProductSpec, CATEGORIES } from '../../data/products';
-import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
+import { AdminMultiImageUploader } from '../../components/admin/AdminMultiImageUploader';
 import { AdminAlert, AdminAlertMessage } from '../../components/admin/AdminAlert';
 import { ADMIN_KEY } from '../../utils/adminConstants';
 import { sanitizeFirestorePayload } from '../../utils/sanitizeFirestore';
@@ -28,6 +28,7 @@ import {
   ExternalLink,
   Loader2,
   Filter,
+  ImageIcon,
 } from 'lucide-react';
 
 export const AdminProductsPage: React.FC = () => {
@@ -57,6 +58,7 @@ export const AdminProductsPage: React.FC = () => {
     description: string;
     price: number;
     imageUrl: string;
+    images: string[];
     storagePath: string;
     specs: ProductSpec[];
     published: boolean;
@@ -69,6 +71,7 @@ export const AdminProductsPage: React.FC = () => {
     description: '',
     price: 0,
     imageUrl: '',
+    images: [],
     storagePath: '',
     specs: [{ label: 'Specification', value: '' }],
     published: true,
@@ -119,6 +122,7 @@ export const AdminProductsPage: React.FC = () => {
       description: '',
       price: 0,
       imageUrl: '',
+      images: [],
       storagePath: '',
       specs: [
         { label: 'Type', value: '' },
@@ -133,6 +137,13 @@ export const AdminProductsPage: React.FC = () => {
   const openEditModal = (item: ProductItem) => {
     setEditingProduct(item);
     setModalError(null);
+    const existingImages =
+      item.images && Array.isArray(item.images) && item.images.length > 0
+        ? item.images
+        : item.imageUrl
+        ? [item.imageUrl]
+        : [];
+
     setFormData({
       name: item.name || '',
       brand: item.brand || 'FishWithNelson',
@@ -140,7 +151,8 @@ export const AdminProductsPage: React.FC = () => {
       subcategory: item.subcategory || '',
       description: item.description || '',
       price: item.price !== undefined ? Math.max(0, Number(item.price)) : 0,
-      imageUrl: item.imageUrl || '',
+      imageUrl: item.imageUrl || existingImages[0] || '',
+      images: existingImages,
       storagePath: item.storagePath || '',
       specs: item.specs && item.specs.length > 0 ? item.specs : [{ label: 'Specification', value: '' }],
       published: item.published !== false,
@@ -162,6 +174,8 @@ export const AdminProductsPage: React.FC = () => {
     setIsSaving(true);
     const id = editingProduct ? editingProduct.id : `prod-${Date.now()}`;
     const cleanSpecs = formData.specs.filter((s) => s.label.trim() && s.value.trim());
+    const primaryImg = formData.images.length > 0 ? formData.images[0] : (formData.imageUrl || '');
+
     const payload = sanitizeFirestorePayload({
       id,
       name: trimmedName,
@@ -170,7 +184,8 @@ export const AdminProductsPage: React.FC = () => {
       subcategory: formData.subcategory.trim() || 'Tackle',
       description: formData.description.trim(),
       price: Math.max(0, Math.round(Number(formData.price) || 0)),
-      imageUrl: formData.imageUrl || '',
+      imageUrl: primaryImg,
+      images: formData.images,
       storagePath: formData.storagePath || '',
       specs: cleanSpecs,
       published: formData.published,
@@ -440,7 +455,7 @@ export const AdminProductsPage: React.FC = () => {
                     {/* Item & Image */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="relative w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0">
                           {item.imageUrl ? (
                             <img
                               src={item.imageUrl}
@@ -449,6 +464,15 @@ export const AdminProductsPage: React.FC = () => {
                             />
                           ) : (
                             <Package className="w-5 h-5 text-slate-600" />
+                          )}
+                          {item.images && item.images.length > 1 && (
+                            <span
+                              className="absolute bottom-0 right-0 bg-slate-900/90 text-amber-400 text-[9px] font-mono font-bold px-1 rounded-tl-sm border-t border-l border-slate-700 flex items-center gap-0.5"
+                              title={`${item.images.length} photos uploaded`}
+                            >
+                              <ImageIcon className="w-2.5 h-2.5" />
+                              <span>{item.images.length}</span>
+                            </span>
                           )}
                         </div>
                         <div className="min-w-0 max-w-xs">
@@ -640,19 +664,20 @@ export const AdminProductsPage: React.FC = () => {
               {/* In-modal feedback */}
               <AdminAlert message={modalError} onDismiss={() => setModalError(null)} />
 
-              {/* Image Uploader */}
-              <AdminImageUploader
-                currentImageUrl={formData.imageUrl}
-                currentStoragePath={formData.storagePath}
+              {/* Multi-Image Uploader for Equipment */}
+              <AdminMultiImageUploader
+                images={formData.images}
+                onChange={(imgs) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    images: imgs,
+                    imageUrl: imgs[0] || '',
+                  }))
+                }
                 folder="products"
-                onImageUploaded={(url, path) =>
-                  setFormData((prev) => ({ ...prev, imageUrl: url, storagePath: path }))
-                }
-                onImageRemoved={() =>
-                  setFormData((prev) => ({ ...prev, imageUrl: '', storagePath: '' }))
-                }
-                label="Product Photograph (Stored in Firebase Storage)"
-                aspectHint="100% full uncropped display"
+                label="Product Photographs & Visual Gallery"
+                aspectHint="Upload multiple equipment photos (macro shots, rod blank, reel spool, lures in water). The first image will be the primary catalogue cover."
+                maxImages={12}
               />
 
               {/* Title & Brand */}

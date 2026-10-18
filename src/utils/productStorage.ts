@@ -118,10 +118,15 @@ export function subscribeToProducts(
       const productsFromDb: Product[] = [];
       snapshot.forEach((d) => {
         const data = d.data() as Product;
+        const imgs = data.images && Array.isArray(data.images) && data.images.length > 0
+          ? data.images
+          : (data.imageUrl ? [data.imageUrl] : []);
         productsFromDb.push({
           ...data,
           id: d.id,
           price: data.price !== undefined ? Number(data.price) : 0,
+          imageUrl: data.imageUrl || imgs[0] || '',
+          images: imgs,
         });
       });
 
@@ -141,9 +146,11 @@ export function subscribeToProducts(
 export async function saveProductToFirestore(product: Product): Promise<void> {
   const docPath = `${COLLECTION_NAME}/${product.id}`;
   try {
+    const primaryImg = product.images && product.images.length > 0 ? product.images[0] : (product.imageUrl || '');
     const payload = {
       ...product,
-      imageUrl: product.imageUrl || '',
+      imageUrl: primaryImg,
+      images: product.images || (primaryImg ? [primaryImg] : []),
       adminKey: ADMIN_KEY,
     };
 

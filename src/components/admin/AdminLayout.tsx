@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   ShieldCheck,
+  Star,
 } from 'lucide-react';
 
 export const AdminLayout: React.FC = () => {
@@ -37,6 +38,7 @@ export const AdminLayout: React.FC = () => {
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
     { name: 'Products Catalogue', path: '/admin/products', icon: Package },
+    { name: 'Customer Reviews', path: '/admin/reviews', icon: Star },
     { name: 'Blog Articles', path: '/admin/blogs', icon: BookOpen },
     { name: 'Events & Tournaments', path: '/admin/events', icon: Calendar },
     { name: 'Fishing Training', path: '/admin/training', icon: GraduationCap },

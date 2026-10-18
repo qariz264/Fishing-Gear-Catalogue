@@ -9,6 +9,7 @@ interface ProductVisualProps {
   size?: 'sm' | 'md' | 'lg';
   allowUpload?: boolean;
   priority?: boolean;
+  activeImageUrl?: string;
 }
 
 export const ProductVisual: React.FC<ProductVisualProps> = ({
@@ -16,6 +17,7 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
   className = '',
   size = 'md',
   priority = false,
+  activeImageUrl,
 }) => {
   const [imageError, setImageError] = useState(false);
 
@@ -26,7 +28,8 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
     lg: 'h-64 sm:h-72',
   }[size];
 
-  const hasImage = Boolean(product.imageUrl && product.imageUrl.trim()) && !imageError;
+  const targetImage = activeImageUrl || product.imageUrl;
+  const hasImage = Boolean(targetImage && targetImage.trim()) && !imageError;
 
   return (
     <div
@@ -37,7 +40,7 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
           {/* 100% Full Visibility Image: object-contain guarantees zero cropping */}
           <div className="w-full h-full p-2 flex items-center justify-center bg-white">
             <img
-              src={product.imageUrl}
+              src={targetImage}
               alt={product.name || 'Fishing gear item'}
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"

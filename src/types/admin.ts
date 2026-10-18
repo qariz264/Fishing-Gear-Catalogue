@@ -9,6 +9,7 @@ export interface ProductItem {
   description: string;
   price?: number;
   imageUrl?: string;
+  images?: string[];
   storagePath?: string;
   specs: ProductSpec[];
   published?: boolean;
@@ -94,4 +95,17 @@ export interface AdminUser {
   displayName?: string | null;
   role: 'admin' | 'superadmin';
   authorized: boolean;
+}
+
+export interface ProductReview {
+  id: string;
+  productId: string;
+  productName?: string;
+  authorName: string;
+  rating: number; // 1 to 5
+  comment: string;
+  location?: string;
+  fishCaught?: string;
+  verified?: boolean;
+  createdAt: string;
 }

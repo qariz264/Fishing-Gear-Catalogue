@@ -3,7 +3,7 @@ import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { ProductVisual } from './ProductVisual';
 import { buildSingleProductWhatsAppUrl } from '../utils/whatsapp';
-import { Plus, Check, MessageSquare } from 'lucide-react';
+import { Plus, Check, MessageSquare, ImageIcon, Star } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product | ProductItem;
@@ -21,6 +21,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   priority = false,
 }) => {
   const directWhatsAppUrl = buildSingleProductWhatsAppUrl(product as Product);
+  const imagesCount = product.images && product.images.length > 0 ? product.images.length : (product.imageUrl ? 1 : 0);
 
   return (
     <div className="group bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all flex flex-col overflow-hidden text-left relative">
@@ -34,14 +35,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           size="md"
           priority={priority}
         />
+
+        {/* Multi-Photo Count Badge */}
+        {imagesCount > 1 && (
+          <span className="absolute top-2 right-2 z-10 bg-slate-950/80 text-white text-[10px] font-mono font-medium px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-xs border border-white/10 shadow-xs">
+            <ImageIcon className="w-3 h-3 text-amber-400" />
+            <span>{imagesCount} Photos</span>
+          </span>
+        )}
       </div>
 
       {/* Card Content */}
       <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category */}
+          {/* Category & Reviews Indicator */}
           <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-medium">
             <span>{product.category} · {product.subcategory || 'Tackle'}</span>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect(product);
+              }}
+              className="inline-flex items-center gap-0.5 text-[11px] text-amber-700 hover:text-amber-800 font-semibold cursor-pointer"
+              title="View customer reviews and catch reports"
+            >
+              <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
+              <span>Reviews</span>
+            </span>
           </div>
 
           {/* Product Name */}

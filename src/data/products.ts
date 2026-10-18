@@ -18,6 +18,7 @@ export interface Product {
   subcategory: string;
   price?: number;
   imageUrl?: string;
+  images?: string[];
   badge?: string;
   description: string;
   application?: string;

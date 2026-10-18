@@ -56,6 +56,9 @@ const AdminTrainingPage = lazy(() =>
 const AdminFishingSpotsPage = lazy(() =>
   import('./pages/admin/AdminFishingSpotsPage').then((m) => ({ default: m.AdminFishingSpotsPage }))
 );
+const AdminReviewsPage = lazy(() =>
+  import('./pages/admin/AdminReviewsPage').then((m) => ({ default: m.AdminReviewsPage }))
+);
 
 // Fast, unobtrusive fallback loader for public routes
 const PublicChunkFallback: React.FC = () => (
@@ -174,6 +177,7 @@ export default function App() {
             >
               <Route index element={<AdminDashboardOverview />} />
               <Route path="products" element={<AdminProductsPage />} />
+              <Route path="reviews" element={<AdminReviewsPage />} />
               <Route path="blogs" element={<AdminBlogsPage />} />
               <Route path="events" element={<AdminEventsPage />} />
               <Route path="training" element={<AdminTrainingPage />} />

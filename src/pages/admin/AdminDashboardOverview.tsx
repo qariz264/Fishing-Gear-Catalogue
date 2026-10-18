@@ -14,6 +14,7 @@ import {
   HardDrive,
   Database,
   ArrowRight,
+  Star,
 } from 'lucide-react';
 import firebaseConfig from '../../../firebase-applet-config.json';
 
@@ -26,6 +27,7 @@ export const AdminDashboardOverview: React.FC = () => {
     events: 0,
     training: 0,
     spots: 0,
+    reviews: 0,
   });
 
   useEffect(() => {
@@ -57,12 +59,17 @@ export const AdminDashboardOverview: React.FC = () => {
       setCounts((prev) => ({ ...prev, spots: snap.size }));
     });
 
+    const unsubReviews = onSnapshot(collection(db, 'reviews'), (snap) => {
+      setCounts((prev) => ({ ...prev, reviews: snap.size }));
+    });
+
     return () => {
       unsubProducts();
       unsubBlogs();
       unsubEvents();
       unsubTraining();
       unsubSpots();
+      unsubReviews();
     };
   }, []);
 
@@ -106,6 +113,15 @@ export const AdminDashboardOverview: React.FC = () => {
       icon: GraduationCap,
       color: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
       description: 'Casting clinics, bait rigging, reel tuning and beginner classes.',
+    },
+    {
+      title: 'Customer Reviews',
+      count: counts.reviews,
+      subtitle: `${counts.reviews} angler ratings`,
+      path: '/admin/reviews',
+      icon: Star,
+      color: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+      description: 'Customer ratings, testimonials, verified catch reports and feedback.',
     },
     {
       title: 'Fishing Spots Guide',
@@ -226,14 +242,16 @@ export const AdminDashboardOverview: React.FC = () => {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 
-                <Link
-                  to={section.addPath}
-                  className="py-2 px-2.5 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1 border border-amber-500/30 transition-colors"
-                  title="Create new entry"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Add</span>
-                </Link>
+                {section.addPath && (
+                  <Link
+                    to={section.addPath}
+                    className="py-2 px-2.5 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1 border border-amber-500/30 transition-colors"
+                    title="Create new entry"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add</span>
+                  </Link>
+                )}
               </div>
             </div>
           ))}

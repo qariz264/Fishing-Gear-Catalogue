@@ -3,7 +3,6 @@ import {
   getSocialShareSettings,
   saveSocialShareSettings,
   subscribeToSocialShareSettings,
-  DEFAULT_SHARE_IMAGE,
   DEFAULT_SHARE_TITLE,
   DEFAULT_SHARE_DESCRIPTION,
 } from '../../services/settingsService';
@@ -20,19 +19,17 @@ import {
   ExternalLink,
   Smartphone,
   Globe,
-  Download,
   Info,
   Check,
-  Sparkles,
-  Eye,
   RefreshCw,
-  Send,
+  Trash2,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 export const AdminSocialSharePage: React.FC = () => {
   const [settings, setSettings] = useState<SocialShareSettings>({
     id: 'socialShare',
-    shareImageUrl: DEFAULT_SHARE_IMAGE,
+    shareImageUrl: '',
     shareTitle: DEFAULT_SHARE_TITLE,
     shareDescription: DEFAULT_SHARE_DESCRIPTION,
   });
@@ -85,25 +82,35 @@ export const AdminSocialSharePage: React.FC = () => {
       shareImageStoragePath: storagePath,
     }));
     setSaveSuccess(false);
+    setErrorMessage(null);
   };
 
-  const handleResetToBrandLogo = () => {
+  const handleImageRemoved = async () => {
+    const updated: SocialShareSettings = {
+      ...settings,
+      shareImageUrl: '',
+      shareImageStoragePath: '',
+    };
+    setSettings(updated);
+    setSaveSuccess(false);
+
+    try {
+      await saveSocialShareSettings(updated);
+      setSaveSuccess(true);
+      updateCacheBuster();
+      setTimeout(() => setSaveSuccess(false), 4000);
+    } catch (err: any) {
+      console.error('Failed to save removed image state:', err);
+      setErrorMessage('Image removed. Click "Save & Update Shared Link" to confirm.');
+    }
+  };
+
+  const handleResetTextOnly = () => {
     setSettings((prev) => ({
       ...prev,
-      shareImageUrl: `${CANONICAL_BASE_URL}/og-image.jpg`,
-      shareImageStoragePath: 'default/brand-og-image',
-    }));
-    setSaveSuccess(false);
-  };
-
-  const handleResetAllToDefaults = () => {
-    setSettings({
-      id: 'socialShare',
-      shareImageUrl: `${CANONICAL_BASE_URL}/og-image.jpg`,
       shareTitle: DEFAULT_SHARE_TITLE,
       shareDescription: DEFAULT_SHARE_DESCRIPTION,
-      shareImageStoragePath: 'default/brand-og-image',
-    });
+    }));
     setSaveSuccess(false);
   };
 
@@ -146,23 +153,32 @@ export const AdminSocialSharePage: React.FC = () => {
               <Share2 className="w-5 h-5" />
             </div>
             <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight">
-              Shared Link & Social Card Manager
+              Shared Link Photo &amp; Card Manager
             </h1>
             <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium">
-              OpenGraph & WhatsApp
+              OpenGraph &amp; WhatsApp
             </span>
           </div>
           <p className="text-xs md:text-sm text-slate-400 max-w-3xl">
-            Upload and customize the image, title, and description that appear when you share{' '}
-            <code className="text-amber-300 font-mono text-xs bg-slate-900 px-1.5 py-0.5 rounded">
-              fishingwithnelson.co.ke
-            </code>{' '}
-            on WhatsApp, Facebook, X (Twitter), iMessage, and LinkedIn.
+            Upload the photo that will appear when you share your link on WhatsApp, Facebook, X (Twitter), and iMessage. Only your uploaded photo will be used.
           </p>
         </div>
 
         {/* Header Actions */}
         <div className="flex items-center gap-2">
+          {settings.shareImageUrl && (
+            <button
+              type="button"
+              onClick={handleImageRemoved}
+              disabled={saving || loading}
+              className="px-3.5 py-2.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-2 border border-red-800/40 transition-colors cursor-pointer disabled:opacity-50"
+              title="Remove current link photo"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Remove Photo</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={handleSave}
@@ -177,7 +193,7 @@ export const AdminSocialSharePage: React.FC = () => {
             ) : (
               <>
                 <Save className="w-4 h-4" />
-                <span>Save & Update Shared Link</span>
+                <span>Save &amp; Update Shared Link</span>
               </>
             )}
           </button>
@@ -191,10 +207,10 @@ export const AdminSocialSharePage: React.FC = () => {
             <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
             <div>
               <p className="font-semibold text-emerald-100">
-                Shared link image & metadata saved successfully!
+                Shared link settings saved successfully!
               </p>
               <p className="text-emerald-300/80 text-[11px] mt-0.5">
-                The OpenGraph image and tags are updated in Firestore and on live pages. Use the cache-busting link below to test instantly on WhatsApp without waiting for cache expiration.
+                The OpenGraph tags and database have been updated. Use the WhatsApp test link on the right to verify your preview immediately.
               </p>
             </div>
           </div>
@@ -229,67 +245,67 @@ export const AdminSocialSharePage: React.FC = () => {
                   Shared Link Photo (OpenGraph Image)
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={handleResetToBrandLogo}
-                className="text-[11px] font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors cursor-pointer"
-                title="Use the official blue circular badge with the fish mascot"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Use Official Fish Badge</span>
-              </button>
+              {settings.shareImageUrl && (
+                <button
+                  type="button"
+                  onClick={handleImageRemoved}
+                  className="text-[11px] font-semibold text-red-400 hover:text-red-300 flex items-center gap-1 transition-colors cursor-pointer"
+                  title="Remove this uploaded photo"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Remove Photo</span>
+                </button>
+              )}
             </div>
 
             <p className="text-xs text-slate-300">
-              Upload the exact image you want WhatsApp, Facebook, and Twitter to display.
-              Recommended format: <strong>1200 × 630 pixels</strong> (or square 800 × 800) in JPG or PNG format.
+              Upload the exact photo you want WhatsApp and social networks to display.
+              Supported formats: JPG, PNG, WebP (ideal dimensions: 1200 × 630 or 800 × 800).
             </p>
 
             <AdminImageUploader
-              currentImageUrl={settings.shareImageUrl}
+              currentImageUrl={settings.shareImageUrl || undefined}
               currentStoragePath={settings.shareImageStoragePath}
               folder="branding"
               onImageUploaded={handleImageUploaded}
-              onImageRemoved={handleResetToBrandLogo}
-              label="Select or Upload New Link Image"
-              aspectHint="Displays at 1.91:1 ratio on web & square on mobile"
+              onImageRemoved={handleImageRemoved}
+              label="Upload Custom Shared Link Image"
+              aspectHint="Displays when sharing the website link"
             />
 
-            {/* Quick Presets */}
-            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-slate-400 text-[11px] font-mono">Quick Brand Options:</span>
-              <button
-                type="button"
-                onClick={() =>
-                  handleImageUploaded(`${CANONICAL_BASE_URL}/og-image.jpg`, 'default/og-image')
-                }
-                className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-[11px] font-medium border border-slate-700 transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <Eye className="w-3 h-3 text-amber-400" />
-                <span>1200×630 Brand Banner</span>
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleImageUploaded(`${CANONICAL_BASE_URL}/linkpic.jpeg`, 'default/linkpic')
-                }
-                className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-[11px] font-medium border border-slate-700 transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <Eye className="w-3 h-3 text-blue-400" />
-                <span>800×800 Circle Badge</span>
-              </button>
-              {settings.shareImageUrl && (
-                <a
-                  href={settings.shareImageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2.5 py-1 bg-slate-800/60 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-medium border border-slate-700 transition-colors flex items-center gap-1 ml-auto"
-                >
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
-                  <span>Open Full Image</span>
-                </a>
-              )}
-            </div>
+            {settings.shareImageUrl ? (
+              <div className="pt-1 flex items-center justify-between text-xs">
+                <span className="text-emerald-400 flex items-center gap-1.5 text-[11px] font-medium">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Custom photo active
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleImageRemoved}
+                    className="px-2.5 py-1 bg-red-950/50 hover:bg-red-900/60 text-red-300 rounded-lg text-[11px] font-medium border border-red-800/40 transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    <span>Remove Photo</span>
+                  </button>
+                  {settings.shareImageUrl.startsWith('http') && (
+                    <a
+                      href={settings.shareImageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-medium border border-slate-700 transition-colors flex items-center gap-1"
+                    >
+                      <ExternalLink className="w-3 h-3 text-slate-400" />
+                      <span>View Full Image</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="p-3 bg-slate-950/60 rounded-xl border border-dashed border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+                <Info className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>No custom photo currently uploaded. Use the button above to upload your photo.</span>
+              </div>
+            )}
           </div>
 
           {/* Card 2: Link Share Text Fields */}
@@ -300,12 +316,12 @@ export const AdminSocialSharePage: React.FC = () => {
                   2
                 </span>
                 <h2 className="text-sm font-bold text-white uppercase tracking-wider">
-                  Link Share Title & Description
+                  Link Share Title &amp; Description
                 </h2>
               </div>
               <button
                 type="button"
-                onClick={handleResetAllToDefaults}
+                onClick={handleResetTextOnly}
                 className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3" />
@@ -394,12 +410,12 @@ export const AdminSocialSharePage: React.FC = () => {
               {saving ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Applying New Image to Shared Link...</span>
+                  <span>Applying Changes to Shared Link...</span>
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  <span>Save & Apply New Link Image</span>
+                  <span>Save &amp; Update Shared Link</span>
                 </>
               )}
             </button>
@@ -472,14 +488,19 @@ export const AdminSocialSharePage: React.FC = () => {
                   <div className="bg-[#025144] rounded-xl overflow-hidden border border-emerald-700/40">
                     {/* Media container */}
                     <div className="h-44 w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={settings.shareImageUrl || DEFAULT_SHARE_IMAGE}
-                        alt="WhatsApp Preview"
-                        className="w-full h-full object-contain bg-white"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = `${CANONICAL_BASE_URL}/og-image.jpg`;
-                        }}
-                      />
+                      {settings.shareImageUrl ? (
+                        <img
+                          src={settings.shareImageUrl}
+                          alt="WhatsApp Preview"
+                          className="w-full h-full object-contain bg-white"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center text-slate-400 p-4 text-center">
+                          <ImageIcon className="w-8 h-8 text-slate-500 mb-1 stroke-1" />
+                          <span className="text-xs font-semibold text-slate-200">No Image Uploaded</span>
+                          <span className="text-[10px] text-slate-400">Upload a photo to preview</span>
+                        </div>
+                      )}
                     </div>
                     {/* Card text */}
                     <div className="p-2.5 space-y-1">
@@ -518,11 +539,19 @@ export const AdminSocialSharePage: React.FC = () => {
                 {/* Twitter Post Card */}
                 <div className="rounded-2xl border border-slate-800 bg-[#080808] overflow-hidden hover:border-slate-700 transition-colors">
                   <div className="h-48 w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={settings.shareImageUrl || DEFAULT_SHARE_IMAGE}
-                      alt="Twitter Preview"
-                      className="w-full h-full object-contain bg-white"
-                    />
+                    {settings.shareImageUrl ? (
+                      <img
+                        src={settings.shareImageUrl}
+                        alt="Twitter Preview"
+                        className="w-full h-full object-contain bg-white"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-slate-400 p-4 text-center">
+                        <ImageIcon className="w-8 h-8 text-slate-500 mb-1 stroke-1" />
+                        <span className="text-xs font-semibold text-slate-200">No Image Uploaded</span>
+                        <span className="text-[10px] text-slate-400">Upload a photo to preview</span>
+                      </div>
+                    )}
                   </div>
                   <div className="p-3 space-y-1">
                     <span className="text-[11px] text-slate-500 font-mono block">
@@ -548,11 +577,19 @@ export const AdminSocialSharePage: React.FC = () => {
 
                 <div className="rounded-lg border border-[#3a3b3c] bg-[#242526] overflow-hidden">
                   <div className="h-44 w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={settings.shareImageUrl || DEFAULT_SHARE_IMAGE}
-                      alt="Facebook Preview"
-                      className="w-full h-full object-contain bg-white"
-                    />
+                    {settings.shareImageUrl ? (
+                      <img
+                        src={settings.shareImageUrl}
+                        alt="Facebook Preview"
+                        className="w-full h-full object-contain bg-white"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-slate-400 p-4 text-center">
+                        <ImageIcon className="w-8 h-8 text-slate-500 mb-1 stroke-1" />
+                        <span className="text-xs font-semibold text-slate-200">No Image Uploaded</span>
+                        <span className="text-[10px] text-slate-400">Upload a photo to preview</span>
+                      </div>
+                    )}
                   </div>
                   <div className="p-3 space-y-1 bg-[#242526]">
                     <span className="text-[10px] text-slate-400 uppercase tracking-wider font-mono">
@@ -617,7 +654,7 @@ export const AdminSocialSharePage: React.FC = () => {
                 </button>
               </div>
               <p className="text-[10px] text-slate-400">
-                Paste this link directly into any WhatsApp chat. The unique query parameter forces WhatsApp to fetch your newly uploaded brand image instantly instead of using its old cache!
+                Paste this link into any WhatsApp chat. The unique query parameter forces WhatsApp to fetch your newly uploaded photo immediately!
               </p>
             </div>
 

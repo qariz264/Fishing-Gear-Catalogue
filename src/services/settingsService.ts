@@ -17,11 +17,10 @@ export const LOCAL_STORAGE_SHARE_DESC_KEY = 'fwn_custom_og_desc';
  * Retrieves the current social share card settings from Firestore with local fallback
  */
 export async function getSocialShareSettings(): Promise<SocialShareSettings> {
+  const storedImage = typeof localStorage !== 'undefined' ? localStorage.getItem(LOCAL_STORAGE_SHARE_IMAGE_KEY) : null;
   const fallbackSettings: SocialShareSettings = {
     id: 'socialShare',
-    shareImageUrl:
-      (typeof localStorage !== 'undefined' && localStorage.getItem(LOCAL_STORAGE_SHARE_IMAGE_KEY)) ||
-      DEFAULT_SHARE_IMAGE,
+    shareImageUrl: storedImage !== null ? storedImage : DEFAULT_SHARE_IMAGE,
     shareTitle:
       (typeof localStorage !== 'undefined' && localStorage.getItem(LOCAL_STORAGE_SHARE_TITLE_KEY)) ||
       DEFAULT_SHARE_TITLE,
@@ -39,8 +38,8 @@ export async function getSocialShareSettings(): Promise<SocialShareSettings> {
       const data = snap.data() as Partial<SocialShareSettings>;
       const merged: SocialShareSettings = {
         id: 'socialShare',
-        shareImageUrl: data.shareImageUrl || fallbackSettings.shareImageUrl,
-        shareImageStoragePath: data.shareImageStoragePath,
+        shareImageUrl: typeof data.shareImageUrl === 'string' ? data.shareImageUrl : fallbackSettings.shareImageUrl,
+        shareImageStoragePath: data.shareImageStoragePath || '',
         shareTitle: data.shareTitle || fallbackSettings.shareTitle,
         shareDescription: data.shareDescription || fallbackSettings.shareDescription,
         updatedAt: data.updatedAt || fallbackSettings.updatedAt,
@@ -71,7 +70,7 @@ export async function saveSocialShareSettings(
 ): Promise<SocialShareSettings> {
   const updated: SocialShareSettings = {
     id: 'socialShare',
-    shareImageUrl: settings.shareImageUrl || DEFAULT_SHARE_IMAGE,
+    shareImageUrl: typeof settings.shareImageUrl === 'string' ? settings.shareImageUrl : '',
     shareImageStoragePath: settings.shareImageStoragePath || '',
     shareTitle: settings.shareTitle || DEFAULT_SHARE_TITLE,
     shareDescription: settings.shareDescription || DEFAULT_SHARE_DESCRIPTION,
@@ -106,13 +105,29 @@ export async function saveSocialShareSettings(
 export function applySocialMetaToDOM(imageUrl: string, title?: string, description?: string) {
   if (typeof document === 'undefined') return;
 
-  if (imageUrl) {
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg) ogImg.setAttribute('content', imageUrl);
-    const ogImgSec = document.querySelector('meta[property="og:image:secure_url"]');
-    if (ogImgSec) ogImgSec.setAttribute('content', imageUrl);
-    const twImg = document.querySelector('meta[name="twitter:image"]');
-    if (twImg) twImg.setAttribute('content', imageUrl);
+  const ogImg = document.querySelector('meta[property="og:image"]');
+  if (ogImg) {
+    if (imageUrl) {
+      ogImg.setAttribute('content', imageUrl);
+    } else {
+      ogImg.removeAttribute('content');
+    }
+  }
+  const ogImgSec = document.querySelector('meta[property="og:image:secure_url"]');
+  if (ogImgSec) {
+    if (imageUrl) {
+      ogImgSec.setAttribute('content', imageUrl);
+    } else {
+      ogImgSec.removeAttribute('content');
+    }
+  }
+  const twImg = document.querySelector('meta[name="twitter:image"]');
+  if (twImg) {
+    if (imageUrl) {
+      twImg.setAttribute('content', imageUrl);
+    } else {
+      twImg.removeAttribute('content');
+    }
   }
 
   if (title) {
@@ -145,7 +160,7 @@ export function subscribeToSocialShareSettings(
           const data = snap.data() as Partial<SocialShareSettings>;
           const settings: SocialShareSettings = {
             id: 'socialShare',
-            shareImageUrl: data.shareImageUrl || DEFAULT_SHARE_IMAGE,
+            shareImageUrl: typeof data.shareImageUrl === 'string' ? data.shareImageUrl : '',
             shareImageStoragePath: data.shareImageStoragePath,
             shareTitle: data.shareTitle || DEFAULT_SHARE_TITLE,
             shareDescription: data.shareDescription || DEFAULT_SHARE_DESCRIPTION,

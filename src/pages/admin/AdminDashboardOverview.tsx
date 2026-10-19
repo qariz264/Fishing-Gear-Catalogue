@@ -303,31 +303,42 @@ export const AdminDashboardOverview: React.FC = () => {
               <Upload className="w-3.5 h-3.5" />
               <span>Upload / Change Link Image</span>
             </Link>
-            <a
-              href={socialSettings.shareImageUrl || '/og-image.jpg'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 rounded-lg border border-slate-700 transition-colors w-fit"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>View Full Image</span>
-            </a>
+            {socialSettings.shareImageUrl && (
+              <a
+                href={socialSettings.shareImageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 rounded-lg border border-slate-700 transition-colors w-fit"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>View Full Image</span>
+              </a>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center">
           {/* Card Image Preview */}
           <div className="lg:col-span-2 relative rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950 aspect-[1200/630] shadow-inner group flex items-center justify-center">
-            <img
-              src={socialSettings.shareImageUrl || '/og-image.jpg'}
-              alt="Fishing With Nelson Link Preview"
-              className="w-full h-full object-contain bg-white transition-transform duration-300 group-hover:scale-[1.01]"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/og-image.jpg';
-              }}
-            />
-            <div className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-xs text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">
-              ✓ Active Share Card (1200×630)
+            {socialSettings.shareImageUrl ? (
+              <img
+                src={socialSettings.shareImageUrl}
+                alt="Fishing With Nelson Link Preview"
+                className="w-full h-full object-contain bg-white transition-transform duration-300 group-hover:scale-[1.01]"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-slate-400 p-6 text-center">
+                <Share2 className="w-8 h-8 text-slate-600 mb-2 stroke-1" />
+                <span className="text-xs font-semibold text-slate-300">No Link Photo Uploaded</span>
+                <span className="text-[11px] text-slate-500 mt-1">Upload your custom photo to display on shared links</span>
+              </div>
+            )}
+            <div className={`absolute top-2 left-2 backdrop-blur-xs text-[10px] font-mono px-2 py-0.5 rounded border ${
+              socialSettings.shareImageUrl
+                ? 'bg-slate-950/80 text-emerald-400 border-emerald-500/30'
+                : 'bg-slate-950/80 text-amber-400 border-amber-500/30'
+            }`}>
+              {socialSettings.shareImageUrl ? '✓ Uploaded Photo Active' : 'No Photo Uploaded'}
             </div>
             <Link
               to="/admin/social-share"
@@ -353,14 +364,16 @@ export const AdminDashboardOverview: React.FC = () => {
               </span>
             </div>
             <div>
-              <span className="text-[11px] font-mono text-slate-400 block">Image Source:</span>
-              <span className="font-mono text-amber-400 text-[10px] break-all">
-                {socialSettings.shareImageUrl || 'https://fishingwithnelson.co.ke/og-image.jpg'}
+              <span className="text-[11px] font-mono text-slate-400 block">Image Status:</span>
+              <span className="text-xs font-semibold text-slate-200">
+                {socialSettings.shareImageUrl ? 'Custom Upload Active' : 'No photo uploaded'}
               </span>
             </div>
             <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                ✓ Ready for WhatsApp
+              <span className={`text-[11px] font-semibold flex items-center gap-1 ${
+                socialSettings.shareImageUrl ? 'text-emerald-400' : 'text-amber-400'
+              }`}>
+                {socialSettings.shareImageUrl ? '✓ Ready for WhatsApp' : 'Waiting for upload'}
               </span>
               <Link
                 to="/admin/social-share"

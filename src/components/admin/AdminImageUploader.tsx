@@ -92,11 +92,18 @@ export const AdminImageUploader: React.FC<AdminImageUploaderProps> = ({
     setTimeout(() => setSuccessMessage(null), 3500);
   };
 
-  const handleRemove = async () => {
+  const handleRemove = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (currentStoragePath) {
       try {
         await deleteImageFromStorage(currentStoragePath);
       } catch (e) {}
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
     if (onImageRemoved) onImageRemoved();
     setError(null);
@@ -158,7 +165,9 @@ export const AdminImageUploader: React.FC<AdminImageUploaderProps> = ({
               <CheckCircle2 className="w-3.5 h-3.5" /> Image attached
             </span>
             <span className="truncate max-w-[220px] text-slate-500 font-mono text-[10px]">
-              {currentStoragePath || 'Image attached'}
+              {currentStoragePath && !currentStoragePath.startsWith('data:') && !currentStoragePath.startsWith('optimized/data:')
+                ? currentStoragePath
+                : 'Custom photo attached'}
             </span>
           </div>
         </div>

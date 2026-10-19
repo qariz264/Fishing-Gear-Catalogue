@@ -135,6 +135,21 @@
         "createdAt": { "type": "string" }
       },
       "required": ["id", "productId", "authorName", "rating", "comment"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global website configuration including social share card image and metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shareImageUrl": { "type": "string", "maxLength": 1000000 },
+        "shareImageStoragePath": { "type": "string", "maxLength": 500 },
+        "shareTitle": { "type": "string", "maxLength": 200 },
+        "shareDescription": { "type": "string", "maxLength": 500 },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id"]
     }
   },
   "firestore": {
@@ -165,6 +180,10 @@
     "/admins/{adminId}": {
       "schema": "Admin",
       "description": "Authorized administrators list"
+    },
+    "/settings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Website global configuration and social share card settings"
     }
   }
 }

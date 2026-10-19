@@ -15,10 +15,26 @@ import {
   Database,
   ArrowRight,
   Star,
+  Share2,
+  Upload,
 } from 'lucide-react';
 import firebaseConfig from '../../../firebase-applet-config.json';
+import {
+  getSocialShareSettings,
+  subscribeToSocialShareSettings,
+  DEFAULT_SHARE_IMAGE,
+  DEFAULT_SHARE_TITLE,
+  DEFAULT_SHARE_DESCRIPTION,
+} from '../../services/settingsService';
+import { SocialShareSettings } from '../../types/admin';
 
 export const AdminDashboardOverview: React.FC = () => {
+  const [socialSettings, setSocialSettings] = useState<SocialShareSettings>({
+    id: 'socialShare',
+    shareImageUrl: DEFAULT_SHARE_IMAGE,
+    shareTitle: DEFAULT_SHARE_TITLE,
+    shareDescription: DEFAULT_SHARE_DESCRIPTION,
+  });
   const [counts, setCounts] = useState({
     products: 0,
     publishedProducts: 0,
@@ -63,6 +79,12 @@ export const AdminDashboardOverview: React.FC = () => {
       setCounts((prev) => ({ ...prev, reviews: snap.size }));
     });
 
+    const unsubSocial = subscribeToSocialShareSettings((loaded) => {
+      setSocialSettings(loaded);
+    });
+
+    getSocialShareSettings().then(setSocialSettings).catch(() => {});
+
     return () => {
       unsubProducts();
       unsubBlogs();
@@ -70,6 +92,7 @@ export const AdminDashboardOverview: React.FC = () => {
       unsubTraining();
       unsubSpots();
       unsubReviews();
+      unsubSocial();
     };
   }, []);
 
@@ -255,6 +278,98 @@ export const AdminDashboardOverview: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Social Link Share & OpenGraph Preview */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-md space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <h2 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
+                Social Link Share Preview (WhatsApp, Facebook, Twitter)
+              </h2>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              This photo and title appear whenever someone shares your store link on WhatsApp, Facebook, iMessage, or Twitter.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/admin/social-share"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-xs font-semibold text-white rounded-lg shadow-sm transition-colors"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span>Upload / Change Link Image</span>
+            </Link>
+            <a
+              href={socialSettings.shareImageUrl || '/og-image.jpg'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 rounded-lg border border-slate-700 transition-colors w-fit"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>View Full Image</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center">
+          {/* Card Image Preview */}
+          <div className="lg:col-span-2 relative rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950 aspect-[1200/630] shadow-inner group flex items-center justify-center">
+            <img
+              src={socialSettings.shareImageUrl || '/og-image.jpg'}
+              alt="Fishing With Nelson Link Preview"
+              className="w-full h-full object-contain bg-white transition-transform duration-300 group-hover:scale-[1.01]"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/og-image.jpg';
+              }}
+            />
+            <div className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-xs text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">
+              ✓ Active Share Card (1200×630)
+            </div>
+            <Link
+              to="/admin/social-share"
+              className="absolute bottom-2 right-2 px-2.5 py-1 bg-slate-900/90 hover:bg-slate-800 text-white text-[11px] font-medium rounded-lg border border-slate-700 shadow-md flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Share2 className="w-3 h-3 text-amber-400" />
+              <span>Configure Card</span>
+            </Link>
+          </div>
+
+          {/* Share metadata info */}
+          <div className="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs">
+            <div>
+              <span className="text-[11px] font-mono text-slate-400 block">Brand Title:</span>
+              <span className="font-semibold text-white line-clamp-2">
+                {socialSettings.shareTitle || DEFAULT_SHARE_TITLE}
+              </span>
+            </div>
+            <div>
+              <span className="text-[11px] font-mono text-slate-400 block">Description:</span>
+              <span className="text-slate-300 line-clamp-3">
+                {socialSettings.shareDescription || DEFAULT_SHARE_DESCRIPTION}
+              </span>
+            </div>
+            <div>
+              <span className="text-[11px] font-mono text-slate-400 block">Image Source:</span>
+              <span className="font-mono text-amber-400 text-[10px] break-all">
+                {socialSettings.shareImageUrl || 'https://fishingwithnelson.co.ke/og-image.jpg'}
+              </span>
+            </div>
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                ✓ Ready for WhatsApp
+              </span>
+              <Link
+                to="/admin/social-share"
+                className="text-amber-400 hover:text-amber-300 text-[11px] font-medium underline"
+              >
+                Open Full Manager →
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

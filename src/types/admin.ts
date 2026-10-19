@@ -109,3 +109,15 @@ export interface ProductReview {
   verified?: boolean;
   createdAt: string;
 }
+
+export interface SocialShareSettings {
+  id: string;
+  shareImageUrl: string;
+  shareImageStoragePath?: string;
+  shareTitle: string;
+  shareDescription: string;
+  updatedAt?: string;
+  updatedBy?: string;
+  adminKey?: string;
+}
+

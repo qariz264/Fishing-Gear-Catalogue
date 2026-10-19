@@ -80,5 +80,11 @@ service cloud.firestore {
                     && request.resource.data.authorName.size() > 0;
       allow update, delete: if isAuthorizedAdminWrite();
     }
+
+    // Global Settings & Social Link Preview Configuration
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthorizedAdminWrite();
+    }
   }
 }

@@ -97,7 +97,12 @@ export function setPageSeo({
     if (twDesc) twDesc.setAttribute('content', description);
   }
 
-  const finalOgImage = ogImage || `${CANONICAL_BASE_URL}/og-image.jpg`;
+  let defaultOgImage = `${CANONICAL_BASE_URL}/og-image.jpg`;
+  if (typeof localStorage !== 'undefined') {
+    const custom = localStorage.getItem('fwn_custom_og_image');
+    if (custom) defaultOgImage = custom;
+  }
+  const finalOgImage = ogImage || defaultOgImage;
   const ogImg = document.querySelector('meta[property="og:image"]');
   if (ogImg) ogImg.setAttribute('content', finalOgImage);
   const twImg = document.querySelector('meta[name="twitter:image"]');

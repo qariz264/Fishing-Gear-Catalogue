@@ -14,7 +14,7 @@ export interface UploadResult {
   sizeKb?: number;
 }
 
-export type StorageFolder = 'products' | 'blogs' | 'events' | 'training' | 'fishing-spots';
+export type StorageFolder = 'products' | 'blogs' | 'events' | 'training' | 'fishing-spots' | 'branding' | 'settings';
 
 /**
  * Uploads an image file with dual strategy:

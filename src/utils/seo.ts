@@ -97,10 +97,9 @@ export function setPageSeo({
     if (twDesc) twDesc.setAttribute('content', description);
   }
 
-  if (ogImage) {
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg) ogImg.setAttribute('content', ogImage);
-    const twImg = document.querySelector('meta[name="twitter:image"]');
-    if (twImg) twImg.setAttribute('content', ogImage);
-  }
+  const finalOgImage = ogImage || `${CANONICAL_BASE_URL}/og-image.jpg`;
+  const ogImg = document.querySelector('meta[property="og:image"]');
+  if (ogImg) ogImg.setAttribute('content', finalOgImage);
+  const twImg = document.querySelector('meta[name="twitter:image"]');
+  if (twImg) twImg.setAttribute('content', finalOgImage);
 }

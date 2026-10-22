@@ -13,4 +13,4 @@ Disallow: /admin/
 Disallow: /admin/*
 
 # Google Search Console Canonical XML Sitemap
-Sitemap: https://fishingwithnelson.co.ke/sitemap.xml
+Sitemap: https://www.fishingwithnelson.co.ke/sitemap.xml

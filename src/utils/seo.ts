@@ -1,9 +1,10 @@
 /**
  * Canonical SEO and Metadata Manager for Fishing With Nelson
- * Enforces strictly non-www https://fishingwithnelson.co.ke/ across all views
+ * Enforces verified canonical https://www.fishingwithnelson.co.ke across all views
+ * Matching Vercel primary domain configuration to prevent Google Search Console redirect loops
  */
 
-export const CANONICAL_BASE_URL = 'https://fishingwithnelson.co.ke';
+export const CANONICAL_BASE_URL = 'https://www.fishingwithnelson.co.ke';
 
 export interface SeoMetadataOptions {
   title?: string;

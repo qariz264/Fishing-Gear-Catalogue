@@ -511,7 +511,7 @@ export const AdminSocialSharePage: React.FC = () => {
                         {settings.shareDescription || DEFAULT_SHARE_DESCRIPTION}
                       </p>
                       <p className="text-[10px] text-emerald-200/60 font-mono pt-0.5">
-                        fishingwithnelson.co.ke
+                        www.fishingwithnelson.co.ke
                       </p>
                     </div>
                   </div>
@@ -519,7 +519,7 @@ export const AdminSocialSharePage: React.FC = () => {
                   {/* Message body with link */}
                   <div className="px-1.5 pb-0.5 flex items-end justify-between gap-3 text-xs">
                     <span className="text-emerald-100 underline truncate max-w-[200px]">
-                      https://fishingwithnelson.co.ke
+                      https://www.fishingwithnelson.co.ke
                     </span>
                     <span className="text-[10px] text-emerald-200/60 shrink-0 font-mono">
                       12:45 ✓✓
@@ -555,7 +555,7 @@ export const AdminSocialSharePage: React.FC = () => {
                   </div>
                   <div className="p-3 space-y-1">
                     <span className="text-[11px] text-slate-500 font-mono block">
-                      fishingwithnelson.co.ke
+                      www.fishingwithnelson.co.ke
                     </span>
                     <p className="text-xs font-bold text-white line-clamp-1">
                       {settings.shareTitle || DEFAULT_SHARE_TITLE}
@@ -593,7 +593,7 @@ export const AdminSocialSharePage: React.FC = () => {
                   </div>
                   <div className="p-3 space-y-1 bg-[#242526]">
                     <span className="text-[10px] text-slate-400 uppercase tracking-wider font-mono">
-                      FISHINGWITHNELSON.CO.KE
+                      WWW.FISHINGWITHNELSON.CO.KE
                     </span>
                     <p className="text-xs font-bold text-slate-100 line-clamp-1">
                       {settings.shareTitle || DEFAULT_SHARE_TITLE}
@@ -619,7 +619,7 @@ export const AdminSocialSharePage: React.FC = () => {
             <p className="text-[11px] text-slate-300 leading-relaxed">
               When a link is shared in WhatsApp, WhatsApp crawls{' '}
               <code className="text-amber-300 font-mono text-[10px] bg-slate-950 px-1 py-0.5 rounded">
-                https://fishingwithnelson.co.ke
+                https://www.fishingwithnelson.co.ke
               </code>{' '}
               and stores a cached copy of the preview photo for 7 to 14 days.
             </p>
@@ -663,7 +663,7 @@ export const AdminSocialSharePage: React.FC = () => {
               <span className="text-slate-400 font-mono text-[10px]">Official Web Crawler Debuggers:</span>
               <div className="flex flex-wrap gap-2">
                 <a
-                  href="https://developers.facebook.com/tools/debug/?q=https%3A%2F%2Ffishingwithnelson.co.ke%2F"
+                  href="https://developers.facebook.com/tools/debug/?q=https%3A%2F%2Fwww.fishingwithnelson.co.ke%2F"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700/80 flex items-center gap-1.5 transition-colors"

@@ -8,6 +8,7 @@ Allow: /blogs
 Allow: /blogs/*
 Allow: /events
 Allow: /training
+Allow: /reviews
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/*

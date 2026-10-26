@@ -86,7 +86,7 @@ export const AdminReviewsPage: React.FC = () => {
         <div className="flex items-center gap-4 bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl shrink-0">
           <div>
             <span className="text-xl font-extrabold text-white font-mono block leading-none">
-              {stats.count > 0 ? stats.average.toFixed(1) : '5.0'} ★
+              {stats.count > 0 ? `${stats.average.toFixed(1)} ★` : '—'}
             </span>
             <span className="text-[10px] text-slate-400 font-mono">Store Average</span>
           </div>

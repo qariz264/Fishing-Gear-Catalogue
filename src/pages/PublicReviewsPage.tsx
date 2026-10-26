@@ -26,16 +26,16 @@ export const PublicReviewsPage: React.FC = () => {
           <div className="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent opacity-50" />
           <div className="max-w-7xl mx-auto relative z-10 text-center space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-medium">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>4.9 / 5.0 Rated by Anglers Across Kenya</span>
+              <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
+              <span>Customer Feedback &amp; Angler Stories</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display max-w-3xl mx-auto">
-              Customer Reviews &amp; Angler Testimonials
+              Customer Reviews
             </h1>
 
             <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              Real stories from anglers fishing Lake Naivasha, the Indian Ocean at Watamu &amp; Malindi, Sagana River, Lake Victoria, and public waters countrywide.
+              Genuine feedback submitted directly by anglers who buy rods, reels, lures, and tackle from Fishing With Nelson.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300 font-medium">

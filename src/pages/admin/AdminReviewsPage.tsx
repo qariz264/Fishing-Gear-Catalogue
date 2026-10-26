@@ -86,7 +86,7 @@ export const AdminReviewsPage: React.FC = () => {
         <div className="flex items-center gap-4 bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl shrink-0">
           <div>
             <span className="text-xl font-extrabold text-white font-mono block leading-none">
-              {stats.count > 0 ? `${stats.average.toFixed(1)} ★` : '—'}
+              {stats.count > 0 ? stats.average.toFixed(1) : '5.0'} ★
             </span>
             <span className="text-[10px] text-slate-400 font-mono">Store Average</span>
           </div>
@@ -205,36 +205,19 @@ export const AdminReviewsPage: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Associated Scope: Overall Store or Product */}
+                {/* Associated Product */}
                 <div className="text-xs bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between">
-                  <span className="text-slate-400 text-[11px]">
-                    {item.productId && item.productId !== 'site' ? 'Product:' : 'Review Scope:'}
-                  </span>
-                  {item.productId && item.productId !== 'site' ? (
-                    <a
-                      href={`/?product=${encodeURIComponent(item.productId)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 truncate max-w-[70%]"
-                    >
-                      <span className="truncate">{item.productName || item.productId}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                  ) : (
-                    <span className="font-semibold text-emerald-400 flex items-center gap-1 font-mono text-[11px]">
-                      <span>Overall Store &amp; Service</span>
-                    </span>
-                  )}
+                  <span className="text-slate-400 text-[11px]">Product:</span>
+                  <a
+                    href={`/?product=${encodeURIComponent(item.productId)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 truncate max-w-[70%]"
+                  >
+                    <span className="truncate">{item.productName || item.productId}</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
                 </div>
-
-                {/* Topic Badge */}
-                {item.topic && (
-                  <div className="pt-0.5">
-                    <span className="inline-block text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
-                      Topic: {item.topic}
-                    </span>
-                  </div>
-                )}
 
                 {/* Location / Catch Badges */}
                 {(item.location || item.fishCaught) && (

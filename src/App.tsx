@@ -24,9 +24,6 @@ const PublicEventsPage = lazy(() =>
 const PublicTrainingPage = lazy(() =>
   import('./pages/PublicTrainingPage').then((m) => ({ default: m.PublicTrainingPage }))
 );
-const PublicReviewsPage = lazy(() =>
-  import('./pages/PublicReviewsPage').then((m) => ({ default: m.PublicReviewsPage }))
-);
 const NotFoundPage = lazy(() =>
   import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
 );
@@ -156,14 +153,6 @@ export default function App() {
               element={
                 <Suspense fallback={<PublicChunkFallback />}>
                   <PublicTrainingPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/reviews"
-              element={
-                <Suspense fallback={<PublicChunkFallback />}>
-                  <PublicReviewsPage />
                 </Suspense>
               }
             />

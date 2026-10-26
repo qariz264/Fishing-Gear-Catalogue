@@ -99,28 +99,16 @@ export interface AdminUser {
 
 export interface ProductReview {
   id: string;
-  productId?: string;
+  productId: string;
   productName?: string;
   authorName: string;
   rating: number; // 1 to 5
   comment: string;
   location?: string;
   fishCaught?: string;
-  topic?: string;
   verified?: boolean;
   createdAt: string;
-  anglerTitle?: string;
-  gearUsed?: string;
-  waterBody?: string;
-  targetSpecies?: string;
-  catchWeight?: string;
-  nelsonsTip?: string;
-  helpfulCount?: number;
-  catchPhotoUrl?: string;
-  orderMethod?: string;
 }
-
-export type SiteReview = ProductReview;
 
 export interface SocialShareSettings {
   id: string;

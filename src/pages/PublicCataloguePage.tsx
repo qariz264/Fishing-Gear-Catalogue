@@ -214,7 +214,7 @@ export const PublicCataloguePage: React.FC = () => {
         )}
       </main>
 
-      {/* Footer with shop address, hours & overall reviews */}
+      {/* Footer with shop address & hours */}
       <Footer
         onSelectCategory={(cat) => {
           setSelectedCategory(cat);

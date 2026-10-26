@@ -3,7 +3,7 @@ import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { ProductVisual } from './ProductVisual';
 import { buildSingleProductWhatsAppUrl } from '../utils/whatsapp';
-import { Plus, Check, MessageSquare, ImageIcon } from 'lucide-react';
+import { Plus, Check, MessageSquare, ImageIcon, Star } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product | ProductItem;
@@ -48,9 +48,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Card Content */}
       <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category */}
-          <div className="text-xs text-slate-500 mb-1 font-medium">
+          {/* Category & Reviews Indicator */}
+          <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-medium">
             <span>{product.category} · {product.subcategory || 'Tackle'}</span>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect(product);
+              }}
+              className="inline-flex items-center gap-0.5 text-[11px] text-amber-700 hover:text-amber-800 font-semibold cursor-pointer"
+              title="View customer reviews and catch reports"
+            >
+              <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
+              <span>Reviews</span>
+            </span>
           </div>
 
           {/* Product Name */}

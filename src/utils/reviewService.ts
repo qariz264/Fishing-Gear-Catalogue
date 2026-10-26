@@ -10,47 +10,40 @@ import { db } from '../firebase';
 import { ProductReview, SiteReview } from '../types/admin';
 
 const COLLECTION_NAME = 'reviews';
-const LOCAL_STORAGE_KEY = 'fishing_with_nelson_real_reviews';
+const LOCAL_STORAGE_REVIEWS_KEY = 'fishwithnelson_customer_reviews';
 
-// Helper to get locally saved user-submitted reviews
-function getLocalRealReviews(): SiteReview[] {
+/**
+ * Retrieves genuine customer-submitted reviews stored locally
+ */
+export function getLocalCustomerReviews(): SiteReview[] {
   try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.warn('Failed to parse local real reviews:', e);
-    return [];
+    const raw = localStorage.getItem(LOCAL_STORAGE_REVIEWS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to parse customer reviews from localStorage:', err);
   }
+  return [];
 }
 
-// Helper to persist user-submitted reviews locally
-function saveLocalRealReview(review: SiteReview): void {
+/**
+ * Saves genuine customer reviews to local storage cache
+ */
+export function saveLocalCustomerReviews(reviews: SiteReview[]): void {
   try {
-    const current = getLocalRealReviews();
-    const updated = [review, ...current.filter((r) => r.id !== review.id)];
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
-  } catch (e) {
-    console.warn('Failed to save real review locally:', e);
-  }
-}
-
-// Helper to remove a deleted review locally
-function removeLocalRealReview(reviewId: string): void {
-  try {
-    const current = getLocalRealReviews();
-    const updated = current.filter((r) => r.id !== reviewId);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
-  } catch (e) {
-    console.warn('Failed to delete local real review:', e);
+    localStorage.setItem(LOCAL_STORAGE_REVIEWS_KEY, JSON.stringify(reviews));
+  } catch (err) {
+    console.warn('Failed to save customer reviews to localStorage:', err);
   }
 }
 
 /**
- * Real-time listener for overall site reviews across the store.
- * Returns only real user reviews (empty array if no real reviews have been submitted).
- * Generic reviews are strictly excluded.
+ * Real-time listener for customer reviews.
+ * Remains completely empty until real customers write reviews.
  */
 export function subscribeToSiteReviews(
   onUpdate: (reviews: SiteReview[]) => void
@@ -60,45 +53,41 @@ export function subscribeToSiteReviews(
   return onSnapshot(
     colRef,
     (snapshot) => {
-      const remoteList: SiteReview[] = [];
+      const list: SiteReview[] = [];
       snapshot.forEach((d) => {
-        remoteList.push({ ...d.data(), id: d.id } as SiteReview);
+        list.push({ ...d.data(), id: d.id } as SiteReview);
       });
 
-      // Merge with any real user reviews stored locally
-      const localList = getLocalRealReviews();
-      const map = new Map<string, SiteReview>();
-
-      remoteList.forEach((r) => map.set(r.id, r));
-      localList.forEach((r) => {
-        if (!map.has(r.id)) {
-          map.set(r.id, r);
+      // Merge with locally submitted customer reviews if any are still syncing
+      const local = getLocalCustomerReviews();
+      const existingIds = new Set(list.map((r) => r.id));
+      for (const item of local) {
+        if (!existingIds.has(item.id)) {
+          list.push(item);
         }
-      });
+      }
 
-      const combined = Array.from(map.values());
       // Sort client-side by date descending
-      combined.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-      // Return real reviews only (blank / empty if none exist)
-      onUpdate(combined);
+      // Save latest real customer reviews
+      saveLocalCustomerReviews(list);
+
+      // Return real reviews only (empty list if no customer has submitted yet)
+      onUpdate(list);
     },
     (err) => {
-      console.warn('Firestore reviews listener notice (e.g. quota/offline):', err);
-      // Fallback only to real reviews submitted by users on this device, never generic reviews
-      const localList = getLocalRealReviews();
-      localList.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      onUpdate(localList);
+      console.warn('Firestore site reviews listener notification:', err);
+      // Fallback only to authentic customer reviews saved locally, never to hardcoded developer reviews
+      const local = getLocalCustomerReviews();
+      onUpdate(local);
     }
   );
 }
 
 /**
- * Add a new overall site review from a real user
+ * Submit a customer review.
+ * Written directly by the customer and saved to Firestore.
  */
 export async function addSiteReview(
   review: {
@@ -110,9 +99,11 @@ export async function addSiteReview(
     fishCaught?: string;
   }
 ): Promise<string> {
-  const generatedId = `rev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-  const payload: SiteReview = {
-    id: generatedId,
+  const colRef = collection(db, COLLECTION_NAME);
+  const now = new Date().toISOString();
+  const tempId = `cust-rev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+  const payload = {
     productId: 'site',
     productName: 'Fishing With Nelson - Overall Store & Service',
     authorName: review.authorName.trim(),
@@ -122,45 +113,34 @@ export async function addSiteReview(
     topic: (review.topic || 'Store & Equipment Experience').trim(),
     fishCaught: (review.fishCaught || '').trim(),
     verified: true,
-    createdAt: new Date().toISOString(),
+    createdAt: now,
   };
 
-  // 1. Immediately store in local state so the review is visible to the user
-  saveLocalRealReview(payload);
+  // Immediate local optimistic save so customer sees their review instantly
+  const localReview: SiteReview = {
+    ...payload,
+    id: tempId,
+  };
+  const currentLocal = getLocalCustomerReviews();
+  saveLocalCustomerReviews([localReview, ...currentLocal.filter((r) => r.id !== tempId)]);
 
-  // 2. Persist to Firestore
   try {
-    const colRef = collection(db, COLLECTION_NAME);
-    const docRef = await addDoc(colRef, {
-      productId: payload.productId,
-      productName: payload.productName,
-      authorName: payload.authorName,
-      rating: payload.rating,
-      comment: payload.comment,
-      location: payload.location,
-      topic: payload.topic,
-      fishCaught: payload.fishCaught,
-      verified: payload.verified,
-      createdAt: payload.createdAt,
-    });
-
-    // Update with Firestore document ID
-    if (docRef.id) {
-      removeLocalRealReview(generatedId);
-      const withFirestoreId = { ...payload, id: docRef.id };
-      saveLocalRealReview(withFirestoreId);
-      return docRef.id;
-    }
-  } catch (firestoreErr) {
-    console.warn('Firestore addDoc note (local review saved):', firestoreErr);
+    const docRef = await addDoc(colRef, payload);
+    // Replace temp ID with Firestore document ID in local cache
+    const updatedLocal = getLocalCustomerReviews().map((r) =>
+      r.id === tempId ? { ...r, id: docRef.id } : r
+    );
+    saveLocalCustomerReviews(updatedLocal);
+    return docRef.id;
+  } catch (err) {
+    console.warn('Review saved locally; Firestore sync notice:', err);
+    return tempId;
   }
-
-  return generatedId;
 }
 
 /**
- * Real-time listener for all reviews across the store (for admin moderation & stats).
- * Blank if no real reviews have been submitted.
+ * Real-time listener for all reviews for admin portal.
+ * Only contains reviews written by customers.
  */
 export function subscribeToAllReviews(
   onUpdate: (reviews: ProductReview[]) => void
@@ -170,34 +150,27 @@ export function subscribeToAllReviews(
   return onSnapshot(
     colRef,
     (snapshot) => {
-      const remoteList: ProductReview[] = [];
+      const list: ProductReview[] = [];
       snapshot.forEach((d) => {
-        remoteList.push({ ...d.data(), id: d.id } as ProductReview);
+        list.push({ ...d.data(), id: d.id } as ProductReview);
       });
 
-      const localList = getLocalRealReviews();
-      const map = new Map<string, ProductReview>();
-
-      remoteList.forEach((r) => map.set(r.id, r));
-      localList.forEach((r) => {
-        if (!map.has(r.id)) {
-          map.set(r.id, r as ProductReview);
+      const local = getLocalCustomerReviews();
+      const existingIds = new Set(list.map((r) => r.id));
+      for (const item of local) {
+        if (!existingIds.has(item.id)) {
+          list.push(item);
         }
-      });
+      }
 
-      const combined = Array.from(map.values());
-      combined.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      onUpdate(combined);
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      saveLocalCustomerReviews(list);
+      onUpdate(list);
     },
     (err) => {
-      console.warn('Error reading all reviews (using local real reviews):', err);
-      const localList = getLocalRealReviews();
-      localList.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      onUpdate(localList as ProductReview[]);
+      console.warn('Firestore all reviews listener notification:', err);
+      const local = getLocalCustomerReviews();
+      onUpdate(local);
     }
   );
 }
@@ -206,7 +179,11 @@ export function subscribeToAllReviews(
  * Admin delete review
  */
 export async function deleteProductReview(reviewId: string): Promise<void> {
-  removeLocalRealReview(reviewId);
+  // Remove from local cache
+  const local = getLocalCustomerReviews().filter((r) => r.id !== reviewId);
+  saveLocalCustomerReviews(local);
+
+  // Try delete in Firestore if document ID exists
   try {
     const docRef = doc(db, COLLECTION_NAME, reviewId);
     await deleteDoc(docRef);
@@ -216,7 +193,8 @@ export async function deleteProductReview(reviewId: string): Promise<void> {
 }
 
 /**
- * Compute average rating and distribution based strictly on real reviews
+ * Compute average rating and distribution from real customer reviews.
+ * Returns 0 average and 0 count if no customer reviews exist.
  */
 export function calculateReviewStats(reviews: ProductReview[]) {
   if (!reviews || reviews.length === 0) {

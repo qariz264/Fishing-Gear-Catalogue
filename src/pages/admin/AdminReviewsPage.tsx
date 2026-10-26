@@ -86,7 +86,7 @@ export const AdminReviewsPage: React.FC = () => {
         <div className="flex items-center gap-4 bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl shrink-0">
           <div>
             <span className="text-xl font-extrabold text-white font-mono block leading-none">
-              {stats.count > 0 ? stats.average.toFixed(1) : '5.0'} ★
+              {stats.count > 0 ? stats.average.toFixed(1) : '0.0'} ★
             </span>
             <span className="text-[10px] text-slate-400 font-mono">Store Average</span>
           </div>
@@ -227,51 +227,30 @@ export const AdminReviewsPage: React.FC = () => {
                   )}
                 </div>
 
-                {/* Catch Photo in Admin if available */}
-                {item.catchPhotoUrl && (
-                  <div className="rounded-xl overflow-hidden border border-slate-800 aspect-16/9 bg-slate-950">
-                    <img
-                      src={item.catchPhotoUrl}
-                      alt="Catch Proof"
-                      className="w-full h-full object-cover"
-                    />
+                {/* Topic Badge */}
+                {item.topic && (
+                  <div className="pt-0.5">
+                    <span className="inline-block text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
+                      Topic: {item.topic}
+                    </span>
                   </div>
                 )}
 
-                {/* Location / Catch / Gear Strip */}
-                <div className="space-y-1.5 text-xs bg-slate-950/70 p-3 rounded-xl border border-slate-800">
-                  {(item.waterBody || item.location) && (
-                    <div className="flex items-center gap-2 text-slate-300">
-                      <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                      <span className="font-semibold text-white">{item.waterBody || item.location}</span>
-                    </div>
-                  )}
-
-                  {(item.fishCaught || item.targetSpecies) && (
-                    <div className="flex items-center gap-2 text-blue-400">
-                      <Fish className="w-3.5 h-3.5 shrink-0" />
-                      <span>Catch: {item.fishCaught || item.targetSpecies}</span>
-                    </div>
-                  )}
-
-                  {item.gearUsed && (
-                    <div className="text-[11px] text-slate-400 font-mono">
-                      Rig: <span className="text-slate-200">{item.gearUsed}</span>
-                    </div>
-                  )}
-
-                  {item.orderMethod && (
-                    <div className="text-[10px] text-emerald-400 font-mono">
-                      Fulfillment: {item.orderMethod}
-                    </div>
-                  )}
-                </div>
-
-                {/* Nelson Pro Tip */}
-                {item.nelsonsTip && (
-                  <div className="p-2.5 bg-amber-500/10 border-l-2 border-amber-500 rounded-r-lg text-xs text-amber-300">
-                    <strong className="block text-amber-400 text-[10px] uppercase tracking-wider">Nelson&apos;s Tip:</strong>
-                    <span className="italic">{item.nelsonsTip}</span>
+                {/* Location / Catch Badges */}
+                {(item.location || item.fishCaught) && (
+                  <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                    {item.location && (
+                      <span className="inline-flex items-center gap-1 text-[11px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-md">
+                        <MapPin className="w-3 h-3 text-slate-500" />
+                        <span>{item.location}</span>
+                      </span>
+                    )}
+                    {item.fishCaught && (
+                      <span className="inline-flex items-center gap-1 text-[11px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
+                        <Fish className="w-3 h-3 text-blue-400" />
+                        <span>Caught: {item.fishCaught}</span>
+                      </span>
+                    )}
                   </div>
                 )}
 

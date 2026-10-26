@@ -109,15 +109,6 @@ export interface ProductReview {
   topic?: string;
   verified?: boolean;
   createdAt: string;
-  anglerTitle?: string;
-  gearUsed?: string;
-  waterBody?: string;
-  targetSpecies?: string;
-  catchWeight?: string;
-  nelsonsTip?: string;
-  helpfulCount?: number;
-  catchPhotoUrl?: string;
-  orderMethod?: string;
 }
 
 export type SiteReview = ProductReview;

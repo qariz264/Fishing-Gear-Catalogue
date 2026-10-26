@@ -7,6 +7,7 @@ import { FooterReviewsSection } from './FooterReviewsSection';
 
 interface FooterProps {
   onSelectCategory?: (cat: string) => void;
+  showReviews?: boolean;
 }
 
 const TikTokIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
@@ -20,15 +21,15 @@ const TikTokIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' })
   </svg>
 );
 
-export const Footer: React.FC<FooterProps> = () => {
+export const Footer: React.FC<FooterProps> = ({ showReviews = true }) => {
   return (
     <footer id="site-reviews" className="bg-slate-950 text-slate-400 text-xs border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {/* Overall Site & Customer Reviews Section on the Footer */}
-        <FooterReviewsSection />
+        {showReviews && <FooterReviewsSection />}
 
         {/* Store Information, Address, Hours & Navigation Grid */}
-        <div className="pt-8 border-t border-slate-800/80">
+        <div className={`pt-8 ${showReviews ? 'border-t border-slate-800/80' : ''}`}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand & Mission */}
             <div className="space-y-3">

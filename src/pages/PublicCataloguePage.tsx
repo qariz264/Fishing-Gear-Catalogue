@@ -7,6 +7,7 @@ import { Hero } from '../components/Hero';
 import { CategoryFilterBar } from '../components/CategoryFilterBar';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetailModal } from '../components/ProductDetailModal';
+import { SiteReviewsSection } from '../components/SiteReviewsSection';
 import { Footer } from '../components/Footer';
 import { Search, ShoppingBag, MessageSquare } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
@@ -213,6 +214,9 @@ export const PublicCataloguePage: React.FC = () => {
           </div>
         )}
       </main>
+
+      {/* Customer Reviews & Angler Testimonials */}
+      <SiteReviewsSection id="reviews" />
 
       {/* Footer with shop address & hours */}
       <Footer

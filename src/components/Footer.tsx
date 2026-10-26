@@ -138,6 +138,11 @@ export const Footer: React.FC<FooterProps> = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/reviews" className="hover:text-white transition-colors">
+                  Customer Reviews &amp; Testimonials
+                </Link>
+              </li>
+              <li>
                 <Link to="/fishing-spots" className="hover:text-white transition-colors">
                   Fishing Spots Guide
                 </Link>

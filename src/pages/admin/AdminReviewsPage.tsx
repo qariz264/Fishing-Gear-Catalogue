@@ -205,19 +205,36 @@ export const AdminReviewsPage: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Associated Product */}
+                {/* Associated Scope: Overall Store or Product */}
                 <div className="text-xs bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between">
-                  <span className="text-slate-400 text-[11px]">Product:</span>
-                  <a
-                    href={`/?product=${encodeURIComponent(item.productId)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 truncate max-w-[70%]"
-                  >
-                    <span className="truncate">{item.productName || item.productId}</span>
-                    <ExternalLink className="w-3 h-3 shrink-0" />
-                  </a>
+                  <span className="text-slate-400 text-[11px]">
+                    {item.productId && item.productId !== 'site' ? 'Product:' : 'Review Scope:'}
+                  </span>
+                  {item.productId && item.productId !== 'site' ? (
+                    <a
+                      href={`/?product=${encodeURIComponent(item.productId)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1 truncate max-w-[70%]"
+                    >
+                      <span className="truncate">{item.productName || item.productId}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                  ) : (
+                    <span className="font-semibold text-emerald-400 flex items-center gap-1 font-mono text-[11px]">
+                      <span>Overall Store &amp; Service</span>
+                    </span>
+                  )}
                 </div>
+
+                {/* Topic Badge */}
+                {item.topic && (
+                  <div className="pt-0.5">
+                    <span className="inline-block text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
+                      Topic: {item.topic}
+                    </span>
+                  </div>
+                )}
 
                 {/* Location / Catch Badges */}
                 {(item.location || item.fishCaught) && (

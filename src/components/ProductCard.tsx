@@ -49,7 +49,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between">
         <div>
           {/* Category */}
-          <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-medium">
+          <div className="text-xs text-slate-500 mb-1 font-medium">
             <span>{product.category} · {product.subcategory || 'Tackle'}</span>
           </div>
 

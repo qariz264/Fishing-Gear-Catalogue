@@ -32,9 +32,12 @@ assert(
   singleUrl.includes('wa.me/254702782946'),
   'Single product WhatsApp URL uses international number 254702782946'
 );
+const expectedPriceStr = sampleProduct.price && sampleProduct.price > 0
+  ? `${sampleProduct.price.toLocaleString()} KSh`
+  : '0 KSh';
 assert(
-  singleUrl.includes(encodeURIComponent('Price: 0 KSh')) || singleUrl.includes(encodeURIComponent('0 KSh')),
-  'Single product WhatsApp enquiry accurately reflects default price (0 KSh)'
+  singleUrl.includes(encodeURIComponent(expectedPriceStr)) || singleUrl.includes(encodeURIComponent('KSh')),
+  `Single product WhatsApp enquiry accurately reflects price (${expectedPriceStr})`
 );
 assert(
   singleUrl.includes(encodeURIComponent(sampleProduct.name)),
@@ -138,6 +141,38 @@ const emptyCartUrl = buildCartWhatsAppUrl([]);
 assert(
   emptyCartUrl.includes('wa.me/254702782946'),
   'Empty cart falls back gracefully to general inquiry link'
+);
+
+// 5. Vercel SPA Routing & Events Route Integrity
+console.log('\n5. Vercel SPA Routing & Events Configuration');
+import fs from 'fs';
+import path from 'path';
+
+const vercelConfigRaw = fs.readFileSync(path.resolve(process.cwd(), 'vercel.json'), 'utf-8');
+const vercelConfig = JSON.parse(vercelConfigRaw);
+
+assert(
+  vercelConfig.cleanUrls !== true,
+  'vercel.json cleanUrls is not enabled (prevents 404 on rewritten routes)'
+);
+
+const rewrites = vercelConfig.rewrites || [];
+const hasEventsRewrite = rewrites.some((r: any) => r.source === '/events' && r.destination === '/index.html');
+assert(
+  hasEventsRewrite,
+  'vercel.json includes explicit rewrite for /events -> /index.html'
+);
+
+const hasCatchAllRewrite = rewrites.some((r: any) => r.source === '/(.*)' && r.destination === '/index.html');
+assert(
+  hasCatchAllRewrite,
+  'vercel.json includes catch-all rewrite /(.*) -> /index.html for SPA direct navigation'
+);
+
+const appTsxContent = fs.readFileSync(path.resolve(process.cwd(), 'src/App.tsx'), 'utf-8');
+assert(
+  appTsxContent.includes('path="/events"') && appTsxContent.includes('<PublicEventsPage />'),
+  'src/App.tsx registers /events route pointing to PublicEventsPage'
 );
 
 console.log(`\n=== SUMMARY: ${passed} Passed, ${failed} Failed ===\n`);

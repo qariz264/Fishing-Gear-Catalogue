@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, MessageSquare, Menu, X } from 'lucide-react';
+import { ShoppingBag, MessageSquare, Menu, X, ShieldCheck } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL, WHATSAPP_PHONE_FORMATTED } from '../utils/whatsapp';
 import { Logo } from './Logo';
 import { useCart } from '../context/CartContext';
+import { useAdminAuth } from '../context/AdminAuthContext';
 import { TopEventsBanner } from './TopEventsBanner';
 
 interface HeaderProps {
@@ -20,13 +21,13 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const cartContext = useCart();
+  const { isAdmin } = useAdminAuth();
 
   const cartCount = propCartCount !== undefined ? propCartCount : cartContext.totalCartCount;
   const onOpenCart = propOnOpenCart || (() => cartContext.setIsCartOpen(true));
 
   const navLinks = [
     { name: 'Gear Catalogue', path: '/' },
-    { name: 'Reviews', path: '/reviews' },
     { name: 'Fishing Spots', path: '/fishing-spots' },
     { name: 'Blog & Guides', path: '/blogs' },
     { name: 'Events', path: '/events' },
@@ -66,6 +67,15 @@ export const Header: React.FC<HeaderProps> = ({
               </Link>
             );
           })}
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-amber-500/10 text-amber-700 border border-amber-400/40 rounded-lg hover:bg-amber-500/20 transition-colors"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+              <span>Admin Console</span>
+            </Link>
+          )}
         </nav>
 
         {/* Action Controls */}
@@ -120,6 +130,24 @@ export const Header: React.FC<HeaderProps> = ({
               {link.name}
             </Link>
           ))}
+          {isAdmin ? (
+            <Link
+              to="/admin"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-amber-700 bg-amber-50 rounded-lg border border-amber-200/60"
+            >
+              <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <span>Admin Console</span>
+            </Link>
+          ) : (
+            <Link
+              to="/admin/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-800"
+            >
+              Admin Portal Sign In
+            </Link>
+          )}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-center">
             <a
               href={`https://wa.me/${WHATSAPP_PHONE_INTERNATIONAL}?text=${encodeURIComponent('Hello Nelson, I would like to inquire about fishing gear.')}`}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { Package } from 'lucide-react';
@@ -20,6 +20,8 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
   activeImageUrl,
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   // Proportioned heights to display 100% of the equipment image without cropping
   const sizeClasses = {
@@ -28,24 +30,44 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
     lg: 'h-64 sm:h-72',
   }[size];
 
-  const targetImage = activeImageUrl || product.imageUrl;
+  const targetImage = activeImageUrl || product.imageUrl || (product.images && product.images.length > 0 ? product.images[0] : '');
   const hasImage = Boolean(targetImage && targetImage.trim()) && !imageError;
+
+  // Reset loading & error state when image changes
+  useEffect(() => {
+    setImageError(false);
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true);
+    } else {
+      setIsLoaded(false);
+    }
+  }, [targetImage]);
 
   return (
     <div
-      className={`relative w-full ${sizeClasses} bg-white rounded-xl overflow-hidden flex items-center justify-center border border-slate-100 group ${className}`}
+      className={`relative w-full ${sizeClasses} bg-white rounded-xl overflow-hidden flex items-center justify-center border border-slate-100 group select-none ${className}`}
     >
       {hasImage ? (
         <>
+          {/* Subtle skeleton shimmer while image decodes */}
+          {!isLoaded && (
+            <div className="absolute inset-0 bg-slate-50/80 animate-pulse pointer-events-none" />
+          )}
+
           {/* 100% Full Visibility Image: object-contain guarantees zero cropping */}
           <div className="w-full h-full p-2 flex items-center justify-center bg-white">
             <img
+              ref={imgRef}
               src={targetImage}
               alt={product.name || 'Fishing gear item'}
               loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'auto'}
               decoding="async"
+              onLoad={() => setIsLoaded(true)}
               onError={() => setImageError(true)}
-              className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-200"
+              className={`max-w-full max-h-full w-auto h-auto object-contain transition-opacity duration-200 ${
+                isLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
             />
           </div>
 

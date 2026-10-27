@@ -69,6 +69,9 @@ function handleFirestoreError(
 /**
  * Gets cached products with custom uploaded images and verified prices
  */
+/**
+ * Gets cached products with custom uploaded images and verified prices
+ */
 export function getStoredProducts(): Product[] {
   const customImages = getCustomImages();
   let cachedProducts: Product[] = [];
@@ -89,12 +92,21 @@ export function getStoredProducts(): Product[] {
   const cachedMap = new Map<string, Product>();
   cachedProducts.forEach((p) => cachedMap.set(p.id, p));
 
-  return INITIAL_PRODUCTS.map((p) => {
+  const result: Product[] = INITIAL_PRODUCTS.map((p) => {
     const cached = cachedMap.get(p.id);
     const customImg = customImages[p.id];
-    const resolvedPrice = cached && cached.price !== undefined && cached.price > 0 ? Number(cached.price) : (p.price || 0);
-    const resolvedImage = customImg || (cached && cached.imageUrl ? cached.imageUrl : (p.imageUrl || `/images/products/${p.id}.jpg`));
-    const resolvedImages = customImg ? [customImg] : (cached && cached.images && cached.images.length > 0 ? cached.images : [resolvedImage]);
+    const resolvedPrice = cached && cached.price !== undefined ? Number(cached.price) : (p.price || 0);
+
+    // Keep ultra-fast static catalog URL; avoid slow/glitchy base64 strings from cache
+    const isCachedBase64 = typeof cached?.imageUrl === 'string' && cached.imageUrl.startsWith('data:');
+    const resolvedImage = customImg || (!isCachedBase64 && cached?.imageUrl ? cached.imageUrl : p.imageUrl || '');
+    const resolvedImages = customImg
+      ? [customImg]
+      : (p.images && p.images.length > 0
+          ? p.images
+          : (cached && cached.images && cached.images.length > 0 && !cached.images[0].startsWith('data:')
+              ? cached.images
+              : [resolvedImage]));
 
     return {
       ...p,
@@ -104,11 +116,36 @@ export function getStoredProducts(): Product[] {
       images: resolvedImages,
     };
   });
+
+  // Include any newly created products that aren't in INITIAL_PRODUCTS
+  const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
+  for (const c of cachedProducts) {
+    if (!initialIds.has(c.id)) {
+      result.push(c);
+    }
+  }
+
+  return result;
 }
 
 export function saveStoredProducts(products: Product[]): void {
   try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(products));
+    // To protect against browser 5MB localStorage quota, sanitize payload
+    // If an image is an excessively large data URL, don't store megabytes in localStorage
+    const lightweight = products.map((p) => {
+      const isHugeDataUrl = typeof p.imageUrl === 'string' && p.imageUrl.startsWith('data:') && p.imageUrl.length > 50000;
+      const imagesClean = Array.isArray(p.images)
+        ? p.images.map((img) => (typeof img === 'string' && img.startsWith('data:') && img.length > 50000 ? `/images/catalog/${p.id}-1.webp` : img))
+        : p.images;
+
+      return {
+        ...p,
+        imageUrl: isHugeDataUrl ? (imagesClean?.[0] || `/images/catalog/${p.id}-1.webp`) : p.imageUrl,
+        images: imagesClean,
+      };
+    });
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lightweight));
   } catch (e) {
     console.warn('Failed to save to localStorage:', e);
   }
@@ -143,17 +180,33 @@ export function subscribeToProducts(
         const initial = initialMap.get(d.id);
         const customImg = customImages[d.id];
 
-        const resolvedPrice = data.price !== undefined && Number(data.price) > 0 
+        const resolvedPrice = data.price !== undefined && Number(data.price) >= 0 
           ? Number(data.price) 
           : (initial?.price || 0);
 
-        const resolvedImage = customImg || data.imageUrl || (initial?.imageUrl || `/images/products/${d.id}.jpg`);
+        // GLITCH FIX & SPEED ENHANCEMENT:
+        // Retain the pre-optimized, cached static file (/images/catalog/...) so browser
+        // doesn't flash/glitch when Firestore snapshot returns heavy raw base64 data URLs.
+        // Only accept remote http(s) URLs if an admin uploaded new assets to storage bucket.
+        const isDbRemote = typeof data.imageUrl === 'string' && (data.imageUrl.startsWith('http://') || data.imageUrl.startsWith('https://'));
+        let resolvedImage = initial?.imageUrl || '';
+        if (customImg) {
+          resolvedImage = customImg;
+        } else if (isDbRemote) {
+          resolvedImage = data.imageUrl!;
+        } else if (!resolvedImage && data.imageUrl) {
+          resolvedImage = data.imageUrl;
+        }
 
-        const imgs = customImg 
-          ? [customImg] 
-          : (data.images && Array.isArray(data.images) && data.images.length > 0
-              ? data.images
-              : [resolvedImage]);
+        // Multi-image array resolution: prefer pre-cached static array
+        let imgs = initial?.images && initial.images.length > 0 ? initial.images : [resolvedImage];
+        if (customImg) {
+          imgs = [customImg];
+        } else if (Array.isArray(data.images) && data.images.length > 0 && isDbRemote) {
+          imgs = data.images;
+        } else if (!imgs || imgs.length === 0) {
+          imgs = [resolvedImage];
+        }
 
         productsFromDb.push({
           ...(initial || {}),
@@ -164,6 +217,14 @@ export function subscribeToProducts(
           images: imgs,
         });
       });
+
+      // Guarantee any initial products not yet in this query snapshot remain intact
+      const dbIds = new Set(productsFromDb.map((p) => p.id));
+      for (const p of INITIAL_PRODUCTS) {
+        if (!dbIds.has(p.id)) {
+          productsFromDb.push(p);
+        }
+      }
 
       saveStoredProducts(productsFromDb);
       onUpdate(productsFromDb);

@@ -7,7 +7,6 @@ import { Hero } from '../components/Hero';
 import { CategoryFilterBar } from '../components/CategoryFilterBar';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetailModal } from '../components/ProductDetailModal';
-import { SiteReviewsSection } from '../components/SiteReviewsSection';
 import { Footer } from '../components/Footer';
 import { Search, ShoppingBag, MessageSquare } from 'lucide-react';
 import { WHATSAPP_PHONE_INTERNATIONAL } from '../utils/whatsapp';
@@ -205,7 +204,7 @@ export const PublicCataloguePage: React.FC = () => {
               <ProductCard
                 key={product.id}
                 product={product}
-                priority={idx < 4}
+                priority={idx < 8}
                 onSelect={(p) => setSelectedProduct(p)}
                 onAddToCart={(p, qty) => addToCart(p, qty)}
                 inCartCount={getInCartCount(product.id)}
@@ -215,10 +214,7 @@ export const PublicCataloguePage: React.FC = () => {
         )}
       </main>
 
-      {/* Customer Reviews & Angler Testimonials */}
-      <SiteReviewsSection id="reviews" />
-
-      {/* Footer with shop address & hours */}
+      {/* Footer with shop address, hours & overall reviews */}
       <Footer
         onSelectCategory={(cat) => {
           setSelectedCategory(cat);

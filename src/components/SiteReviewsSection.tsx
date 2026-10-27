@@ -18,7 +18,6 @@ import {
   Sparkles,
   ShieldCheck,
   Search,
-  Filter,
 } from 'lucide-react';
 
 interface SiteReviewsSectionProps {
@@ -87,7 +86,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
       return;
     }
     if (!cleanComment) {
-      setFormError('Please write your review or comments about your experience.');
+      setFormError('Please write your review about your experience or tackle.');
       return;
     }
     if (rating < 1 || rating > 5) {
@@ -106,7 +105,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
         fishCaught: fishCaught.trim(),
       });
 
-      setFormSuccess('Thank you! Your review has been submitted successfully.');
+      setFormSuccess('Thank you! Your customer review has been submitted.');
       setTimeout(() => {
         setIsModalOpen(false);
         setAuthorName('');
@@ -115,9 +114,9 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
         setComment('');
         setRating(5);
         setFormSuccess(null);
-      }, 2000);
+      }, 1500);
     } catch (err: any) {
-      console.error('Failed to submit site review:', err);
+      console.error('Failed to submit review:', err);
       setFormError(err?.message || 'Failed to submit review. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -148,13 +147,13 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>Customer Feedback &amp; Angler Stories</span>
+                <span>Customer Reviews</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-                Overall Customer Reviews
+                Customer Reviews
               </h2>
               <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-                Read real experiences from anglers across Nairobi, Naivasha, Coastal Kenya, and Lake Victoria who trust Fishing With Nelson for tackle, advice, and delivery.
+                Reviews and feedback written exclusively by anglers and customers who have purchased tackle, equipment, or received fishing advice from Nelson.
               </p>
             </div>
 
@@ -169,159 +168,193 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
           </div>
         )}
 
-        {/* Aggregate Score & Trust Banner */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Big Score */}
-          <div className="lg:col-span-4 flex items-center gap-5 border-b lg:border-b-0 lg:border-r border-slate-100 pb-5 lg:pb-0 lg:pr-6">
-            <div className="text-center p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20 shrink-0">
-              <span className="text-4xl sm:text-5xl font-extrabold text-slate-950 font-mono block leading-none">
-                {stats.count > 0 ? stats.average.toFixed(1) : '4.9'}
-              </span>
-              <div className="flex items-center justify-center gap-1 text-amber-500 mt-2">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-4 h-4 fill-amber-400 text-amber-500" />
-                ))}
-              </div>
-              <span className="text-[11px] font-semibold text-amber-800 uppercase tracking-wider block mt-1">
-                Out of 5 Stars
-              </span>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-emerald-700 font-bold text-sm">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Verified Angler Satisfaction</span>
-              </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Based on <strong className="text-slate-900">{stats.count || reviews.length} verified customer reviews</strong> across Kenya.
-              </p>
-              <div className="pt-1">
-                <span className="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-mono">
-                  100% Genuine Kenyan Anglers
+        {/* Real Customer Reviews Aggregate Banner (Only shown when customers have written reviews) */}
+        {reviews.length > 0 && (
+          <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            {/* Big Score */}
+            <div className="lg:col-span-4 flex items-center gap-5 border-b lg:border-b-0 lg:border-r border-slate-100 pb-5 lg:pb-0 lg:pr-6">
+              <div className="text-center p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20 shrink-0">
+                <span className="text-4xl sm:text-5xl font-extrabold text-slate-950 font-mono block leading-none">
+                  {stats.average.toFixed(1)}
+                </span>
+                <div className="flex items-center justify-center gap-1 text-amber-500 mt-2">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className={`w-4 h-4 ${
+                        s <= Math.round(stats.average)
+                          ? 'fill-amber-400 text-amber-500'
+                          : 'text-slate-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-[11px] font-semibold text-amber-800 uppercase tracking-wider block mt-1">
+                  Out of 5 Stars
                 </span>
               </div>
-            </div>
-          </div>
 
-          {/* Star Distribution Progress Bars */}
-          <div className="lg:col-span-4 space-y-1.5 border-b lg:border-b-0 lg:border-r border-slate-100 pb-5 lg:pb-0 lg:pr-6">
-            {[5, 4, 3, 2, 1].map((s) => {
-              const count = stats.distribution[s as 1 | 2 | 3 | 4 | 5] || 0;
-              const pct = stats.count > 0 ? Math.round((count / stats.count) * 100) : s === 5 ? 90 : 10;
-              return (
-                <div key={s} className="flex items-center gap-2 text-xs">
-                  <span className="w-7 text-[11px] font-mono text-slate-500 flex items-center gap-0.5">
-                    {s} <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400 inline" />
-                  </span>
-                  <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-amber-500 rounded-full transition-all duration-500"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <span className="w-9 text-right text-[11px] font-mono text-slate-600">
-                    {count}
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-emerald-700 font-bold text-sm">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Customer Feedback</span>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Based on{' '}
+                  <strong className="text-slate-900">
+                    {stats.count} customer review{stats.count === 1 ? '' : 's'}
+                  </strong>
+                  .
+                </p>
+                <div className="pt-1">
+                  <span className="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-mono">
+                    Authentic Angler Feedback
                   </span>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Service Trust Highlights */}
-          <div className="lg:col-span-4 space-y-2.5 text-xs text-slate-600">
-            <div className="flex items-start gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900 block">Personalized Advice:</strong>
-                <span>Nelson advises on the exact rig and hook size for your target waters.</span>
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900 block">Fast Countrywide Delivery:</strong>
-                <span>Nairobi CBD shop pick-up or fast courier parcel dispatch across Kenya.</span>
+
+            {/* Star Distribution Progress Bars */}
+            <div className="lg:col-span-4 space-y-1.5 border-b lg:border-b-0 lg:border-r border-slate-100 pb-5 lg:pb-0 lg:pr-6">
+              {[5, 4, 3, 2, 1].map((s) => {
+                const count = stats.distribution[s as 1 | 2 | 3 | 4 | 5] || 0;
+                const pct = stats.count > 0 ? Math.round((count / stats.count) * 100) : 0;
+                return (
+                  <div key={s} className="flex items-center gap-2 text-xs">
+                    <span className="w-7 text-[11px] font-mono text-slate-500 flex items-center gap-0.5">
+                      {s} <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400 inline" />
+                    </span>
+                    <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="w-9 text-right text-[11px] font-mono text-slate-600">
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Service Highlights */}
+            <div className="lg:col-span-4 space-y-2.5 text-xs text-slate-600">
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 block">Personalized Advice:</strong>
+                  <span>Nelson advises on the exact rig and hook size for your target waters.</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 block">Fast Countrywide Delivery:</strong>
+                  <span>Nairobi CBD shop pick-up or courier parcel dispatch across Kenya.</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200">
-          {/* Rating Tabs */}
-          <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto no-scrollbar">
-            <button
-              type="button"
-              onClick={() => setSelectedRating('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                selectedRating === 'all'
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              All Reviews ({reviews.length})
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRating('5')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer ${
-                selectedRating === '5'
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>5 Stars</span>
-              <span className="text-[10px] opacity-80 font-mono">({stats.distribution[5] || 0})</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRating('4')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer ${
-                selectedRating === '4'
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>4 Stars</span>
-              <span className="text-[10px] opacity-80 font-mono">({stats.distribution[4] || 0})</span>
-            </button>
+        {/* Filter & Search Bar (Only shown when reviews exist) */}
+        {reviews.length > 0 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200">
+            {/* Rating Tabs */}
+            <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto no-scrollbar">
+              <button
+                type="button"
+                onClick={() => setSelectedRating('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                  selectedRating === 'all'
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                All Reviews ({reviews.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedRating('5')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer ${
+                  selectedRating === '5'
+                    ? 'bg-amber-600 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <span>5 Stars</span>
+                <span className="text-[10px] opacity-80 font-mono">
+                  ({stats.distribution[5] || 0})
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedRating('4')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer ${
+                  selectedRating === '4'
+                    ? 'bg-amber-600 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <span>4 Stars</span>
+                <span className="text-[10px] opacity-80 font-mono">
+                  ({stats.distribution[4] || 0})
+                </span>
+              </button>
+            </div>
+
+            {/* Search */}
+            <div className="relative w-full sm:w-64">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                value={searchFilter}
+                onChange={(e) => setSearchFilter(e.target.value)}
+                placeholder="Search by angler, location..."
+                className="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-amber-500"
+              />
+            </div>
           </div>
+        )}
 
-          {/* Search */}
-          <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-            <input
-              type="text"
-              value={searchFilter}
-              onChange={(e) => setSearchFilter(e.target.value)}
-              placeholder="Search by angler, location..."
-              className="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-amber-500"
-            />
-          </div>
-        </div>
-
-        {/* Reviews Grid */}
+        {/* Reviews Grid or Empty State */}
         {loading ? (
-          <div className="py-16 text-center text-slate-400 text-xs font-mono">
-            Loading verified reviews...
+          <div className="py-12 text-center text-slate-400 text-xs font-mono">
+            Loading reviews...
+          </div>
+        ) : reviews.length === 0 ? (
+          /* When no reviews have been written yet, leave section clean and blank with customer submission action */
+          <div className="bg-white rounded-3xl p-10 sm:p-12 text-center border border-slate-200 max-w-lg mx-auto space-y-4 shadow-xs">
+            <div className="w-14 h-14 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mx-auto text-amber-600">
+              <MessageSquare className="w-7 h-7" />
+            </div>
+            <div className="space-y-1.5">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                No Customer Reviews Yet
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                Reviews on Fishing With Nelson are written by our customers. Have you bought fishing rods, reels, lures, or received advice from Nelson? Be the first to share your experience!
+              </p>
+            </div>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md shadow-amber-900/10 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Write the First Review</span>
+              </button>
+            </div>
           </div>
         ) : filteredReviews.length === 0 ? (
-          <div className="bg-white rounded-2xl p-10 text-center border border-slate-200 max-w-md mx-auto space-y-3">
-            <MessageSquare className="w-8 h-8 text-slate-400 mx-auto" />
-            <h3 className="text-sm font-bold text-slate-900">No reviews found</h3>
+          <div className="bg-white rounded-2xl p-8 text-center border border-slate-200 max-w-md mx-auto space-y-2">
+            <Search className="w-6 h-6 text-slate-400 mx-auto" />
+            <h3 className="text-xs font-bold text-slate-900">No matching reviews</h3>
             <p className="text-xs text-slate-600">
-              {searchFilter
-                ? `No reviews match "${searchFilter}".`
-                : 'Be the first to share your experience with Fishing With Nelson!'}
+              No reviews match &ldquo;{searchFilter}&rdquo;.
             </p>
-            <button
-              type="button"
-              onClick={handleOpenModal}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 hover:text-amber-800 underline cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Write a Review</span>
-            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -335,20 +368,18 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 font-bold text-xs flex items-center justify-center shrink-0">
-                        {r.authorName.slice(0, 2).toUpperCase()}
+                        {r.authorName ? r.authorName.slice(0, 2).toUpperCase() : 'CU'}
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm font-bold text-slate-900">{r.authorName}</span>
-                          {r.verified !== false && (
-                            <span
-                              className="inline-flex items-center gap-0.5 text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded font-medium border border-emerald-200"
-                              title="Verified Customer / Angler"
-                            >
-                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
-                              <span>Verified</span>
-                            </span>
-                          )}
+                          <span
+                            className="inline-flex items-center gap-0.5 text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded font-medium border border-emerald-200"
+                            title="Customer Review"
+                          >
+                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                            <span>Customer</span>
+                          </span>
                         </div>
                         <div className="flex items-center gap-1 text-amber-400 mt-0.5">
                           {[1, 2, 3, 4, 5].map((s) => (
@@ -393,7 +424,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
 
                   {/* Review Text */}
                   <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line pt-1">
-                    "{r.comment}"
+                    &ldquo;{r.comment}&rdquo;
                   </p>
                 </div>
               </div>
@@ -402,7 +433,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
         )}
       </div>
 
-      {/* Interactive Modal Form: Leave a Site Review */}
+      {/* Customer Review Modal Form */}
       {isModalOpen && (
         <div
           className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
@@ -416,10 +447,10 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
             <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
               <div>
                 <h3 className="text-base font-bold text-slate-900">
-                  Review Fishing With Nelson
+                  Write a Customer Review
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Share your experience with our equipment, advice, or delivery.
+                  Share your experience with tackle, delivery, or advice from Nelson.
                 </p>
               </div>
               <button
@@ -483,7 +514,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
                 </div>
               </div>
 
-              {/* Angler Name */}
+              {/* Customer Name */}
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-800 block">
                   Your Name <span className="text-red-500">*</span>
@@ -502,13 +533,13 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
                 {/* Location */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 block">
-                    Location / Water Body
+                    Location / Water Body <span className="text-slate-400 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="e.g. Lake Naivasha / Nairobi"
+                    placeholder="e.g. Nairobi / Lake Naivasha"
                     className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-amber-500 focus:bg-white"
                   />
                 </div>
@@ -516,7 +547,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
                 {/* Experience Topic */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 block">
-                    Experience Topic
+                    Topic
                   </label>
                   <select
                     value={topic}
@@ -542,7 +573,7 @@ export const SiteReviewsSection: React.FC<SiteReviewsSectionProps> = ({
                   type="text"
                   value={fishCaught}
                   onChange={(e) => setFishCaught(e.target.value)}
-                  placeholder="e.g. Tilapia (1.5kg), Bass, Mudfish, Kingfish"
+                  placeholder="e.g. Tilapia (1.5kg), Bass, Mudfish"
                   className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-amber-500 focus:bg-white"
                 />
               </div>

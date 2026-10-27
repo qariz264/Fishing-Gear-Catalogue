@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { ProductVisual } from './ProductVisual';
-import { ProductReviewsSection } from './ProductReviewsSection';
 import { buildSingleProductWhatsAppUrl, WHATSAPP_PHONE_FORMATTED } from '../utils/whatsapp';
 import {
   X,
@@ -10,8 +9,6 @@ import {
   Plus,
   Minus,
   MessageSquare,
-  Star,
-  ImageIcon,
   ArrowLeft,
   ArrowRight,
   Maximize2,
@@ -33,7 +30,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 }) => {
   if (!product) return null;
 
-  const [activeTab, setActiveTab] = useState<'details' | 'reviews'>('details');
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -45,6 +41,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       : product.imageUrl
       ? [product.imageUrl]
       : [];
+
+  // Reset active photo index when product changes
+  useEffect(() => {
+    setActivePhotoIdx(0);
+  }, [product?.id]);
+
+  // Instant photo preloading for seamless switching without glitches
+  useEffect(() => {
+    if (productImages.length > 1) {
+      productImages.forEach((url) => {
+        if (url && !url.startsWith('data:')) {
+          const img = new Image();
+          img.src = url;
+        }
+      });
+    }
+  }, [productImages]);
 
   const directWhatsAppUrl = buildSingleProductWhatsAppUrl(product as Product);
 
@@ -73,39 +86,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         className="relative bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-6 text-left flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Top Header with Tabs */}
-        <div className="px-5 sm:px-6 py-3.5 border-b border-slate-100 bg-slate-50/90 flex flex-wrap items-center justify-between gap-3">
+        {/* Modal Top Header */}
+        <div className="px-5 sm:px-6 py-3.5 border-b border-slate-100 bg-slate-50/90 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-600 bg-slate-200/60 px-2.5 py-1 rounded-lg">
+            <span className="text-xs text-slate-500 font-medium">
               {product.category} · {product.subcategory || 'Tackle'}
             </span>
-          </div>
-
-          {/* Navigation Tabs */}
-          <div className="flex bg-slate-200/80 p-0.5 rounded-xl border border-slate-300/40 text-xs font-semibold">
-            <button
-              type="button"
-              onClick={() => setActiveTab('details')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'details'
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Equipment &amp; Order
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('reviews')}
-              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
-                activeTab === 'reviews'
-                  ? 'bg-white text-amber-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-              <span>Angler Reviews</span>
-            </button>
           </div>
 
           <button
@@ -119,208 +105,188 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
         {/* Modal Scrollable Body */}
         <div className="p-5 sm:p-6 overflow-y-auto flex-1">
-          {activeTab === 'details' ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-              {/* Left Column: Multi-Image Photo Gallery */}
-              <div className="space-y-3">
-                <div className="relative group bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex items-center justify-center">
-                  <ProductVisual
-                    product={product}
-                    size="lg"
-                    activeImageUrl={productImages[activePhotoIdx]}
-                  />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            {/* Left Column: Multi-Image Photo Gallery */}
+            <div className="space-y-3">
+              <div className="relative group bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex items-center justify-center">
+                <ProductVisual
+                  product={product}
+                  size="lg"
+                  activeImageUrl={productImages[activePhotoIdx]}
+                />
 
-                  {/* Left / Right Arrow Buttons if > 1 images */}
-                  {productImages.length > 1 && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={handlePrevPhoto}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white transition-all shadow-md cursor-pointer opacity-80 group-hover:opacity-100"
-                        title="Previous photo"
-                      >
-                        <ArrowLeft className="w-4 h-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleNextPhoto}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white transition-all shadow-md cursor-pointer opacity-80 group-hover:opacity-100"
-                        title="Next photo"
-                      >
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-
-                      {/* Photo Index Counter */}
-                      <span className="absolute bottom-2.5 right-2.5 bg-slate-950/80 text-white text-[10px] font-mono font-medium px-2 py-0.5 rounded-md backdrop-blur-xs border border-white/10 shadow-xs">
-                        {activePhotoIdx + 1} / {productImages.length}
-                      </span>
-                    </>
-                  )}
-
-                  {/* Zoom / Fullscreen Button */}
-                  {productImages.length > 0 && (
+                {/* Left / Right Arrow Buttons if > 1 images */}
+                {productImages.length > 1 && (
+                  <>
                     <button
                       type="button"
-                      onClick={() => setIsLightboxOpen(true)}
-                      className="absolute top-2.5 right-2.5 p-1.5 rounded-lg bg-slate-950/70 hover:bg-slate-900 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-md flex items-center gap-1 cursor-pointer"
-                      title="Enlarge photo"
+                      onClick={handlePrevPhoto}
+                      className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white transition-all shadow-md cursor-pointer opacity-80 group-hover:opacity-100"
+                      title="Previous photo"
                     >
-                      <Maximize2 className="w-3.5 h-3.5" />
-                      <span className="text-[10px]">Zoom</span>
+                      <ArrowLeft className="w-4 h-4" />
                     </button>
-                  )}
+                    <button
+                      type="button"
+                      onClick={handleNextPhoto}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white transition-all shadow-md cursor-pointer opacity-80 group-hover:opacity-100"
+                      title="Next photo"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+
+                    {/* Photo Index Counter */}
+                    <span className="absolute bottom-2.5 right-2.5 bg-slate-950/80 text-white text-[10px] font-mono font-medium px-2 py-0.5 rounded-md backdrop-blur-xs border border-white/10 shadow-xs">
+                      {activePhotoIdx + 1} / {productImages.length}
+                    </span>
+                  </>
+                )}
+
+                {/* Zoom / Fullscreen Button */}
+                {productImages.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="absolute top-2.5 right-2.5 p-1.5 rounded-lg bg-slate-950/70 hover:bg-slate-900 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-md flex items-center gap-1 cursor-pointer"
+                    title="Enlarge photo"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span className="text-[10px]">Zoom</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Thumbnail Strip if multiple images */}
+              {productImages.length > 1 && (
+                <div className="flex items-center gap-2 overflow-x-auto p-1 no-scrollbar">
+                  {productImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActivePhotoIdx(idx)}
+                      className={`w-14 h-14 rounded-xl overflow-hidden border-2 bg-white transition-all shrink-0 cursor-pointer ${
+                        activePhotoIdx === idx
+                          ? 'border-amber-500 ring-2 ring-amber-500/30 scale-102'
+                          : 'border-slate-200 opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-contain p-1" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: Details, Price, Specs & Actions */}
+            <div className="flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div>
+                  <span className="text-xs text-amber-800 font-bold uppercase tracking-wider">
+                    {product.brand}
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug">
+                    {product.name}
+                  </h2>
+
+                  {/* Price */}
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <div className="flex items-baseline gap-2 py-1 px-3 bg-amber-50/80 rounded-lg border border-amber-200/60 inline-flex">
+                      <span className="text-[11px] font-mono text-amber-900 font-semibold uppercase tracking-wide">
+                        Price:
+                      </span>
+                      <span className="text-base font-extrabold text-amber-950 font-mono">
+                        {product.price && product.price > 0
+                          ? `KSh ${product.price.toLocaleString()}`
+                          : '0 KSh'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Thumbnail Strip if multiple images */}
-                {productImages.length > 1 && (
-                  <div className="flex items-center gap-2 overflow-x-auto p-1 no-scrollbar">
-                    {productImages.map((img, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setActivePhotoIdx(idx)}
-                        className={`w-14 h-14 rounded-xl overflow-hidden border-2 bg-white transition-all shrink-0 cursor-pointer ${
-                          activePhotoIdx === idx
-                            ? 'border-amber-500 ring-2 ring-amber-500/30 scale-102'
-                            : 'border-slate-200 opacity-60 hover:opacity-100'
-                        }`}
-                      >
-                        <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-contain p-1" />
-                      </button>
-                    ))}
+                {product.description && (
+                  <p className="text-xs text-slate-600 leading-relaxed pt-1">
+                    {product.description}
+                  </p>
+                )}
+
+                {/* Specifications */}
+                {product.specs && product.specs.length > 0 && (
+                  <div className="pt-2">
+                    <h4 className="text-xs font-semibold text-slate-800 mb-1.5 flex items-center gap-1.5">
+                      <Package className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Specifications & Features</span>
+                    </h4>
+                    <div className="rounded-xl border border-slate-200 overflow-hidden text-xs divide-y divide-slate-100 bg-slate-50/60">
+                      {product.specs.map((spec, idx) => (
+                        <div key={idx} className="flex justify-between p-2 sm:px-3">
+                          <span className="text-slate-500">{spec.label}</span>
+                          <span className="text-slate-800 font-mono font-medium text-right">
+                            {spec.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Right Column: Details, Price, Specs & Actions */}
-              <div className="flex flex-col justify-between space-y-4">
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-xs text-amber-800 font-bold uppercase tracking-wider">
-                      {product.brand}
-                    </span>
-                    <h2 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug">
-                      {product.name}
-                    </h2>
-
-                    {/* Price and Customer Review Star Summary */}
-                    <div className="mt-2.5 flex flex-wrap items-center gap-3">
-                      <div className="flex items-baseline gap-2 py-1 px-3 bg-amber-50/80 rounded-lg border border-amber-200/60 inline-flex">
-                        <span className="text-[11px] font-mono text-amber-900 font-semibold uppercase tracking-wide">
-                          Price:
-                        </span>
-                        <span className="text-base font-extrabold text-amber-950 font-mono">
-                          {product.price && product.price > 0
-                            ? `KSh ${product.price.toLocaleString()}`
-                            : '0 KSh'}
-                        </span>
-                      </div>
-
-                      {/* Jump to Reviews Link */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab('reviews')}
-                        className="inline-flex items-center gap-1.5 text-xs text-amber-800 hover:text-amber-900 bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-1 rounded-lg transition-colors cursor-pointer border border-amber-500/20"
-                      >
-                        <div className="flex items-center text-amber-500">
-                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                        </div>
-                        <span className="font-semibold">Angler Reviews</span>
-                        <span className="text-slate-500 text-[11px]">· Leave Feedback</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {product.description && (
-                    <p className="text-xs text-slate-600 leading-relaxed pt-1">
-                      {product.description}
-                    </p>
-                  )}
-
-                  {/* Specifications */}
-                  {product.specs && product.specs.length > 0 && (
-                    <div className="pt-2">
-                      <h4 className="text-xs font-semibold text-slate-800 mb-1.5 flex items-center gap-1.5">
-                        <Package className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Specifications & Features</span>
-                      </h4>
-                      <div className="rounded-xl border border-slate-200 overflow-hidden text-xs divide-y divide-slate-100 bg-slate-50/60">
-                        {product.specs.map((spec, idx) => (
-                          <div key={idx} className="flex justify-between p-2 sm:px-3">
-                            <span className="text-slate-500">{spec.label}</span>
-                            <span className="text-slate-800 font-mono font-medium text-right">
-                              {spec.value}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Bottom Actions: Quantity, Cart, WhatsApp */}
-                <div className="pt-4 border-t border-slate-100 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="p-2 text-slate-500 hover:bg-slate-100 cursor-pointer"
-                        aria-label="Decrease"
-                      >
-                        <Minus className="w-3.5 h-3.5" />
-                      </button>
-                      <span className="px-3 text-xs font-semibold font-mono text-slate-800">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="p-2 text-slate-500 hover:bg-slate-100 cursor-pointer"
-                        aria-label="Increase"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-
+              {/* Bottom Actions: Quantity, Cart, WhatsApp */}
+              <div className="pt-4 border-t border-slate-100 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden">
                     <button
-                      onClick={handleAdd}
-                      className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
-                        justAdded
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-amber-600 hover:bg-amber-700 text-white shadow-2xs'
-                      }`}
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="p-2 text-slate-500 hover:bg-slate-100 cursor-pointer"
+                      aria-label="Decrease"
                     >
-                      {justAdded ? (
-                        <>
-                          <Check className="w-3.5 h-3.5" />
-                          <span>Added to Order List</span>
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>Add to Order List {inCartCount > 0 ? `(${inCartCount} in list)` : ''}</span>
-                        </>
-                      )}
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="px-3 text-xs font-semibold font-mono text-slate-800">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="p-2 text-slate-500 hover:bg-slate-100 cursor-pointer"
+                      aria-label="Increase"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <a
-                    href={directWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-2xs"
+                  <button
+                    onClick={handleAdd}
+                    className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+                      justAdded
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-amber-600 hover:bg-amber-700 text-white shadow-2xs'
+                    }`}
                   >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>Inquire on WhatsApp ({WHATSAPP_PHONE_FORMATTED})</span>
-                  </a>
+                    {justAdded ? (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Added to Order List</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add to Order List {inCartCount > 0 ? `(${inCartCount} in list)` : ''}</span>
+                      </>
+                    )}
+                  </button>
                 </div>
+
+                <a
+                  href={directWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-2xs"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Inquire on WhatsApp ({WHATSAPP_PHONE_FORMATTED})</span>
+                </a>
               </div>
             </div>
-          ) : (
-            /* Customer Reviews Tab */
-            <div className="pt-2">
-              <ProductReviewsSection product={product} />
-            </div>
-          )}
+          </div>
         </div>
       </div>
 

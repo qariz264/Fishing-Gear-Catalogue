@@ -498,11 +498,13 @@ export const AdminProductsPage: React.FC = () => {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         <div className="relative w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0">
-                          {item.imageUrl ? (
+                          {item.imageUrl || (item.images && item.images.length > 0) ? (
                             <img
-                              src={item.imageUrl}
+                              src={item.imageUrl || item.images![0]}
                               alt={item.name}
-                              className="max-h-full max-w-full w-auto h-auto object-contain"
+                              loading="lazy"
+                              decoding="async"
+                              className="max-h-full max-w-full w-auto h-auto object-contain transition-opacity duration-150"
                             />
                           ) : (
                             <Package className="w-5 h-5 text-slate-600" />

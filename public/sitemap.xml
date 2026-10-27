@@ -1,168 +1,967 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Public Navigation Pages (Direct 200 OK) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Core Public Navigation Pages -->
   <url>
     <loc>https://www.fishingwithnelson.co.ke/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.fishingwithnelson.co.ke/reviews</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://www.fishingwithnelson.co.ke/fishing-spots</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.fishingwithnelson.co.ke/blogs</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.fishingwithnelson.co.ke/events</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.fishingwithnelson.co.ke/training</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Verified Real Equipment Catalogue Products -->
+  <!-- Product Categories -->
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Fishing%20Rods</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Fishing%20Reels</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Artificial%20Lures</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Hooks%20%26%20Terminal</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Fishing%20Lines</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Nets%20%26%20Landing%20Gear</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Accessories</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?category=Other%20Gear</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Verified Authentic Products (80 Equipment Items) -->
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792331101161</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792331101161-1.webp</image:loc>
+      <image:title><![CDATA[Braided fishing line | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Braided fishing lines are rated as some of the Best lines when it comes to fighting Strong fish. This braid can comfortably do 40pounds or 18kgs before snagging]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792331300018</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792331300018-1.webp</image:loc>
+      <image:title><![CDATA[Stopper beads | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[These beads are used for installation of floaters and sinkers to make sure they stay in place.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792331882603</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792331882603-1.webp</image:loc>
+      <image:title><![CDATA[Pro kit fishing Combo | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[This is a complete fishing Combo for heavy duty fishing. Best when targeting Bass fishing, bream tilapia and hard fighting fish like barbells. This combo contai]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792332175845</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792332175845-1.webp</image:loc>
+      <image:title><![CDATA[Senko or Wacky Worms | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[1pc of a senko Will catch you more fish than anything else in your lure box.. these 6inch senkos go for 200 each at our Shop.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792332870594</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792332870594-1.webp</image:loc>
+      <image:title><![CDATA[100M clear fishing line | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Strong and durable fishing line. Nylon. 100m for all types of reels and leaders lines.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792333090163</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792333090163-1.webp</image:loc>
+      <image:title><![CDATA[Premium crankbaits | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[For 600 Each you get yourself the Best crankbaits in town. These ones work like magic on Bass fishing.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792333612437</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792333612437-1.webp</image:loc>
+      <image:title><![CDATA[Multi jointed glind bait | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[This glind bait works perfectly and catches ONLY personal bests.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792333964051</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792333964051-1.webp</image:loc>
+      <image:title><![CDATA[Catfish circle hooks | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[4pcs at Ksh 300. When target giant catfish these are the hooks you need. If the catfish you are targeting are less than 3kgs just avoid These ones and buy size ]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792334895287</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792334895287-1.webp</image:loc>
+      <image:title><![CDATA[Fishing handpole | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Retractable fishing handpole. Simple to use for both adults and kids 7+years. Avoid the hustle of a reel machine.... just show up and start catching. Comes in d]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792335189815</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792335189815-1.webp</image:loc>
+      <image:title><![CDATA[Strong two piece fishing rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Strong rods.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792341191735</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792341191735-1.webp</image:loc>
+      <image:title><![CDATA[R- Bait caster | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Bait casters are the best for bass fishing and casting lures. Cast with Lazer sharp precision. R bait caster does the job smoothly.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792341436021</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792341436021-1.webp</image:loc>
+      <image:title><![CDATA[3000 series reel | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Metallic super heavy duty. Powerful reel for handling powerful fish upto 12kgs comfortably.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792341673522</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792341673522-1.webp</image:loc>
+      <image:title><![CDATA[Powerful s3000 reel | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[This reel is a metallic beast and there is no freshwater fish that it can't handle. Fishing power looks like this.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792342279541</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792342279541-1.webp</image:loc>
+      <image:title><![CDATA[Carperan Sea fishing reel and rod Combo. | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Dominate the sea with this saltwater fishing Combo. Rated for salt water fishing this combo gives you a strong 12 foot rod, 3 different reels for sea fishing to]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792353799992</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792353799992-1.webp</image:loc>
+      <image:title><![CDATA[Soft lure | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Basically a 6inch 7grams senko with a swimming tail. Very effective for Bass fishing.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792354075294</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792354075294-1.webp</image:loc>
+      <image:title><![CDATA[Fishing lures | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Best lures to start Bass fishing with. Kickstart.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792354800804</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792354800804-1.webp</image:loc>
+      <image:title><![CDATA[Fishing beginners kit | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[For complete begginers. A low budget fishing kit that Will enable you practice with confidence before upgrading to something serious also our best selling Combo]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792355046307</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792355046307-1.webp</image:loc>
+      <image:title><![CDATA[Powerful fishing reel and rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Great for catfish, and Bass fishing]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792399617842</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792399617842-1.webp</image:loc>
+      <image:title><![CDATA[8/15grams Fishing Floaters. | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Built light with Luminous colors to enhance visibility in water, these bulb floater are a must have for any angler.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792417505271</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792417505271-1.webp</image:loc>
+      <image:title><![CDATA[Fishing Reels | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Reasonably priced fishing gears. Any reel of your choice for the images above goes for Ksh 5500. Take a screenshot and Reach out with it.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792417911662</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792417911662-1.webp</image:loc>
+      <image:title><![CDATA[Fishing Rod and reel | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[A combination of fishing reel and rod. Excellent quality. Metallic semi reels and medium Action rods. No better way of kick-starting your fishing passion]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792418576361</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792418576361-1.webp</image:loc>
+      <image:title><![CDATA[Catfish circle hooks | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[4pcs of catfish circle hooks at Ksh 300. Catches the Giants.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792418766717</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792418766717-1.webp</image:loc>
+      <image:title><![CDATA[Abu Garcia Bmax Sx spinning reel and baitcasters | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[If you know you know.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792693493935</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792693493935-1.webp</image:loc>
+      <image:title><![CDATA[Fishing Hat | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fishing jungle hat]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792764885060</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792764885060-1.webp</image:loc>
+      <image:title><![CDATA[Trout Lure s | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Per packet of 5pcs]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792765033173</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792765033173-1.webp</image:loc>
+      <image:title><![CDATA[J hooks for fishing | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[A packet of 200 pcs of J hooks size 8 to size 14 hooks]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792765367882</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792765367882-1.webp</image:loc>
+      <image:title><![CDATA[Traditional Arrow and bow | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Traditional 6 Sharp arrows and a strong wooden bow .]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=prod-1792765518916</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/prod-1792765518916-1.webp</image:loc>
+      <image:title><![CDATA[Sinkers or fishing weights | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fishing sinkers from 3grams sinkers to 10grams sinkers]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791961702588</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791961702588-1.jpg</image:loc>
+      <image:title><![CDATA[Daiwa crossfire LT | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Lightweight reel for everyday fishing]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791961847245</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791961847245-1.jpg</image:loc>
+      <image:title><![CDATA[Penn Pursuit IV | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Designed for saltwater use]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962301849</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962301849-1.jpg</image:loc>
+      <image:title><![CDATA[Shimano SLX | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Popular Low-profile baitcaster]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962396617</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962396617-1.jpg</image:loc>
+      <image:title><![CDATA[Daiwa Tatula | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Designed for Controlled and accurate casting]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962499985</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962499985-1.jpg</image:loc>
+      <image:title><![CDATA[Abu Garcia Max X | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Entry level baitcasting option]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962596138</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962596138-1.jpg</image:loc>
+      <image:title><![CDATA[Penn Senator | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Used for heavy duty saltwater fishing]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962751477</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962751477-1.jpg</image:loc>
+      <image:title><![CDATA[Shimano TLD | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Used for offshore trolling]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962823333</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962823333-1.jpg</image:loc>
+      <image:title><![CDATA[Daiwa Sealine | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Used for boat fishing and trolling]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791962908959</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791962908959-1.jpg</image:loc>
+      <image:title><![CDATA[Zebco 33 | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[A well known closed-face reel]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791963000594</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791963000594-1.jpg</image:loc>
+      <image:title><![CDATA[Zebco 202 imitation reel | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Simple beginners fishing reel. Zebco look alike.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791963104860</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791963104860-1.webp</image:loc>
+      <image:title><![CDATA[Enclosed casting reel | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[a spincast reel with an enclosed spool. Great for kids and adults easy to operate.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791963689137</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791963689137-1.jpg</image:loc>
+      <image:title><![CDATA[Minnow Lure. Jerk baits | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Predatory fish such as tuna in suitable offshore applications, barracuda, and freshwater game fish, depending on lure size and design]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791963752893</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791963752893-1.jpg</image:loc>
+      <image:title><![CDATA[spoon Lure | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Heavy for Casting long distances and targeting predatory fish in fresh or salt water]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964366037</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964366037-1.jpg</image:loc>
+      <image:title><![CDATA[Soft plastic lures | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Bass, snapper, and other predatory fish when rigged appropriately.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964418315</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964418315-1.jpg</image:loc>
+      <image:title><![CDATA[Popper lures | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Best Top water lures for bass fishing and Surface-feeding fish, including trevally and other aggressive saltwater predators]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964487708</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964487708-1.jpg</image:loc>
+      <image:title><![CDATA[Metal Jig | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Shore jigging, offshore jigging, and targeting fish such as trevally, tuna, and kingfish.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964579538</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964579538-1.jpg</image:loc>
+      <image:title><![CDATA[spinner bait and inline spinner | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Mostly for freshwater predatory fish, though some inline spinners are also suitable for other environments.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964803078</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964803078-1.jpg</image:loc>
+      <image:title><![CDATA[Long nose Crankbait | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Crankbaits are the best for Searching different water depths for predatory fish especially Bass fishing and ocean fishing lures.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791964945388</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791964945388-1.webp</image:loc>
+      <image:title><![CDATA[Wacky Worms, senkos Stick Worm | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[They are popular soft baits primarily used in freshwater bass fishing, most frequently rigged weightless, as a Texas rig, or as a Wacky rig to produce a flutter]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791968844705</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791968844705-1.jpg</image:loc>
+      <image:title><![CDATA[Crankbait circle hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Crankbait circle hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791968893682</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791968893682-1.jpg</image:loc>
+      <image:title><![CDATA[octopus hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[octopus hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791968950840</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791968950840-1.jpg</image:loc>
+      <image:title><![CDATA[Offset Shank Worm EWG hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Offset Shank Worm EWG hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791968992563</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791968992563-1.jpg</image:loc>
+      <image:title><![CDATA[Decoy Ringed hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Decoy Ringed hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969115364</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969115364-1.jpg</image:loc>
+      <image:title><![CDATA[EWG lightwire worm hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[EWG lightwire worm hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969147273</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969147273-1.jpg</image:loc>
+      <image:title><![CDATA[Mondo EWG hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Mondo EWG hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969201725</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969201725-1.jpg</image:loc>
+      <image:title><![CDATA[Monster Hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Monster Hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969255429</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969255429-1.jpg</image:loc>
+      <image:title><![CDATA[Bass hooks for senkos and wacky worms | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[When you want to do a weedless Texas rig this is the Hook to purchase.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969298143</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969298143-1.jpg</image:loc>
+      <image:title><![CDATA[Treble Round Hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Treble Round Hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969338748</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969338748-1.jpg</image:loc>
+      <image:title><![CDATA[Treble catfish Hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Treble catfish Hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969391068</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969391068-1.jpg</image:loc>
+      <image:title><![CDATA[Jig Hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Jig Hook]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969430933</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969430933-1.jpg</image:loc>
+      <image:title><![CDATA[Jig head Hook | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Jighead hooks, strong and silver]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969669010</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969669010-1.jpg</image:loc>
+      <image:title><![CDATA[Spinning  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Spinning rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969681286</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969681286-1.jpg</image:loc>
+      <image:title><![CDATA[Spinning  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Spinning rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791969698001</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791969698001-1.jpg</image:loc>
+      <image:title><![CDATA[Spinning  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Spinning rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791970973768</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791970973768-1.jpg</image:loc>
+      <image:title><![CDATA[Casting  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Casting rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791970992294</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791970992294-1.jpg</image:loc>
+      <image:title><![CDATA[Casting  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Casting rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971004222</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971004222-1.jpg</image:loc>
+      <image:title><![CDATA[Casting  rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Casting rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971058545</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971058545-1.jpg</image:loc>
+      <image:title><![CDATA[Boat and trolling rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Boat and trolling rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971073848</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971073848-1.jpg</image:loc>
+      <image:title><![CDATA[Boat and trolling rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Boat and trolling rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971086875</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971086875-1.jpg</image:loc>
+      <image:title><![CDATA[Boat and trolling rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Boat and trolling rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971101081</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971101081-1.jpg</image:loc>
+      <image:title><![CDATA[Boat and trolling rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Boat and trolling rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971146074</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971146074-1.jpg</image:loc>
+      <image:title><![CDATA[Telescopic rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Telescopic rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971166530</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971166530-1.jpg</image:loc>
+      <image:title><![CDATA[Telescopic rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Telescopic rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971209846</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971209846-1.jpg</image:loc>
+      <image:title><![CDATA[Telescopic rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Telescopic rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971222703</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971222703-1.jpg</image:loc>
+      <image:title><![CDATA[Telescopic rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Telescopic rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971426055</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971426055-1.jpg</image:loc>
+      <image:title><![CDATA[Fly rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fly rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971439523</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971439523-1.jpg</image:loc>
+      <image:title><![CDATA[Fly rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fly rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971463495</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971463495-1.jpg</image:loc>
+      <image:title><![CDATA[Fly rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fly rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791971485629</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791971485629-1.jpg</image:loc>
+      <image:title><![CDATA[Fly rod | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[Fly rod]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791972219470</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791972219470-1.jpg</image:loc>
+      <image:title><![CDATA[Landing Net / scooping net | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[1 meter Long landing net. Good for all types of fresh water fish.]]></image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.fishingwithnelson.co.ke/?product=product-1791972273018</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/product-1791972273018-1.jpg</image:loc>
+      <image:title><![CDATA[Fish landing Net /scoop net | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[This is a trout specific landing or scoop net. Strong for highland fish.]]></image:caption>
+    </image:image>
+  </url>
   <url>
     <loc>https://www.fishingwithnelson.co.ke/?product=rod-muriyu-zhb-540</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-saltwater-blue-game</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-classic-cork-spin</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-copper-orange-lure</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-carbon-monocoque-pro</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-teal-ultralight-stream</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=rod-stealth-finesse-trigger</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-tx-2000-spin</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-km-3000-spin</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-chrome-ultralight-spin</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-stealth-charcoal-gold-baitcaster</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-tricolor-crimson-baitcaster</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-tricolor-cobalt-baitcaster</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=reel-tricolor-yellow-baitcaster</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-rat-l-trap-chrome</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-rat-l-trap-firetiger</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-rat-l-trap-white-shad</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-xuantu-jointed-swimbait</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=lure-senko-ribbed-stickbait</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=terminal-carbon-circle-hooks</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.fishingwithnelson.co.ke/?product=net-aluminum-hand-landing</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.fishingwithnelson.co.ke/images/catalog/rod-muriyu-zhb-540-1.jpg</image:loc>
+      <image:title><![CDATA[Shimano Sienna | Fishing With Nelson Kenya]]></image:title>
+      <image:caption><![CDATA[suitable for general-purpose fishing]]></image:caption>
+    </image:image>
   </url>
 </urlset>

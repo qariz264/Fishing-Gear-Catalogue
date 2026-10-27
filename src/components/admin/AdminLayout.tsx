@@ -40,7 +40,6 @@ export const AdminLayout: React.FC = () => {
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
     { name: 'Shared Link & Social', path: '/admin/social-share', icon: Share2 },
     { name: 'Products Catalogue', path: '/admin/products', icon: Package },
-    { name: 'Customer Reviews', path: '/admin/reviews', icon: Star },
     { name: 'Blog Articles', path: '/admin/blogs', icon: BookOpen },
     { name: 'Events & Tournaments', path: '/admin/events', icon: Calendar },
     { name: 'Fishing Training', path: '/admin/training', icon: GraduationCap },

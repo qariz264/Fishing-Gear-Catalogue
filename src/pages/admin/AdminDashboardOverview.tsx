@@ -28,6 +28,8 @@ import {
 } from '../../services/settingsService';
 import { SocialShareSettings } from '../../types/admin';
 
+import { getStoredProducts } from '../../utils/productStorage';
+
 export const AdminDashboardOverview: React.FC = () => {
   const [socialSettings, setSocialSettings] = useState<SocialShareSettings>({
     id: 'socialShare',
@@ -47,13 +49,31 @@ export const AdminDashboardOverview: React.FC = () => {
   });
 
   useEffect(() => {
-    const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
-      let published = 0;
-      snap.forEach((d) => {
-        if (d.data().published !== false) published++;
-      });
-      setCounts((prev) => ({ ...prev, products: snap.size, publishedProducts: published }));
-    });
+    // Initial sync from stored products
+    const initialProducts = getStoredProducts();
+    const initialPublished = initialProducts.filter((p) => p.published !== false).length;
+    setCounts((prev) => ({
+      ...prev,
+      products: initialProducts.length,
+      publishedProducts: initialPublished,
+    }));
+
+    const unsubProducts = onSnapshot(
+      collection(db, 'products'),
+      (snap) => {
+        let published = 0;
+        snap.forEach((d) => {
+          if (d.data().published !== false) published++;
+        });
+        setCounts((prev) => ({ ...prev, products: snap.size, publishedProducts: published }));
+      },
+      (err) => {
+        console.warn('Notice: products subscription fallback:', err);
+        const stored = getStoredProducts();
+        const published = stored.filter((p) => p.published !== false).length;
+        setCounts((prev) => ({ ...prev, products: stored.length, publishedProducts: published }));
+      }
+    );
 
     const unsubBlogs = onSnapshot(collection(db, 'blogs'), (snap) => {
       let published = 0;
@@ -75,10 +95,6 @@ export const AdminDashboardOverview: React.FC = () => {
       setCounts((prev) => ({ ...prev, spots: snap.size }));
     });
 
-    const unsubReviews = onSnapshot(collection(db, 'reviews'), (snap) => {
-      setCounts((prev) => ({ ...prev, reviews: snap.size }));
-    });
-
     const unsubSocial = subscribeToSocialShareSettings((loaded) => {
       setSocialSettings(loaded);
     });
@@ -91,7 +107,6 @@ export const AdminDashboardOverview: React.FC = () => {
       unsubEvents();
       unsubTraining();
       unsubSpots();
-      unsubReviews();
       unsubSocial();
     };
   }, []);
@@ -136,15 +151,6 @@ export const AdminDashboardOverview: React.FC = () => {
       icon: GraduationCap,
       color: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
       description: 'Casting clinics, bait rigging, reel tuning and beginner classes.',
-    },
-    {
-      title: 'Customer Reviews',
-      count: counts.reviews,
-      subtitle: `${counts.reviews} angler ratings`,
-      path: '/admin/reviews',
-      icon: Star,
-      color: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-      description: 'Customer ratings, testimonials, verified catch reports and feedback.',
     },
     {
       title: 'Fishing Spots Guide',

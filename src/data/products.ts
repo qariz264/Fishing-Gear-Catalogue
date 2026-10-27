@@ -29,7 +29,12 @@ export interface Product {
   researchNotes?: string;
   variants?: ProductVariant[];
   catalogPhotoMatch?: string;
-  gearType?: 'rod' | 'reel' | 'lure' | 'hook' | 'net';
+  gearType?: 'rod' | 'reel' | 'lure' | 'hook' | 'net' | 'line' | 'other';
+  published?: boolean;
+  featured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  storagePath?: string;
   accentTheme?: {
     bg: string;
     border: string;
@@ -39,692 +44,2337 @@ export interface Product {
 }
 
 export const CATEGORIES = [
-  'All Equipment',
-  'Fishing Rods',
-  'Fishing Reels',
-  'Artificial Lures',
-  'Hooks & Terminal',
-  'Nets & Landing Gear',
+  "All Equipment",
+  "Fishing Rods",
+  "Fishing Reels",
+  "Artificial Lures",
+  "Hooks & Terminal",
+  "Fishing Lines",
+  "Nets & Landing Gear",
+  "Accessories",
+  "Other Gear"
 ] as const;
 
 export type CategoryType = (typeof CATEGORIES)[number];
 
 export const PRODUCTS: Product[] = [
-  // 1. RODS
   {
-    id: 'rod-muriyu-zhb-540',
-    name: 'Muriyu ZHB-540 Power Telescopic Hand Pole (5.4m / 18ft)',
-    brand: 'Muriyu',
-    category: 'Fishing Rods',
-    subcategory: 'Telescopic Hand Poles / Whip Rods',
-    price: 3500,
-    imageUrl: '/images/products/rod-muriyu-zhb-540.jpg',
-    images: ['/images/products/rod-muriyu-zhb-540.jpg'],
-    badge: 'Stock Inspected',
-    description: 'High-leverage 5.4-meter multi-section telescopic whip pole engineered for traditional bank, dam, and stream angling. Features a multi-tiered carbon composite blank that collapses neatly into an ultra-portable profile and extends with firm friction locks. Fitted with a reinforced braided Lillian tip tie cord for direct line rigging without a mechanical reel, delivering lightning-fast bite detection and natural presentations for stillwater species.',
-    application: 'Bank angling on lakes (Lake Naivasha, Baringo), farm dams, aquaculture ponds, and slow rivers',
-    waterType: 'Freshwater',
-    targetSpecies: ['Tilapia', 'African Catfish (Mudfish)', 'Common Carp', 'Barbel'],
-    specs: [
-      { label: 'Extended Length', value: '5.40 Meters (approx. 17.7 ft)' },
-      { label: 'Blank Marking', value: 'MURIYU ZHB 540 / POWER 540' },
-      { label: 'Action & Flex', value: 'Fast Power Taper (Tip Flex)' },
-      { label: 'Tip Connection', value: 'Braided Lillian Cord (Direct Tie)' },
-      { label: 'Finish', value: 'High-Gloss Power Amber / Black Carbon' },
-      { label: 'Sections', value: 'Multi-Section Telescopic with Butt Cap' },
+    "id": "prod-1792331101161",
+    "name": "Braided fishing line",
+    "brand": "FishWithNelson",
+    "category": "Fishing Lines",
+    "subcategory": "Braided fishing Lines",
+    "price": 1200,
+    "imageUrl": "/images/catalog/prod-1792331101161-1.webp",
+    "images": [
+      "/images/catalog/prod-1792331101161-1.webp",
+      "/images/catalog/prod-1792331101161-2.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Identified directly from stock bundle photographs (y.jpeg). Factory labeled "MURIYU ZHB 540" with official Asian manufacturer quality seal and "POWER 540" script on each yellow/amber butt section.',
-    catalogPhotoMatch: 'Stock Photo: y.jpeg (Yellow power blanks with Lillian tip cord)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-amber-500/10',
-      border: 'border-amber-500/30',
-      text: 'text-amber-700',
-      gradient: 'from-amber-600 to-amber-900',
-    },
+    "badge": "",
+    "description": "Braided fishing lines are rated as some of the Best lines when it comes to fighting Strong fish. This braid can comfortably do 40pounds or 18kgs before snagging. 40ponds braided line.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "100M"
+      },
+      {
+        "label": "Key Feature",
+        "value": "0.23mm"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T13:45:01.162Z",
+    "updatedAt": "2026-10-18T19:48:01.969Z"
   },
   {
-    id: 'rod-saltwater-blue-game',
-    name: 'Heavy-Duty Saltwater Boat & Trolling Rod (Deep Sea / Gamefish)',
-    brand: 'Nelson Pro Salt',
-    category: 'Fishing Rods',
-    subcategory: 'Boat Trolling & Big Game Rods',
-    price: 8500,
-    imageUrl: '/images/products/rod-saltwater-blue-game.jpg',
-    images: ['/images/products/rod-saltwater-blue-game.jpg'],
-    badge: 'Heavy Tackle',
-    description: 'Robust offshore boat rod constructed with a heavy-walled carbon composite blank with cross-spiral wrap reinforcement. Designed for brutal saltwater trolling, deep drop bottom fishing, and heavy freshwater gamefish. Features oversized corrosion-proof double-foot stainless guide frames with ceramic shock rings, a knurled double-locking anodized aluminum reel seat, durable high-density EVA split fighting grips, and a gimbal butt cap.',
-    application: 'Offshore deep sea trolling (Mombasa, Malindi, Watamu) and heavy freshwater boat angling (Lake Victoria)',
-    waterType: 'Saltwater',
-    targetSpecies: ['Kingfish', 'Sailfish', 'Yellowfin Tuna', 'Giant Trevally', 'Nile Perch'],
-    specs: [
-      { label: 'Guide System', value: 'Heavy Double-Foot Saltwater Guides' },
-      { label: 'Reel Seat', value: 'Machined Aluminum Alloy Dual Lock' },
-      { label: 'Butt Section', value: 'Cross-Notch Gimbal with Rubber Cap' },
-      { label: 'Grips', value: 'High-Density Non-Slip EVA Foam' },
-      { label: 'Guide Wraps', value: 'Metallic Cobalt Blue & Silver Trim' },
-      { label: 'Target Class', value: 'Heavy Power / Fast Backbone' },
+    "id": "prod-1792331300018",
+    "name": "Stopper beads",
+    "brand": "FishWithNelson",
+    "category": "Other Gear",
+    "subcategory": "Fishing accessories",
+    "price": 500,
+    "imageUrl": "/images/catalog/prod-1792331300018-1.webp",
+    "images": [
+      "/images/catalog/prod-1792331300018-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Verified from hardware macro photograph (tt.jpeg) showing the machined aluminum locknuts, heavy ring guides, and gimbal butt.',
-    catalogPhotoMatch: 'Stock Photo: tt.jpeg (Blue metallic thread wraps, machined alloy reel seat, heavy guide rings)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-blue-500/10',
-      border: 'border-blue-500/30',
-      text: 'text-blue-700',
-      gradient: 'from-blue-600 to-slate-900',
-    },
+    "badge": "",
+    "description": "These beads are used for installation of floaters and sinkers to make sure they stay in place.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "250beads"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Blue or Red"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T13:48:20.019Z",
+    "updatedAt": "2026-10-18T13:48:20.018Z"
   },
   {
-    id: 'rod-classic-cork-spin',
-    name: 'Classic 2-Piece Medium-Action Cork Handle Spinning Rod',
-    brand: 'Nelson Tackle Classics',
-    category: 'Fishing Rods',
-    subcategory: '2-Piece Spinning Rods',
-    price: 4200,
-    imageUrl: '/images/products/rod-classic-cork-spin.jpg',
-    images: ['/images/products/rod-classic-cork-spin.jpg'],
-    badge: 'Versatile Freshwater',
-    description: 'A timeless all-around 2-piece spinning rod featuring a traditional full Portuguese cork handle with contoured foregrip and butt. Built on an unpolished matte black high-modulus graphite blank that blends forgiving shock absorption with crisp hook-setting power. Equipped with standard stainless steel single- and double-foot guides, screw-lock cushioned reel seat hoods, and a secure friction spigot ferrule.',
-    application: 'Spinners, spoons, float rigs, and bait fishing in lakes, rivers, and trout streams',
-    waterType: 'Freshwater',
-    targetSpecies: ['Rainbow Trout', 'Brown Trout', 'Largemouth Bass', 'Tilapia', 'Yellowfish'],
-    specs: [
-      { label: 'Construction', value: '2-Piece Takedown (Portable Ferrule)' },
-      { label: 'Handle Material', value: 'Full Natural Contoured Cork' },
-      { label: 'Power & Action', value: 'Medium Power / Moderate-Fast Action' },
-      { label: 'Reel Seat', value: 'Graphite Body with Stainless Hoods' },
-      { label: 'Guide Rings', value: 'Smooth Ceramic Inserts for Mono & Braid' },
+    "id": "prod-1792331882603",
+    "name": "Pro kit fishing Combo",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Complete Combo",
+    "price": 9800,
+    "imageUrl": "/images/catalog/prod-1792331882603-1.webp",
+    "images": [
+      "/images/catalog/prod-1792331882603-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Stock photograph s.jpeg shows the full cork handle, black matte blank, and standard guide spacing.',
-    catalogPhotoMatch: 'Stock Photo: s.jpeg (Full cork handle 2-piece spinning blank)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-amber-700/10',
-      border: 'border-amber-700/30',
-      text: 'text-amber-800',
-      gradient: 'from-amber-700 to-stone-900',
-    },
+    "badge": "",
+    "description": "This is a complete fishing Combo for heavy duty fishing. Best when targeting Bass fishing, bream tilapia and hard fighting fish like barbells. This combo contains 3000 reel series. 5 foot 2piece rod, a 15 or 8grams floater, a 10 or 5 grams sinker, one set of stopper beads, 4size 14 J hooks, a braided line thats 100M , a change nylon line that is 100M and a free crankbait. You will be so ready to start your Bass fishing carrier. It casts smooth like butter.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Pro kit"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Metallic reel"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T13:58:02.603Z",
+    "updatedAt": "2026-10-18T13:58:02.603Z"
   },
   {
-    id: 'rod-copper-orange-lure',
-    name: 'High-Visibility Copper-Orange 2-Piece Carbon Lure Casting Rod',
-    brand: 'Nelson Predator Series',
-    category: 'Fishing Rods',
-    subcategory: 'Lure Casting & Spinning Rods',
-    price: 4800,
-    imageUrl: '/images/products/rod-copper-orange-lure.jpg',
-    images: ['/images/products/rod-copper-orange-lure.jpg'],
-    badge: 'High-Visibility Guides',
-    description: 'Dynamic 2-piece lure rod featuring a distinctive metallic copper-orange finish on the lower blank and a stealth black upper blank. Accented with high-visibility bright orange guide wrap indicators that allow visual tracking of delicate bites and line slack in dim dawn or dusk conditions. Outfitted with an ergonomic split-grip EVA handle and modern skeleton reel seat for continuous blank contact.',
-    application: 'Artificial lure casting: crankbaits, topwater frogs, spoons, and swimbaits',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Nile Perch', 'African Pike (Hepsetus)', 'Catfish'],
-    specs: [
-      { label: 'Color Scheme', value: 'Metallic Copper Orange & Charcoal Black' },
-      { label: 'Visual Strike System', value: 'Fluorescent Orange Wrapped Guide Tips' },
-      { label: 'Handle Style', value: 'Split Grip Ergonomic EVA Foam' },
-      { label: 'Blank Construction', value: '24T Carbon Composite Blank' },
-      { label: 'Recommended Lures', value: '10g - 28g Crankbaits & Hard Lures' },
+    "id": "prod-1792332175845",
+    "name": "Senko or Wacky Worms",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Plastic Fishing Worms",
+    "price": 200,
+    "imageUrl": "/images/catalog/prod-1792332175845-1.webp",
+    "images": [
+      "/images/catalog/prod-1792332175845-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in grils.jpeg with its distinct copper-orange gloss finish, split grip handle, and fluorescent guide thread accents.',
-    catalogPhotoMatch: 'Stock Photo: grils.jpeg (Copper orange blank with bright orange guide markings)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-orange-500/10',
-      border: 'border-orange-500/30',
-      text: 'text-orange-700',
-      gradient: 'from-orange-600 to-stone-900',
-    },
+    "badge": "",
+    "description": "1pc of a senko Will catch you more fish than anything else in your lure box.. these 6inch senkos go for 200 each at our Shop.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "6inch"
+      },
+      {
+        "label": "Key Feature",
+        "value": "8.5grams"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:02:55.846Z",
+    "updatedAt": "2026-10-18T14:02:55.846Z"
   },
   {
-    id: 'rod-carbon-monocoque-pro',
-    name: 'Tournament Carbon Monocoque Fast-Action Casting Rod',
-    brand: 'Nelson Precision Carbon',
-    category: 'Fishing Rods',
-    subcategory: 'Tournament Baitcasting Rods',
-    price: 7500,
-    imageUrl: '/images/products/rod-carbon-monocoque-pro.jpg',
-    images: ['/images/products/rod-carbon-monocoque-pro.jpg'],
-    badge: 'High-Modulus Carbon',
-    description: 'Elite baitcasting rod built with a specialized hollow carbon monocoque rear grip that transfers underwater bottom vibrations, lure harmonics, and subtle fish taps directly into the angler\'s palm. Fitted with an ergonomic low-profile trigger reel seat, knurled gold aluminum hood locking ring, and a lightweight micro-guide train on a high-tonnage woven carbon blank.',
-    application: 'Tournament bass angling, deep jigging, Texas rigs, and precision baitcaster presentations',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Pike', 'Nile Perch'],
-    specs: [
-      { label: 'Grip Design', value: 'Integrated Carbon Monocoque Handle' },
-      { label: 'Reel Seat Type', value: 'Trigger Casting Seat with Gold Hood' },
-      { label: 'Blank Weave', value: 'Cross-Carbon Fiber High-Modulus' },
-      { label: 'Sensitivity Class', value: 'Ultra-High Resonance Vibration' },
-      { label: 'Line Compatibility', value: 'Optimized for Braided Line' },
+    "id": "prod-1792332870594",
+    "name": "100M clear fishing line",
+    "brand": "FishWithNelson",
+    "category": "Fishing Lines",
+    "subcategory": "Fishing Lines",
+    "price": 1200,
+    "imageUrl": "/images/catalog/prod-1792332870594-1.webp",
+    "images": [
+      "/images/catalog/prod-1792332870594-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Macro stock photo e.jpeg shows the specialized hollow carbon grip geometry, trigger casting seat, and gold locking collar.',
-    catalogPhotoMatch: 'Stock Photo: e.jpeg (Integrated carbon monocoque handle and trigger reel seat)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-zinc-500/10',
-      border: 'border-zinc-500/30',
-      text: 'text-zinc-700',
-      gradient: 'from-zinc-700 to-black',
-    },
+    "badge": "",
+    "description": "Strong and durable fishing line. Nylon. 100m for all types of reels and leaders lines.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Nylon clear"
+      },
+      {
+        "label": "Key Feature",
+        "value": "100M long"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:14:30.594Z",
+    "updatedAt": "2026-10-18T14:14:30.594Z"
   },
   {
-    id: 'rod-teal-ultralight-stream',
-    name: 'Teal-Turquoise Ultralight Stream & Panfish Rod',
-    brand: 'Nelson Finesse Line',
-    category: 'Fishing Rods',
-    subcategory: 'Ultralight Spinning Rods',
-    price: 3800,
-    imageUrl: '/images/products/rod-teal-ultralight-stream.jpg',
-    images: ['/images/products/rod-teal-ultralight-stream.jpg'],
-    badge: 'Finesse Action',
-    description: 'Vibrant turquoise-teal blank paired with gold-anodized winding checks and a sculpted natural cork grip. Tuned with an ultra-sensitive light tip section that launches micro-spoons, small spinners, and live bait rigs with remarkable accuracy while protecting ultra-light leader lines.',
-    application: 'Highland mountain streams (Aberdares, Mt Kenya), trout rivers, and small dam tilapia',
-    waterType: 'Freshwater',
-    targetSpecies: ['Rainbow Trout', 'Brown Trout', 'Tilapia', 'Panfish'],
-    specs: [
-      { label: 'Blank Color', value: 'Gloss Teal Turquoise with Gold Hardware' },
-      { label: 'Power Rating', value: 'Ultralight (UL) to Light (L)' },
-      { label: 'Handle', value: 'Ergonomic Shaped Natural Cork' },
-      { label: 'Best Lure Range', value: '1g - 7g Micro Lures' },
+    "id": "prod-1792333090163",
+    "name": "Premium crankbaits",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Crankbaits",
+    "price": 600,
+    "imageUrl": "/images/catalog/prod-1792333090163-1.webp",
+    "images": [
+      "/images/catalog/prod-1792333090163-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Discovered in stock lineup WhatsApp Image 2026-10-13 at 1.58.07 PM.jpeg (the distinctive bright teal rod with gold collar and cork handle).',
-    catalogPhotoMatch: 'Stock Photo: WhatsApp Image 2026-10-13 at 1.58.07 PM.jpeg (Teal rod)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-teal-500/10',
-      border: 'border-teal-500/30',
-      text: 'text-teal-700',
-      gradient: 'from-teal-600 to-emerald-950',
-    },
+    "badge": "",
+    "description": "For 600 Each you get yourself the Best crankbaits in town. These ones work like magic on Bass fishing.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Plastic"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Multiple colors."
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:18:10.163Z",
+    "updatedAt": "2026-10-18T14:18:10.163Z"
   },
   {
-    id: 'rod-stealth-finesse-trigger',
-    name: 'Stealth Finesse Baitcasting Trigger Rod (High-Modulus Carbon)',
-    brand: 'Nelson Stealth Series',
-    category: 'Fishing Rods',
-    subcategory: 'Baitcasting Rods',
-    price: 5200,
-    imageUrl: '/images/products/rod-stealth-finesse-trigger.jpg',
-    images: ['/images/products/rod-stealth-finesse-trigger.jpg'],
-    badge: 'Trigger Grip',
-    description: 'Matte carbon multi-piece baitcasting rod with ergonomic pistol-finger trigger grip and firm EVA rear handle. Balanced specifically for low-profile baitcasting reels with fast line recovery and pinpoint target casting around reed lines and submerged timber.',
-    application: 'Shoreline casting around submerged structure, lily pads, and fallen trees in dams and lakes',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Catfish', 'Tilapia'],
-    specs: [
-      { label: 'Reel Seat', value: 'Ergonomic Finger Trigger Casting Seat' },
-      { label: 'Blank Surface', value: 'Matte Cross-Carbon Wrap' },
-      { label: 'Grip', value: 'Durable Contoured EVA Foam' },
-      { label: 'Action', value: 'Fast Action Fast Recovery' },
+    "id": "prod-1792333612437",
+    "name": "Multi jointed glind bait",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Lures",
+    "price": 1000,
+    "imageUrl": "/images/catalog/prod-1792333612437-1.webp",
+    "images": [
+      "/images/catalog/prod-1792333612437-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Part of the rod family represented in WhatsApp Image 2026-10-13 at 1.58.07 PM.jpeg.',
-    catalogPhotoMatch: 'Stock Photo: WhatsApp Image 2026-10-13 at 1.58.07 PM.jpeg (Trigger grip baitcaster)',
-    gearType: 'rod',
-    accentTheme: {
-      bg: 'bg-slate-500/10',
-      border: 'border-slate-500/30',
-      text: 'text-slate-700',
-      gradient: 'from-slate-700 to-black',
-    },
-  },
-
-  // 2. REELS
-  {
-    id: 'reel-tx-2000-spin',
-    name: 'TX 2000 Front-Drag Aluminum Spool Spinning Reel (5.2:1)',
-    brand: 'TX Series',
-    category: 'Fishing Reels',
-    subcategory: 'Front-Drag Spinning Reels',
-    price: 3200,
-    imageUrl: '/images/products/reel-tx-2000-spin.jpg',
-    images: ['/images/products/reel-tx-2000-spin.jpg'],
-    badge: 'Spool Specs Verified',
-    description: 'Workhorse 2000-size spinning reel equipped with a CNC-machined aluminum spool with gold and black porting, heavy-duty wire bail arm, and high-density EVA comfort knob. Features a smooth multi-disc oiled felt front drag system and instant anti-reverse for reliable hook sets. Ambidextrous left/right swappable folding handle.',
-    application: 'All-round freshwater spinning, float fishing, and light coastal estuary angling',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Tilapia', 'African Catfish', 'Trout'],
-    specs: [
-      { label: 'Model Marked', value: 'TX 2000' },
-      { label: 'Gear Ratio', value: '5.2:1 Precision Brass Pinion' },
-      { label: 'Bearings', value: 'Double Bearing System' },
-      { label: 'Spool Construction', value: 'Two-Tone Ported Aluminum Alloy' },
-      { label: 'Handle Knob', value: 'Oversized Ergonomic EVA Knob' },
-      { label: 'Handle Orientation', value: 'Reversible (Left or Right Hand)' },
+    "badge": "",
+    "description": "This glind bait works perfectly and catches ONLY personal bests.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Multi jointed"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Plastic lure"
+      }
     ],
-    verificationStatus: 'Manufacturer Verified',
-    researchNotes: 'Exact manufacturer markings verified from stock photo t.jpeg: "TX 2000", "GEAR RATIO 5.2:1", "Double Bearing".',
-    catalogPhotoMatch: 'Stock Photo: t.jpeg (Black & gold TX 2000 with EVA handle knob)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-amber-500/10',
-      border: 'border-amber-500/30',
-      text: 'text-amber-700',
-      gradient: 'from-amber-600 to-zinc-900',
-    },
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:26:52.437Z",
+    "updatedAt": "2026-10-18T14:26:52.437Z"
   },
   {
-    id: 'reel-km-3000-spin',
-    name: 'KM 3000 Graphite Front-Drag Spinning Reel (Red & Black)',
-    brand: 'KM Series',
-    category: 'Fishing Reels',
-    subcategory: 'Front-Drag Spinning Reels',
-    price: 3800,
-    imageUrl: '/images/products/reel-km-3000-spin.jpg',
-    images: ['/images/products/reel-km-3000-spin.jpg'],
-    badge: 'Heavy Spool Capacity',
-    description: 'A size 3000 spinning reel designed with a high-capacity red anodized ported spool and reinforced graphite frame. Sized to hold heavier monofilament and braided line for larger lake predators, catfish, and dam angling. Includes a thick bail wire, micro-click front drag dial, and sturdy folding crank handle.',
-    application: 'Medium-heavy lake ledgering, live baiting, and predator lure retrieval',
-    waterType: 'Freshwater',
-    targetSpecies: ['African Catfish (Mudfish)', 'Largemouth Bass', 'Carp', 'Nile Perch'],
-    specs: [
-      { label: 'Model Marked', value: 'KM 3000' },
-      { label: 'Size Class', value: '3000 Series (Medium-Heavy Capacity)' },
-      { label: 'Colorway', value: 'Gloss Black Body with Anodized Crimson Spool' },
-      { label: 'Drag System', value: 'Multi-Disc Front Drag' },
-      { label: 'Handle', value: 'Quick-Fold Lever Handle with T-Bar Grip' },
+    "id": "prod-1792333964051",
+    "name": "Catfish circle hooks",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Hoojs",
+    "price": 300,
+    "imageUrl": "/images/catalog/prod-1792333964051-1.webp",
+    "images": [
+      "/images/catalog/prod-1792333964051-1.webp"
     ],
-    verificationStatus: 'Manufacturer Verified',
-    researchNotes: 'Verified from stock inventory collection photo w.jpeg clearly showing the "KM 3000" printed on the crimson anodized spool rim.',
-    catalogPhotoMatch: 'Stock Photo: w.jpeg (Bottom right: KM 3000 red & black spool)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-red-500/10',
-      border: 'border-red-500/30',
-      text: 'text-red-700',
-      gradient: 'from-red-600 to-stone-900',
-    },
+    "badge": "",
+    "description": "4pcs at Ksh 300. When target giant catfish these are the hooks you need. If the catfish you are targeting are less than 3kgs just avoid These ones and buy size 14 J hooks. Check them out here on our site",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Big"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Strong hooks"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:32:44.051Z",
+    "updatedAt": "2026-10-18T14:32:44.051Z"
   },
   {
-    id: 'reel-chrome-ultralight-spin',
-    name: 'Precision Chrome / Silver Match Ultralight Spinning Reel',
-    brand: 'Nelson Precision Match',
-    category: 'Fishing Reels',
-    subcategory: 'Ultralight Spinning Reels',
-    price: 2800,
-    imageUrl: '/images/products/reel-chrome-ultralight-spin.jpg',
-    images: ['/images/products/reel-chrome-ultralight-spin.jpg'],
-    badge: 'Mirror Chrome Finish',
-    description: 'Featherweight spinning reel engineered with a full polished chrome metallic exterior, ported shallow match spool, and skeletal graphite rotor. Engineered for low rotor inertia to detect subtle bites when fishing fine monofilament or micro-braid in clear streams and pressured waters.',
-    application: 'Finesse spinning, trout angling, dropshotting, and panfish in clear waters',
-    waterType: 'Freshwater',
-    targetSpecies: ['Rainbow Trout', 'Tilapia', 'Light Bass'],
-    specs: [
-      { label: 'Body Finish', value: 'High-Polish Mirror Chrome Finish' },
-      { label: 'Spool Type', value: 'Ported Shallow Braid-Ready Match Spool' },
-      { label: 'Handle', value: 'Machined Screw-In Aluminum Arm with Contoured Grip' },
-      { label: 'Rotor', value: 'Balanced Skeletal Air-Rotor Design' },
+    "id": "prod-1792334895287",
+    "name": "Fishing handpole",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Handpole",
+    "price": 2500,
+    "imageUrl": "/images/catalog/prod-1792334895287-1.webp",
+    "images": [
+      "/images/catalog/prod-1792334895287-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Identified from detailed studio macro photo ee.jpeg displaying the mirror chrome body and skeleton rotor.',
-    catalogPhotoMatch: 'Stock Photo: ee.jpeg (Polished silver/chrome body profile)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-slate-300/20',
-      border: 'border-slate-400/40',
-      text: 'text-slate-800',
-      gradient: 'from-slate-400 to-slate-800',
-    },
+    "badge": "",
+    "description": "Retractable fishing handpole. Simple to use for both adults and kids 7+years. Avoid the hustle of a reel machine.... just show up and start catching. Comes in different colors.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "3.6 m Long"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Telescopic"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:48:15.287Z",
+    "updatedAt": "2026-10-18T14:48:15.287Z"
   },
   {
-    id: 'reel-stealth-charcoal-gold-baitcaster',
-    name: 'Stealth Charcoal & Gold Baitcasting Reel (Dual EVA Knobs)',
-    brand: 'Nelson Predator Baitcasters',
-    category: 'Fishing Reels',
-    subcategory: 'Low-Profile Baitcasting Reels',
-    price: 6500,
-    imageUrl: '/images/products/reel-stealth-charcoal-gold-baitcaster.jpg',
-    images: ['/images/products/reel-stealth-charcoal-gold-baitcaster.jpg'],
-    badge: 'Magnetic Brake',
-    description: 'Precision low-profile baitcasting reel in a matte charcoal graphite frame with a gold drilled aluminum spool. Features an external 10-magnet braking system to prevent backlashes and bird\'s nests when casting lures into head-winds. Fitted with a swept aluminum double handle with oversized ergonomic dual EVA knob grips and smooth star drag.',
-    application: 'Bass lure casting, crankbaits, topwater walking baits, and accurate shoreline pitching',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Pike', 'Nile Perch'],
-    specs: [
-      { label: 'Spool', value: 'CNC Drilled V-Spool in Anodized Gold' },
-      { label: 'Brake System', value: 'Multi-Setting External Magnetic Brake' },
-      { label: 'Handle Style', value: 'Swept Aluminum Double Handle with Dual EVA Knobs' },
-      { label: 'Drag Wheel', value: 'Micro-Click Star Drag Tensioner' },
-      { label: 'Spool Release', value: 'Quick-Trip Thumb Bar Release' },
+    "id": "prod-1792335189815",
+    "name": "Strong two piece fishing rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Rods",
+    "price": 3500,
+    "imageUrl": "/images/catalog/prod-1792335189815-1.webp",
+    "images": [
+      "/images/catalog/prod-1792335189815-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Verified from dedicated stock studio photograph g.jpeg showing the charcoal frame, gold spool, and dual EVA handle grips.',
-    catalogPhotoMatch: 'Stock Photo: g.jpeg (Charcoal frame with gold spool and dual EVA knobs)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-zinc-500/10',
-      border: 'border-zinc-500/30',
-      text: 'text-zinc-700',
-      gradient: 'from-zinc-700 to-amber-900',
-    },
+    "badge": "",
+    "description": "Strong rods.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "2.1 m or 5 foot 2piece rod"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Corbon"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T14:53:09.815Z",
+    "updatedAt": "2026-10-18T14:53:09.815Z"
   },
   {
-    id: 'reel-tricolor-crimson-baitcaster',
-    name: 'Crimson Fire Low-Profile Baitcasting Reel (Red / Black Anodized)',
-    brand: 'Nelson Pro Cast Series',
-    category: 'Fishing Reels',
-    subcategory: 'Low-Profile Baitcasting Reels',
-    price: 5800,
-    imageUrl: '/images/products/reel-tricolor-crimson-baitcaster.jpg',
-    images: ['/images/products/reel-tricolor-crimson-baitcaster.jpg'],
-    badge: 'Color Series',
-    description: 'Aggressive matte black and crimson red low-profile baitcaster. Features a high gear ratio mechanism for rapid line retrieval, anodized red spool and tension knob accents, and dual contoured paddle handles for positive grip under hard strikes.',
-    application: 'Fast-paced lure casting, burning spinnerbaits, and weedless plastic retrieving',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Catfish', 'Nile Perch'],
-    specs: [
-      { label: 'Colorway', value: 'Crimson Red Top-Cowl & Matte Black Body' },
-      { label: 'Brake Type', value: 'Adjustable Magnetic Control Dial' },
-      { label: 'Handle Design', value: 'Dual Contoured Soft-Touch Grips' },
-      { label: 'Line Guide', value: 'Ceramic Insert Level-Wind Guide' },
+    "id": "prod-1792341191735",
+    "name": "R- Bait caster",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Baitcasters",
+    "price": 5500,
+    "imageUrl": "/images/catalog/prod-1792341191735-1.webp",
+    "images": [
+      "/images/catalog/prod-1792341191735-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg and w.jpeg as part of the tricolor baitcasting reel trio.',
-    catalogPhotoMatch: 'Stock Photo: WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg (Red baitcaster)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-rose-500/10',
-      border: 'border-rose-500/30',
-      text: 'text-rose-700',
-      gradient: 'from-rose-600 to-zinc-950',
-    },
+    "badge": "",
+    "description": "Bait casters are the best for bass fishing and casting lures. Cast with Lazer sharp precision. R bait caster does the job smoothly.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Carbon fiber"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Heavy power"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T16:33:11.735Z",
+    "updatedAt": "2026-10-18T16:33:11.735Z"
   },
   {
-    id: 'reel-tricolor-cobalt-baitcaster',
-    name: 'Cobalt Blue Tournament Baitcaster (Blue / Gold Anodized)',
-    brand: 'Nelson Pro Cast Series',
-    category: 'Fishing Reels',
-    subcategory: 'Low-Profile Baitcasting Reels',
-    price: 5800,
-    imageUrl: '/images/products/reel-tricolor-cobalt-baitcaster.jpg',
-    images: ['/images/products/reel-tricolor-cobalt-baitcaster.jpg'],
-    badge: 'Color Series',
-    description: 'Metallic cobalt blue low-profile baitcaster with polished gold nosepiece accents and a drilled blue aluminum spool. Smooth star drag system and magnetic cast control provide clean, long-distance casts with monofilament or braid.',
-    application: 'Distance lure casting on open waters and reservoir shorelines',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Pike', 'Perch'],
-    specs: [
-      { label: 'Colorway', value: 'Metallic Cobalt Blue & Polished Gold Accents' },
-      { label: 'Spool Material', value: 'Drilled Anodized Cobalt Aluminum' },
-      { label: 'Braking', value: 'Dial-Adjusted Magnetic Spool Braking' },
-      { label: 'Drag Wheel', value: 'Reinforced Metal Star Drag' },
+    "id": "prod-1792341436021",
+    "name": "3000 series reel",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Reels",
+    "price": 5500,
+    "imageUrl": "/images/catalog/prod-1792341436021-1.webp",
+    "images": [
+      "/images/catalog/prod-1792341436021-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg and w.jpeg (center blue reel with gold cowl).',
-    catalogPhotoMatch: 'Stock Photo: WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg (Blue & gold reel)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-indigo-500/10',
-      border: 'border-indigo-500/30',
-      text: 'text-indigo-700',
-      gradient: 'from-blue-600 to-indigo-950',
-    },
+    "badge": "",
+    "description": "Metallic super heavy duty. Powerful reel for handling powerful fish upto 12kgs comfortably.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Metallic"
+      },
+      {
+        "label": "Key Feature",
+        "value": "3000 series."
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T16:37:16.022Z",
+    "updatedAt": "2026-10-18T16:37:16.022Z"
   },
   {
-    id: 'reel-tricolor-yellow-baitcaster',
-    name: 'Canary Gold Low-Profile Baitcasting Reel (Yellow / Black Anodized)',
-    brand: 'Nelson Pro Cast Series',
-    category: 'Fishing Reels',
-    subcategory: 'Low-Profile Baitcasting Reels',
-    price: 5800,
-    imageUrl: '/images/products/reel-tricolor-yellow-baitcaster.jpg',
-    images: ['/images/products/reel-tricolor-yellow-baitcaster.jpg'],
-    badge: 'Color Series',
-    description: 'High-visibility canary yellow and matte black low-profile baitcaster. Combines dependable mechanical drag with a lightweight low-slung frame that sits comfortably in the hand for all-day casting sessions.',
-    application: 'Precision shoreline casting, skipping lures under overhanging branches',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Tilapia', 'Catfish'],
-    specs: [
-      { label: 'Colorway', value: 'Canary Yellow Frame with Matte Black Cowl' },
-      { label: 'Spool', value: 'Aluminum Alloy V-Spool' },
-      { label: 'Handle Grips', value: 'Contoured Non-Slip Dual Knobs' },
+    "id": "prod-1792341673522",
+    "name": "Powerful s3000 reel",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Reels",
+    "price": 7500,
+    "imageUrl": "/images/catalog/prod-1792341673522-1.webp",
+    "images": [
+      "/images/catalog/prod-1792341673522-1.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg and w.jpeg (bottom yellow baitcaster).',
-    catalogPhotoMatch: 'Stock Photo: WhatsApp Image 2026-10-13 at 1.58.04 PM.jpeg (Yellow baitcaster)',
-    gearType: 'reel',
-    accentTheme: {
-      bg: 'bg-yellow-500/10',
-      border: 'border-yellow-500/30',
-      text: 'text-yellow-700',
-      gradient: 'from-yellow-500 to-neutral-900',
-    },
-  },
-
-  // 3. ARTIFICIAL LURES
-  {
-    id: 'lure-rat-l-trap-chrome',
-    name: 'Genuine Bill Lewis Rat-L-Trap 1/2 oz - Chrome / Silver Scale',
-    brand: 'Bill Lewis Lures',
-    category: 'Artificial Lures',
-    subcategory: 'Lipless Crankbaits',
-    price: 850,
-    imageUrl: '/images/products/lure-rat-l-trap-chrome.jpg',
-    images: ['/images/products/lure-rat-l-trap-chrome.jpg'],
-    badge: 'Original Packaging Verified',
-    description: 'The world-famous Bill Lewis Rat-L-Trap in genuine retail packaging. 1/2 ounce sinking lipless crankbait featuring internal multiple-BB acoustic sound chambers ("Liv-N-Sound") that replicate distressed baitfish vibrations. The reflective silver chrome scale finish reflects ambient light deep down in clear or slightly stained water.',
-    application: 'Casting and ripping through submerged weedbeds, open dam flats, and schooling baitfish zones',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Nile Perch', 'African Catfish', 'Tigerfish'],
-    specs: [
-      { label: 'Brand & Model', value: 'Bill Lewis Genuine Rat-L-Trap' },
-      { label: 'Weight Spec', value: '1/2 Ounce (approx. 14 Grams)' },
-      { label: 'Sound Feature', value: 'Internal Multi-BB "Liv-N-Sound" Rattle Chamber' },
-      { label: 'Pattern', value: 'Reflective Chrome Diamond Mesh Scale' },
-      { label: 'Hooks', value: 'Two Chemically Sharpened Treble Hooks' },
-      { label: 'Buoyancy', value: 'Sinking on Pause / Vibrating on Retrieve' },
+    "badge": "",
+    "description": "This reel is a metallic beast and there is no freshwater fish that it can't handle. Fishing power looks like this.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "S3000"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Metallic"
+      }
     ],
-    verificationStatus: 'Verified Packaging',
-    researchNotes: 'Identified directly in original retail blister packs in photo gril.jpeg: "GENUINE Rat-L-Trap", "Bill Lewis Lures", "Liv-N-Sound", "1/2 OZ", and "Best Crankbait in the World by Field & Stream".',
-    catalogPhotoMatch: 'Stock Photo: gril.jpeg (Left: Chrome scale Rat-L-Trap in box)',
-    gearType: 'lure',
-    accentTheme: {
-      bg: 'bg-slate-300/20',
-      border: 'border-slate-400/40',
-      text: 'text-slate-800',
-      gradient: 'from-slate-300 to-slate-700',
-    },
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T16:41:13.522Z",
+    "updatedAt": "2026-10-18T16:41:13.522Z"
   },
   {
-    id: 'lure-rat-l-trap-firetiger',
-    name: 'Genuine Bill Lewis Rat-L-Trap 1/2 oz - Firetiger (Chartreuse & Orange)',
-    brand: 'Bill Lewis Lures',
-    category: 'Artificial Lures',
-    subcategory: 'Lipless Crankbaits',
-    price: 850,
-    imageUrl: '/images/products/lure-rat-l-trap-firetiger.jpg',
-    images: ['/images/products/lure-rat-l-trap-firetiger.jpg'],
-    badge: 'Murky Water Specialist',
-    description: 'Authentic 1/2 oz Bill Lewis Rat-L-Trap in the legendary Firetiger pattern: high-contrast neon chartreuse flanks, black lateral markings, and a hot orange throat/belly. Ideal for murky, algae-rich, or silt-heavy African lakes and dams where sound and silhouette trigger reaction bites.',
-    application: 'Turbid dam water, algae-bloom shorelines, rainy season run-offs, and stained lake flats',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Pike', 'Catfish', 'Nile Perch'],
-    specs: [
-      { label: 'Brand & Model', value: 'Bill Lewis Genuine Rat-L-Trap' },
-      { label: 'Weight', value: '1/2 Ounce (~14 Grams)' },
-      { label: 'Colorway', value: 'Chartreuse / Black Bars / Hot Orange Belly' },
-      { label: 'Acoustics', value: 'High-Pitch Multiple Ball-Bearing Rattle' },
-      { label: 'Hooks', value: 'Dual Factory Trebles with Split Rings' },
+    "id": "prod-1792342279541",
+    "name": "Carperan Sea fishing reel and rod Combo.",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Complete Combo",
+    "price": 45000,
+    "imageUrl": "/images/catalog/prod-1792342279541-1.webp",
+    "images": [
+      "/images/catalog/prod-1792342279541-1.webp"
     ],
-    verificationStatus: 'Verified Packaging',
-    researchNotes: 'Verified from packaging photo gril.jpeg (center lure in box with vivid chartreuse and orange coloration).',
-    catalogPhotoMatch: 'Stock Photo: gril.jpeg (Center: Firetiger chartreuse Rat-L-Trap in box)',
-    gearType: 'lure',
-    accentTheme: {
-      bg: 'bg-lime-500/10',
-      border: 'border-lime-500/30',
-      text: 'text-lime-700',
-      gradient: 'from-lime-500 to-emerald-950',
-    },
+    "badge": "",
+    "description": "Dominate the sea with this saltwater fishing Combo. Rated for salt water fishing this combo gives you a strong 12 foot rod,  3 different reels for sea fishing to use depending With the size of fish you are targeting, a 500 meter Long braided line, 2 long jerk baits, and 2 ... 60grams sinkers. Now heat the sea. This combo is ONLY available on preorder.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Power"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Seawater Combo"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T16:51:19.541Z",
+    "updatedAt": "2026-10-18T16:51:19.541Z"
   },
   {
-    id: 'lure-rat-l-trap-white-shad',
-    name: 'Genuine Bill Lewis Rat-L-Trap 1/2 oz - Pearl White Bleeding Shad',
-    brand: 'Bill Lewis Lures',
-    category: 'Artificial Lures',
-    subcategory: 'Lipless Crankbaits',
-    price: 850,
-    imageUrl: '/images/products/lure-rat-l-trap-white-shad.jpg',
-    images: ['/images/products/lure-rat-l-trap-white-shad.jpg'],
-    badge: 'Overcast & Baitfish',
-    description: 'Genuine 1/2 oz Bill Lewis Rat-L-Trap in bone pearl white with fine red sparkle flecks mimicking a bleeding or wounded baitfish. Excels on cloudy or overcast days and when predatory fish are feeding on silvery fingerlings and shad.',
-    application: 'Open water casting, schooling fry imitations, cloudy skies, and dusk/dawn feeding periods',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Nile Perch', 'Catfish'],
-    specs: [
-      { label: 'Brand & Model', value: 'Bill Lewis Genuine Rat-L-Trap' },
-      { label: 'Weight', value: '1/2 Ounce (~14 Grams)' },
-      { label: 'Color Pattern', value: 'Pearl Bone White with Red Fleck Specks' },
-      { label: 'Rattle Type', value: 'Liv-N-Sound Resonant Chamber' },
+    "id": "prod-1792353799992",
+    "name": "Soft lure",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Lures",
+    "price": 200,
+    "imageUrl": "/images/catalog/prod-1792353799992-1.webp",
+    "images": [
+      "/images/catalog/prod-1792353799992-1.webp",
+      "/images/catalog/prod-1792353799992-2.webp",
+      "/images/catalog/prod-1792353799992-3.webp"
     ],
-    verificationStatus: 'Verified Packaging',
-    researchNotes: 'Verified from packaging photo gril.jpeg (right lure in box with white pearl body and red glitter accent).',
-    catalogPhotoMatch: 'Stock Photo: gril.jpeg (Right: Pearl White Rat-L-Trap in box)',
-    gearType: 'lure',
-    accentTheme: {
-      bg: 'bg-stone-200/40',
-      border: 'border-stone-400/40',
-      text: 'text-stone-800',
-      gradient: 'from-stone-200 to-stone-600',
-    },
+    "badge": "",
+    "description": "Basically a 6inch 7grams senko with a swimming tail. Very effective for Bass fishing.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Soft silicone"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Swimming tail"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T20:03:19.992Z",
+    "updatedAt": "2026-10-18T20:03:19.992Z"
   },
   {
-    id: 'lure-xuantu-jointed-swimbait',
-    name: 'Xuantu 8-Segment Jointed Sinking Swimbait (Chartreuse Tiger)',
-    brand: 'Xuantu (轩途)',
-    category: 'Artificial Lures',
-    subcategory: 'Multi-Jointed Swimbaits',
-    price: 1450,
-    imageUrl: '/images/products/lure-xuantu-jointed-swimbait.jpg',
-    images: ['/images/products/lure-xuantu-jointed-swimbait.jpg'],
-    badge: 'KEBS Verified Import',
-    description: 'Multi-jointed 8-segment sinking swimbait imported by Xuantu with verified KEBS inspection sticker. Connected by an ultra-durable woven composite spine that creates a serpentine, lifelike S-curve swimming motion at both slow and fast retrieval speeds. Features 3D holographic predatory eyes, chartreuse tiger-stripe finish, and dual needle-point treble hooks.',
-    application: 'Slow rolling along reed edges, dropping beside submerged boulders, and casting for aggressive predators',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'African Pike (Hepsetus)', 'Nile Perch', 'Large Catfish'],
-    specs: [
-      { label: 'Brand Label', value: 'Xuantu (轩途) / Boxed with KEBS Sticker' },
-      { label: 'Body Segments', value: '8 Flexible Interlinked Sections' },
-      { label: 'Color Pattern', value: 'Chartreuse & Lime Tiger-Stripe with Black Bars' },
-      { label: 'Eyes', value: 'Realistic 3D Holographic Eyes' },
-      { label: 'Hook Rigging', value: '2 Stainless Steel Treble Hooks with Split Rings' },
-      { label: 'Action', value: 'Natural Flexible S-Curve Swimming Motion' },
+    "id": "prod-1792354075294",
+    "name": "Fishing lures",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Lures",
+    "price": 3500,
+    "imageUrl": "/images/catalog/prod-1792354075294-1.webp",
+    "images": [
+      "/images/catalog/prod-1792354075294-1.webp",
+      "/images/catalog/prod-1792354075294-2.webp"
     ],
-    verificationStatus: 'Verified Packaging',
-    researchNotes: 'Directly verified from stock packaging photo rt.jpeg showing the brand "Xuantu (轩途)" and official KEBS sticker "UCR2301090650".',
-    catalogPhotoMatch: 'Stock Photo: rt.jpeg (Xuantu boxed 8-segment green jointed swimbait)',
-    gearType: 'lure',
-    accentTheme: {
-      bg: 'bg-emerald-500/10',
-      border: 'border-emerald-500/30',
-      text: 'text-emerald-700',
-      gradient: 'from-emerald-500 to-green-950',
-    },
+    "badge": "",
+    "description": "Best lures to start Bass fishing with. Kickstart.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Assorted colors"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Lures"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T20:07:55.294Z",
+    "updatedAt": "2026-10-18T20:07:55.294Z"
   },
   {
-    id: 'lure-senko-ribbed-stickbait',
-    name: 'Ribbed High-Density Soft Plastic Stick Baits (Senko-Style Worms)',
-    brand: 'Nelson Soft Plastics',
-    category: 'Artificial Lures',
-    subcategory: 'Soft Plastics & Worms',
-    price: 950,
-    imageUrl: '/images/products/lure-senko-ribbed-stickbait.jpg',
-    images: ['/images/products/lure-senko-ribbed-stickbait.jpg'],
-    badge: 'Heavy Salt Infused',
-    description: 'High-density ribbed soft plastic stick baits in rich Junebug / Dark Cinnamon Brown. Molded with deep annular body ribs that displace water and create subtle micro-vibrations as the bait falls horizontally on slack line. Smooth mid-body band specifically designed for secure Wacky rig hook placement or O-ring rings.',
-    application: 'Weedless Texas rigging in heavy grass, Wacky rigging in open water, Carolina rigging, and Ned rigging',
-    waterType: 'Freshwater',
-    targetSpecies: ['Largemouth Bass', 'Tilapia', 'African Catfish'],
-    specs: [
-      { label: 'Body Style', value: 'Annular Ribbed Body with Smooth Center Rigging Band' },
-      { label: 'Colorway', value: 'Junebug / Dark Cinnamon Brown with Micro Fleck' },
-      { label: 'Fall Rate', value: 'High-Density Horizontal Shimmy Sinking' },
-      { label: 'Recommended Rigs', value: 'Wacky Rig, Texas Rig, Carolina Rig' },
+    "id": "prod-1792354800804",
+    "name": "Fishing beginners kit",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Complete Combo",
+    "price": 3500,
+    "imageUrl": "/images/catalog/prod-1792354800804-1.webp",
+    "images": [
+      "/images/catalog/prod-1792354800804-1.webp",
+      "/images/catalog/prod-1792354800804-2.webp",
+      "/images/catalog/prod-1792354800804-3.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in hand photo l.jpeg showing the ribbed segments, center smooth band, and rich dark coloration.',
-    catalogPhotoMatch: 'Stock Photo: l.jpeg (Handful of ribbed dark stick baits)',
-    gearType: 'lure',
-    accentTheme: {
-      bg: 'bg-stone-500/10',
-      border: 'border-stone-500/30',
-      text: 'text-stone-700',
-      gradient: 'from-stone-600 to-neutral-950',
-    },
+    "badge": "",
+    "description": "For complete begginers. A low budget fishing kit that Will enable you practice with confidence before upgrading to something serious also our best selling Combo. It includes a 200 series metaplastic reel, a 1.3/1.8m  two piece fishing rod, a strong nylon fishing line, a spare 100M fishing line, floater, sinker, stopper beads and 4pcs J hook. If lucky you might also get a crankbait in the package. Can pull out a 6pounder",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Complete Combo"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Everything inclusive"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T20:20:00.804Z",
+    "updatedAt": "2026-10-18T20:20:00.804Z"
   },
-
-  // 4. HOOKS & TERMINAL
   {
-    id: 'terminal-carbon-circle-hooks',
-    name: 'Heavy-Duty High Carbon Steel Offset Circle Hooks (Black Nickel)',
-    brand: 'Nelson Terminal Tackle',
-    category: 'Hooks & Terminal',
-    subcategory: 'Circle Hooks & Live Bait Tackle',
-    price: 650,
-    imageUrl: '/images/products/terminal-carbon-circle-hooks.jpg',
-    images: ['/images/products/terminal-carbon-circle-hooks.jpg'],
-    badge: 'High Carbon Steel',
-    description: 'Forged high-carbon steel circle hooks with black nickel anti-corrosion coating. Features a precision chemically sharpened needle point angled severely inward toward the shank. Designed to slide cleanly out of a fish\'s gullet and self-set firmly into the corner of the jaw as the fish turns, preventing gut-hooking and enabling safe catch-and-release.',
-    application: 'Live baiting (tilapia fingerlings, earthworms, crickets), cut baiting for catfish, and sea bottom fishing',
-    waterType: 'Versatile',
-    targetSpecies: ['African Catfish (Mudfish)', 'Tilapia', 'Nile Perch', 'Carp', 'Inshore Coastal Species'],
-    specs: [
-      { label: 'Material', value: 'Forged High-Carbon Steel' },
-      { label: 'Finish', value: 'Corrosion-Resistant Black Nickel Plating' },
-      { label: 'Point Style', value: 'Chemically Sharpened Inward Beak Point' },
-      { label: 'Eye Design', value: 'Smooth Welded Solid Ringed Eye' },
-      { label: 'Wire Gauge', value: 'Heavy Gauge Wire (Resists Straightening Under Load)' },
+    "id": "prod-1792355046307",
+    "name": "Powerful fishing reel and rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Combo",
+    "price": 7500,
+    "imageUrl": "/images/catalog/prod-1792355046307-1.webp",
+    "images": [
+      "/images/catalog/prod-1792355046307-1.webp",
+      "/images/catalog/prod-1792355046307-2.webp",
+      "/images/catalog/prod-1792355046307-3.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed in hand in macro detail photo l2.jpeg demonstrating the inward circle hook geometry and black nickel finish.',
-    catalogPhotoMatch: 'Stock Photo: l2.jpeg (Macro circle hooks held in palm)',
-    gearType: 'hook',
-    accentTheme: {
-      bg: 'bg-zinc-700/10',
-      border: 'border-zinc-700/30',
-      text: 'text-zinc-800',
-      gradient: 'from-zinc-700 to-black',
-    },
+    "badge": "",
+    "description": "Great for catfish, and Bass fishing",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Specification",
+        "value": "Premium"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-18T20:24:06.307Z",
+    "updatedAt": "2026-10-19T08:34:13.056Z"
   },
-
-  // 5. NETS & LANDING GEAR
   {
-    id: 'net-aluminum-hand-landing',
-    name: 'Ergonomic Aluminum Hand Landing Net with Fish-Safe Micro-Mesh',
-    brand: 'Nelson Landing Essentials',
-    category: 'Nets & Landing Gear',
-    subcategory: 'Landing Nets & Fish Care',
-    price: 2400,
-    imageUrl: '/images/products/net-aluminum-hand-landing.jpg',
-    images: ['/images/products/net-aluminum-hand-landing.jpg'],
-    badge: 'Fish-Safe Mesh',
-    description: 'Lightweight teardrop aluminum alloy landing net fitted with soft green knotless micro-mesh. The knotless weave prevents damage to delicate fish scales and protective slime coats, while resisting hook snags. Outfitted with an ergonomic contoured molded handle with non-slip ridges, reinforced Y-bracket frame joint, and lanyard attachment base.',
-    application: 'Landing fish from lake banks, kayaks, boats, and river wading without dropping thrashing fish',
-    waterType: 'Versatile',
-    targetSpecies: ['Tilapia', 'Largemouth Bass', 'Trout', 'Medium Catfish', 'Carp'],
-    specs: [
-      { label: 'Frame Material', value: 'Corrosion-Resistant Tubular Aluminum Alloy' },
-      { label: 'Mesh Type', value: 'Fish-Friendly Knotless Soft Green Micro-Mesh' },
-      { label: 'Handle Grip', value: 'Contoured Non-Slip Molded Grip with Ribs' },
-      { label: 'Safety Feature', value: 'Lanyard Attachment Eyelet for Leashing' },
-      { label: 'Hoop Shape', value: 'Deep Teardrop Profile for Secure Fish Cradling' },
+    "id": "prod-1792399617842",
+    "name": "8/15grams Fishing Floaters.",
+    "brand": "FishWithNelson",
+    "category": "Other Gear",
+    "subcategory": "Floaters",
+    "price": 150,
+    "imageUrl": "/images/catalog/prod-1792399617842-1.webp",
+    "images": [
+      "/images/catalog/prod-1792399617842-1.webp",
+      "/images/catalog/prod-1792399617842-2.webp"
     ],
-    verificationStatus: 'Inspected from Stock',
-    researchNotes: 'Photographed held in hand in photo nets.jpeg showing the aluminum teardrop frame, fine green netting, and grooved handle.',
-    catalogPhotoMatch: 'Stock Photo: nets.jpeg (Teardrop net held in hand over tile)',
-    gearType: 'net',
-    accentTheme: {
-      bg: 'bg-emerald-600/10',
-      border: 'border-emerald-600/30',
-      text: 'text-emerald-800',
-      gradient: 'from-emerald-700 to-slate-950',
-    },
+    "badge": "",
+    "description": "Built light with Luminous colors to enhance visibility in water, these bulb floater are a must have for any angler.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Light"
+      },
+      {
+        "label": "Key Feature",
+        "value": "3,8,15, grams"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-19T08:46:57.842Z",
+    "updatedAt": "2026-10-19T08:46:57.842Z"
   },
+  {
+    "id": "prod-1792417505271",
+    "name": "Fishing Reels",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 5500,
+    "imageUrl": "/images/catalog/prod-1792417505271-1.webp",
+    "images": [
+      "/images/catalog/prod-1792417505271-1.webp",
+      "/images/catalog/prod-1792417505271-2.webp",
+      "/images/catalog/prod-1792417505271-3.webp",
+      "/images/catalog/prod-1792417505271-4.webp",
+      "/images/catalog/prod-1792417505271-5.webp",
+      "/images/catalog/prod-1792417505271-6.webp",
+      "/images/catalog/prod-1792417505271-7.webp",
+      "/images/catalog/prod-1792417505271-8.webp",
+      "/images/catalog/prod-1792417505271-9.webp",
+      "/images/catalog/prod-1792417505271-10.webp",
+      "/images/catalog/prod-1792417505271-11.webp",
+      "/images/catalog/prod-1792417505271-12.webp"
+    ],
+    "badge": "",
+    "description": "Reasonably priced fishing gears. Any reel of your choice for the images above goes for Ksh 5500. Take a screenshot and Reach out with it.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Assorted"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Metallic and plastic."
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-19T13:45:05.271Z",
+    "updatedAt": "2026-10-19T13:45:05.271Z"
+  },
+  {
+    "id": "prod-1792417911662",
+    "name": "Fishing Rod and reel",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Rod, reel",
+    "price": 7500,
+    "imageUrl": "/images/catalog/prod-1792417911662-1.webp",
+    "images": [
+      "/images/catalog/prod-1792417911662-1.webp",
+      "/images/catalog/prod-1792417911662-2.webp",
+      "/images/catalog/prod-1792417911662-3.webp",
+      "/images/catalog/prod-1792417911662-4.webp",
+      "/images/catalog/prod-1792417911662-5.webp",
+      "/images/catalog/prod-1792417911662-6.webp",
+      "/images/catalog/prod-1792417911662-7.webp",
+      "/images/catalog/prod-1792417911662-8.webp",
+      "/images/catalog/prod-1792417911662-9.webp",
+      "/images/catalog/prod-1792417911662-10.webp",
+      "/images/catalog/prod-1792417911662-11.webp"
+    ],
+    "badge": "",
+    "description": "A combination of fishing reel and rod. Excellent quality. Metallic semi reels and medium Action rods. No better way of kick-starting your fishing passion",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Assorted"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-19T13:51:51.662Z",
+    "updatedAt": "2026-10-19T13:51:51.662Z"
+  },
+  {
+    "id": "prod-1792418576361",
+    "name": "Catfish circle hooks",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Hooks",
+    "price": 300,
+    "imageUrl": "/images/catalog/prod-1792418576361-1.webp",
+    "images": [
+      "/images/catalog/prod-1792418576361-1.webp",
+      "/images/catalog/prod-1792418576361-2.webp",
+      "/images/catalog/prod-1792418576361-3.webp",
+      "/images/catalog/prod-1792418576361-4.webp",
+      "/images/catalog/prod-1792418576361-5.webp",
+      "/images/catalog/prod-1792418576361-6.webp",
+      "/images/catalog/prod-1792418576361-7.webp"
+    ],
+    "badge": "",
+    "description": "4pcs of catfish circle hooks at Ksh 300. Catches the Giants.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Hard steel"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Size 4&5"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-19T14:02:56.361Z",
+    "updatedAt": "2026-10-19T14:02:56.361Z"
+  },
+  {
+    "id": "prod-1792418766717",
+    "name": "Abu Garcia Bmax Sx spinning reel and baitcasters",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Reels",
+    "price": 18500,
+    "imageUrl": "/images/catalog/prod-1792418766717-1.webp",
+    "images": [
+      "/images/catalog/prod-1792418766717-1.webp",
+      "/images/catalog/prod-1792418766717-2.webp",
+      "/images/catalog/prod-1792418766717-3.webp"
+    ],
+    "badge": "",
+    "description": "If you know you know.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Abu Garcia"
+      },
+      {
+        "label": "Key Feature",
+        "value": "Sx"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-19T14:06:06.717Z",
+    "updatedAt": "2026-10-19T14:06:06.717Z"
+  },
+  {
+    "id": "prod-1792693493935",
+    "name": "Fishing Hat",
+    "brand": "FishWithNelson",
+    "category": "Other Gear",
+    "subcategory": "Tackle",
+    "price": 650,
+    "imageUrl": "/images/catalog/prod-1792693493935-1.webp",
+    "images": [
+      "/images/catalog/prod-1792693493935-1.webp",
+      "/images/catalog/prod-1792693493935-2.webp",
+      "/images/catalog/prod-1792693493935-3.webp",
+      "/images/catalog/prod-1792693493935-4.webp",
+      "/images/catalog/prod-1792693493935-5.webp",
+      "/images/catalog/prod-1792693493935-6.webp"
+    ],
+    "badge": "",
+    "description": "Fishing jungle hat",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T18:24:53.935Z",
+    "updatedAt": "2026-10-22T18:24:53.935Z"
+  },
+  {
+    "id": "prod-1792764885060",
+    "name": "Trout Lure s",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Lures",
+    "price": 200,
+    "imageUrl": "/images/catalog/prod-1792764885060-1.webp",
+    "images": [
+      "/images/catalog/prod-1792764885060-1.webp",
+      "/images/catalog/prod-1792764885060-2.webp",
+      "/images/catalog/prod-1792764885060-3.webp",
+      "/images/catalog/prod-1792764885060-4.webp",
+      "/images/catalog/prod-1792764885060-5.webp",
+      "/images/catalog/prod-1792764885060-6.webp"
+    ],
+    "badge": "",
+    "description": "Per packet of 5pcs",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Type",
+        "value": "Tiny"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-23T14:14:45.060Z",
+    "updatedAt": "2026-10-23T14:14:45.060Z"
+  },
+  {
+    "id": "prod-1792765033173",
+    "name": "J hooks for fishing",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Hooks",
+    "price": 1200,
+    "imageUrl": "/images/catalog/prod-1792765033173-1.webp",
+    "images": [
+      "/images/catalog/prod-1792765033173-1.webp",
+      "/images/catalog/prod-1792765033173-2.webp",
+      "/images/catalog/prod-1792765033173-3.webp",
+      "/images/catalog/prod-1792765033173-4.webp"
+    ],
+    "badge": "Featured",
+    "description": "A packet of 200 pcs of J hooks size 8 to size 14 hooks",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [],
+    "published": true,
+    "featured": true,
+    "createdAt": "2026-10-23T14:17:13.173Z",
+    "updatedAt": "2026-10-23T14:17:13.173Z"
+  },
+  {
+    "id": "prod-1792765367882",
+    "name": "Traditional Arrow and bow",
+    "brand": "FishWithNelson",
+    "category": "Other Gear",
+    "subcategory": "Bow",
+    "price": 3500,
+    "imageUrl": "/images/catalog/prod-1792765367882-1.webp",
+    "images": [
+      "/images/catalog/prod-1792765367882-1.webp",
+      "/images/catalog/prod-1792765367882-2.webp",
+      "/images/catalog/prod-1792765367882-3.webp",
+      "/images/catalog/prod-1792765367882-4.webp"
+    ],
+    "badge": "",
+    "description": "Traditional 6 Sharp arrows and a strong wooden bow .",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-23T14:22:47.882Z",
+    "updatedAt": "2026-10-23T14:22:47.882Z"
+  },
+  {
+    "id": "prod-1792765518916",
+    "name": "Sinkers or fishing weights",
+    "brand": "FishWithNelson",
+    "category": "Accessories",
+    "subcategory": "Sinkers",
+    "price": 100,
+    "imageUrl": "/images/catalog/prod-1792765518916-1.webp",
+    "images": [
+      "/images/catalog/prod-1792765518916-1.webp",
+      "/images/catalog/prod-1792765518916-2.webp",
+      "/images/catalog/prod-1792765518916-3.webp"
+    ],
+    "badge": "",
+    "description": "Fishing sinkers from 3grams sinkers to 10grams sinkers",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-23T14:25:18.916Z",
+    "updatedAt": "2026-10-23T14:25:18.916Z"
+  },
+  {
+    "id": "product-1791961702588",
+    "name": "Daiwa crossfire LT",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 17500,
+    "imageUrl": "/images/catalog/product-1791961702588-1.jpg",
+    "images": [
+      "/images/catalog/product-1791961702588-1.jpg"
+    ],
+    "badge": "",
+    "description": "Lightweight reel for everyday fishing",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-17T12:27:24.418Z",
+    "updatedAt": "2026-10-17T12:27:24.418Z"
+  },
+  {
+    "id": "product-1791961847245",
+    "name": "Penn Pursuit IV",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791961847245-1.jpg",
+    "images": [
+      "/images/catalog/product-1791961847245-1.jpg"
+    ],
+    "badge": "",
+    "description": "Designed for saltwater use",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-17T13:20:58.750Z",
+    "updatedAt": "2026-10-17T13:20:58.750Z"
+  },
+  {
+    "id": "product-1791962301849",
+    "name": "Shimano SLX",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962301849-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962301849-1.jpg"
+    ],
+    "badge": "",
+    "description": "Popular Low-profile baitcaster",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.095Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962396617",
+    "name": "Daiwa Tatula",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962396617-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962396617-1.jpg"
+    ],
+    "badge": "",
+    "description": "Designed for Controlled and accurate casting",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962499985",
+    "name": "Abu Garcia Max X",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962499985-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962499985-1.jpg"
+    ],
+    "badge": "",
+    "description": "Entry level baitcasting option",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962596138",
+    "name": "Penn Senator",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962596138-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962596138-1.jpg"
+    ],
+    "badge": "",
+    "description": "Used for heavy duty saltwater fishing",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962751477",
+    "name": "Shimano TLD",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962751477-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962751477-1.jpg"
+    ],
+    "badge": "",
+    "description": "Used for offshore trolling",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962823333",
+    "name": "Daiwa Sealine",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962823333-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962823333-1.jpg"
+    ],
+    "badge": "",
+    "description": "Used for boat fishing and trolling",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791962908959",
+    "name": "Zebco 33",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791962908959-1.jpg",
+    "images": [
+      "/images/catalog/product-1791962908959-1.jpg"
+    ],
+    "badge": "",
+    "description": "A well known closed-face reel",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791963000594",
+    "name": "Zebco 202 imitation reel",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 5800,
+    "imageUrl": "/images/catalog/product-1791963000594-1.jpg",
+    "images": [
+      "/images/catalog/product-1791963000594-1.jpg",
+      "/images/catalog/product-1791963000594-2.webp",
+      "/images/catalog/product-1791963000594-3.webp",
+      "/images/catalog/product-1791963000594-4.webp",
+      "/images/catalog/product-1791963000594-5.webp",
+      "/images/catalog/product-1791963000594-6.webp",
+      "/images/catalog/product-1791963000594-7.webp"
+    ],
+    "badge": "",
+    "description": "Simple beginners fishing reel.  Zebco look alike.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:45:21.584Z",
+    "updatedAt": "2026-10-22T10:45:21.584Z"
+  },
+  {
+    "id": "product-1791963104860",
+    "name": "Enclosed casting reel",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 5800,
+    "imageUrl": "/images/catalog/product-1791963104860-1.webp",
+    "images": [
+      "/images/catalog/product-1791963104860-1.webp",
+      "/images/catalog/product-1791963104860-2.jpg",
+      "/images/catalog/product-1791963104860-3.webp",
+      "/images/catalog/product-1791963104860-4.webp",
+      "/images/catalog/product-1791963104860-5.webp",
+      "/images/catalog/product-1791963104860-6.webp",
+      "/images/catalog/product-1791963104860-7.webp"
+    ],
+    "badge": "",
+    "description": "a spincast reel with an enclosed spool. Great for kids and adults easy to operate.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:35:13.916Z",
+    "updatedAt": "2026-10-22T10:35:13.916Z"
+  },
+  {
+    "id": "product-1791963689137",
+    "name": "Minnow Lure. Jerk baits",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 600,
+    "imageUrl": "/images/catalog/product-1791963689137-1.jpg",
+    "images": [
+      "/images/catalog/product-1791963689137-1.jpg",
+      "/images/catalog/product-1791963689137-2.webp",
+      "/images/catalog/product-1791963689137-3.webp",
+      "/images/catalog/product-1791963689137-4.webp",
+      "/images/catalog/product-1791963689137-5.webp",
+      "/images/catalog/product-1791963689137-6.webp",
+      "/images/catalog/product-1791963689137-7.webp"
+    ],
+    "badge": "",
+    "description": "Predatory fish such as tuna in suitable offshore applications, barracuda, and freshwater game fish, depending on lure size and design",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:31:17.055Z",
+    "updatedAt": "2026-10-22T10:31:17.055Z"
+  },
+  {
+    "id": "product-1791963752893",
+    "name": "spoon Lure",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 450,
+    "imageUrl": "/images/catalog/product-1791963752893-1.jpg",
+    "images": [
+      "/images/catalog/product-1791963752893-1.jpg",
+      "/images/catalog/product-1791963752893-2.webp",
+      "/images/catalog/product-1791963752893-3.webp",
+      "/images/catalog/product-1791963752893-4.webp"
+    ],
+    "badge": "",
+    "description": "Heavy for Casting long distances and targeting predatory fish in fresh or salt water",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:28:57.874Z",
+    "updatedAt": "2026-10-22T10:28:57.874Z"
+  },
+  {
+    "id": "product-1791964366037",
+    "name": "Soft plastic lures",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 200,
+    "imageUrl": "/images/catalog/product-1791964366037-1.jpg",
+    "images": [
+      "/images/catalog/product-1791964366037-1.jpg",
+      "/images/catalog/product-1791964366037-2.webp",
+      "/images/catalog/product-1791964366037-3.webp",
+      "/images/catalog/product-1791964366037-4.webp",
+      "/images/catalog/product-1791964366037-5.webp"
+    ],
+    "badge": "",
+    "description": "Bass, snapper, and other predatory fish when rigged appropriately.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:26:31.043Z",
+    "updatedAt": "2026-10-22T10:26:31.041Z"
+  },
+  {
+    "id": "product-1791964418315",
+    "name": "Popper lures",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 400,
+    "imageUrl": "/images/catalog/product-1791964418315-1.jpg",
+    "images": [
+      "/images/catalog/product-1791964418315-1.jpg"
+    ],
+    "badge": "",
+    "description": "Best Top water lures for bass fishing and Surface-feeding fish, including trevally and other aggressive saltwater predators",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:23:08.982Z",
+    "updatedAt": "2026-10-22T10:23:08.982Z"
+  },
+  {
+    "id": "product-1791964487708",
+    "name": "Metal Jig",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 500,
+    "imageUrl": "/images/catalog/product-1791964487708-1.jpg",
+    "images": [
+      "/images/catalog/product-1791964487708-1.jpg"
+    ],
+    "badge": "",
+    "description": "Shore jigging, offshore jigging, and targeting fish such as trevally, tuna, and kingfish.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:21:35.538Z",
+    "updatedAt": "2026-10-22T10:21:35.538Z"
+  },
+  {
+    "id": "product-1791964579538",
+    "name": "spinner bait and inline spinner",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 500,
+    "imageUrl": "/images/catalog/product-1791964579538-1.jpg",
+    "images": [
+      "/images/catalog/product-1791964579538-1.jpg",
+      "/images/catalog/product-1791964579538-2.webp",
+      "/images/catalog/product-1791964579538-3.webp"
+    ],
+    "badge": "",
+    "description": "Mostly for freshwater predatory fish, though some inline spinners are also suitable for other environments.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:20:58.187Z",
+    "updatedAt": "2026-10-22T10:20:58.187Z"
+  },
+  {
+    "id": "product-1791964803078",
+    "name": "Long nose Crankbait",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 400,
+    "imageUrl": "/images/catalog/product-1791964803078-1.jpg",
+    "images": [
+      "/images/catalog/product-1791964803078-1.jpg",
+      "/images/catalog/product-1791964803078-2.webp",
+      "/images/catalog/product-1791964803078-3.webp",
+      "/images/catalog/product-1791964803078-4.webp"
+    ],
+    "badge": "",
+    "description": "Crankbaits are the best for Searching different water depths for predatory fish especially Bass fishing and ocean fishing lures.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:19:05.153Z",
+    "updatedAt": "2026-10-22T10:19:05.153Z"
+  },
+  {
+    "id": "product-1791964945388",
+    "name": "Wacky Worms, senkos Stick Worm",
+    "brand": "FishWithNelson",
+    "category": "Artificial Lures",
+    "subcategory": "Tackle",
+    "price": 200,
+    "imageUrl": "/images/catalog/product-1791964945388-1.webp",
+    "images": [
+      "/images/catalog/product-1791964945388-1.webp",
+      "/images/catalog/product-1791964945388-2.jpg",
+      "/images/catalog/product-1791964945388-3.webp",
+      "/images/catalog/product-1791964945388-4.webp",
+      "/images/catalog/product-1791964945388-5.webp",
+      "/images/catalog/product-1791964945388-6.webp",
+      "/images/catalog/product-1791964945388-7.webp",
+      "/images/catalog/product-1791964945388-8.webp"
+    ],
+    "badge": "",
+    "description": "They are popular soft baits primarily used in freshwater bass fishing, most frequently rigged weightless, as a Texas rig, or as a Wacky rig to produce a fluttering, lifelike shimmy as they sink.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:15:19.395Z",
+    "updatedAt": "2026-10-22T10:15:19.395Z"
+  },
+  {
+    "id": "product-1791968844705",
+    "name": "Crankbait circle hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791968844705-1.jpg",
+    "images": [
+      "/images/catalog/product-1791968844705-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791968893682",
+    "name": "octopus hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791968893682-1.jpg",
+    "images": [
+      "/images/catalog/product-1791968893682-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791968950840",
+    "name": "Offset Shank Worm EWG hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791968950840-1.jpg",
+    "images": [
+      "/images/catalog/product-1791968950840-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791968992563",
+    "name": "Decoy Ringed hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791968992563-1.jpg",
+    "images": [
+      "/images/catalog/product-1791968992563-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969115364",
+    "name": "EWG lightwire worm hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969115364-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969115364-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969147273",
+    "name": "Mondo EWG hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969147273-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969147273-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969201725",
+    "name": "Monster Hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969201725-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969201725-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969255429",
+    "name": "Bass hooks for senkos and wacky worms",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Hooks",
+    "price": 100,
+    "imageUrl": "/images/catalog/product-1791969255429-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969255429-1.jpg",
+      "/images/catalog/product-1791969255429-2.webp",
+      "/images/catalog/product-1791969255429-3.webp"
+    ],
+    "badge": "",
+    "description": "When you want to do a weedless Texas rig this is the Hook to purchase.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:10:42.095Z",
+    "updatedAt": "2026-10-22T10:10:42.095Z"
+  },
+  {
+    "id": "product-1791969298143",
+    "name": "Treble Round Hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 40,
+    "imageUrl": "/images/catalog/product-1791969298143-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969298143-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-22T10:07:30.279Z"
+  },
+  {
+    "id": "product-1791969338748",
+    "name": "Treble catfish Hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 40,
+    "imageUrl": "/images/catalog/product-1791969338748-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969338748-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-22T10:07:01.558Z"
+  },
+  {
+    "id": "product-1791969391068",
+    "name": "Jig Hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 50,
+    "imageUrl": "/images/catalog/product-1791969391068-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969391068-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-22T10:06:48.683Z"
+  },
+  {
+    "id": "product-1791969430933",
+    "name": "Jig head Hook",
+    "brand": "FishWithNelson",
+    "category": "Hooks & Terminal",
+    "subcategory": "Tackle",
+    "price": 50,
+    "imageUrl": "/images/catalog/product-1791969430933-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969430933-1.jpg"
+    ],
+    "badge": "",
+    "description": "Jighead hooks, strong and silver",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:06:26.043Z",
+    "updatedAt": "2026-10-22T10:06:26.043Z"
+  },
+  {
+    "id": "product-1791969669010",
+    "name": "Spinning  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969669010-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969669010-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969681286",
+    "name": "Spinning  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969681286-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969681286-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791969698001",
+    "name": "Spinning  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791969698001-1.jpg",
+    "images": [
+      "/images/catalog/product-1791969698001-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791970973768",
+    "name": "Casting  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791970973768-1.jpg",
+    "images": [
+      "/images/catalog/product-1791970973768-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791970992294",
+    "name": "Casting  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791970992294-1.jpg",
+    "images": [
+      "/images/catalog/product-1791970992294-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971004222",
+    "name": "Casting  rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971004222-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971004222-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971058545",
+    "name": "Boat and trolling rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971058545-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971058545-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971073848",
+    "name": "Boat and trolling rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971073848-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971073848-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971086875",
+    "name": "Boat and trolling rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971086875-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971086875-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971101081",
+    "name": "Boat and trolling rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971101081-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971101081-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971146074",
+    "name": "Telescopic rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971146074-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971146074-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971166530",
+    "name": "Telescopic rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971166530-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971166530-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971209846",
+    "name": "Telescopic rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971209846-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971209846-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971222703",
+    "name": "Telescopic rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971222703-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971222703-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971426055",
+    "name": "Fly rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971426055-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971426055-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971439523",
+    "name": "Fly rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971439523-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971439523-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971463495",
+    "name": "Fly rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971463495-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971463495-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791971485629",
+    "name": "Fly rod",
+    "brand": "FishWithNelson",
+    "category": "Fishing Rods",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/product-1791971485629-1.jpg",
+    "images": [
+      "/images/catalog/product-1791971485629-1.jpg"
+    ],
+    "badge": "",
+    "description": "",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  },
+  {
+    "id": "product-1791972219470",
+    "name": "Landing Net / scooping net",
+    "brand": "FishWithNelson",
+    "category": "Nets & Landing Gear",
+    "subcategory": "Tackle",
+    "price": 1600,
+    "imageUrl": "/images/catalog/product-1791972219470-1.jpg",
+    "images": [
+      "/images/catalog/product-1791972219470-1.jpg"
+    ],
+    "badge": "",
+    "description": "1 meter Long landing net. Good for all types of fresh water fish.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Strong",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:05:25.290Z",
+    "updatedAt": "2026-10-22T10:05:25.290Z"
+  },
+  {
+    "id": "product-1791972273018",
+    "name": "Fish landing Net /scoop net",
+    "brand": "FishWithNelson",
+    "category": "Nets & Landing Gear",
+    "subcategory": "Tackle",
+    "price": 2300,
+    "imageUrl": "/images/catalog/product-1791972273018-1.jpg",
+    "images": [
+      "/images/catalog/product-1791972273018-1.jpg"
+    ],
+    "badge": "",
+    "description": "This is a trout specific landing or scoop net. Strong for highland fish.",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-22T10:03:37.368Z",
+    "updatedAt": "2026-10-22T10:03:37.368Z"
+  },
+  {
+    "id": "rod-muriyu-zhb-540",
+    "name": "Shimano Sienna",
+    "brand": "FishWithNelson",
+    "category": "Fishing Reels",
+    "subcategory": "Tackle",
+    "price": 0,
+    "imageUrl": "/images/catalog/rod-muriyu-zhb-540-1.jpg",
+    "images": [
+      "/images/catalog/rod-muriyu-zhb-540-1.jpg"
+    ],
+    "badge": "",
+    "description": "suitable for general-purpose fishing",
+    "application": "",
+    "waterType": "Versatile",
+    "targetSpecies": [],
+    "specs": [
+      {
+        "label": "Details",
+        "value": "Verified Gear"
+      }
+    ],
+    "published": true,
+    "featured": false,
+    "createdAt": "2026-10-27T13:04:14.096Z",
+    "updatedAt": "2026-10-27T13:04:14.096Z"
+  }
 ];

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { ProductVisual } from './ProductVisual';
+import { ProductReviewsSection } from './ProductReviewsSection';
 import { buildSingleProductWhatsAppUrl, WHATSAPP_PHONE_FORMATTED } from '../utils/whatsapp';
 import {
   X,
@@ -9,6 +10,7 @@ import {
   Plus,
   Minus,
   MessageSquare,
+  Star,
   ImageIcon,
   ArrowLeft,
   ArrowRight,
@@ -31,6 +33,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 }) => {
   if (!product) return null;
 
+  const [activeTab, setActiveTab] = useState<'details' | 'reviews'>('details');
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -70,12 +73,39 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         className="relative bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-6 text-left flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Top Header */}
-        <div className="px-5 sm:px-6 py-3.5 border-b border-slate-100 bg-slate-50/90 flex items-center justify-between gap-3">
+        {/* Modal Top Header with Tabs */}
+        <div className="px-5 sm:px-6 py-3.5 border-b border-slate-100 bg-slate-50/90 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-slate-600 bg-slate-200/60 px-2.5 py-1 rounded-lg">
               {product.category} · {product.subcategory || 'Tackle'}
             </span>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="flex bg-slate-200/80 p-0.5 rounded-xl border border-slate-300/40 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setActiveTab('details')}
+              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                activeTab === 'details'
+                  ? 'bg-white text-slate-900 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Equipment &amp; Order
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('reviews')}
+              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'reviews'
+                  ? 'bg-white text-amber-900 shadow-2xs font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+              <span>Angler Reviews</span>
+            </button>
           </div>
 
           <button
@@ -89,9 +119,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
         {/* Modal Scrollable Body */}
         <div className="p-5 sm:p-6 overflow-y-auto flex-1">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {/* Left Column: Multi-Image Photo Gallery */}
-            <div className="space-y-3">
+          {activeTab === 'details' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              {/* Left Column: Multi-Image Photo Gallery */}
+              <div className="space-y-3">
                 <div className="relative group bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex items-center justify-center">
                   <ProductVisual
                     product={product}
@@ -183,6 +214,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             ? `KSh ${product.price.toLocaleString()}`
                             : '0 KSh'}
                         </span>
+                      </div>
+
+                      {/* Jump to Reviews Link */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('reviews')}
+                        className="inline-flex items-center gap-1.5 text-xs text-amber-800 hover:text-amber-900 bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-1 rounded-lg transition-colors cursor-pointer border border-amber-500/20"
+                      >
+                        <div className="flex items-center text-amber-500">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                        </div>
+                        <span className="font-semibold">Angler Reviews</span>
+                        <span className="text-slate-500 text-[11px]">· Leave Feedback</span>
+                      </button>
                     </div>
                   </div>
 
@@ -270,7 +315,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            /* Customer Reviews Tab */
+            <div className="pt-2">
+              <ProductReviewsSection product={product} />
+            </div>
+          )}
         </div>
       </div>
 

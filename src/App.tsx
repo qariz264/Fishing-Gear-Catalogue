@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import { CartDrawer } from './components/CartDrawer';
@@ -150,6 +150,30 @@ export default function App() {
                   <PublicEventsPage />
                 </Suspense>
               }
+            />
+            <Route
+              path="/events/*"
+              element={
+                <Suspense fallback={<PublicChunkFallback />}>
+                  <PublicEventsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/event"
+              element={<Navigate to="/events" replace />}
+            />
+            <Route
+              path="/event/*"
+              element={<Navigate to="/events" replace />}
+            />
+            <Route
+              path="/upcoming-events"
+              element={<Navigate to="/events" replace />}
+            />
+            <Route
+              path="/tournaments"
+              element={<Navigate to="/events" replace />}
             />
             <Route
               path="/training"

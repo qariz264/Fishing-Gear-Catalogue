@@ -1,5 +1,5 @@
 {
-  "summary": "Brand social preview card featuring the user uploaded linkpic.jpeg image for Fishing With Nelson.",
-  "updatedAt": "2026-10-19T14:40:10.419931560Z",
-  "userFacing": true
+  "summary":  "Admin login page cleaned up to remove Google sign-in, autofill options, exposed default credentials, and subtitle text. Only secure username and password inputs remain.",
+  "updatedAt":  "2026-11-02T09:37:00.718300463Z",
+  "userFacing":  true
 }

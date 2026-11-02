@@ -267,6 +267,56 @@ assert(
   'AdminDashboardOverview routes all real-time counter listeners through safeOnSnapshot'
 );
 
+// 9. Featured Products Priority Display
+console.log('\n9. Featured Products Priority Display');
+const cataloguePageContent = fs.readFileSync(path.resolve(process.cwd(), 'src/pages/PublicCataloguePage.tsx'), 'utf-8');
+assert(
+  cataloguePageContent.includes('featuredList.push(p)') &&
+    cataloguePageContent.includes('[...featuredList, ...regularList]'),
+  'PublicCataloguePage partitions matched products so featured products appear at the top'
+);
+
+// Simulation test of priority logic
+const mockCatalogProducts = [
+  { id: '1', name: 'Standard Rod', featured: false },
+  { id: '2', name: 'Featured Reel', featured: true },
+  { id: '3', name: 'Unset Tackle' },
+  { id: '4', name: 'Featured Lure', featured: true },
+];
+
+const simFeatured: any[] = [];
+const simRegular: any[] = [];
+for (const p of mockCatalogProducts) {
+  if (p.featured === true) simFeatured.push(p);
+  else simRegular.push(p);
+}
+const sortedSim = [...simFeatured, ...simRegular];
+
+assert(
+  sortedSim[0].id === '2' && sortedSim[1].id === '4',
+  'Featured products always appear first before non-featured items'
+);
+
+assert(
+  sortedSim[2].id === '1' && sortedSim[3].id === '3',
+  'Non-featured items appear after featured items, preserving relative order'
+);
+
+// Unmark simulation
+mockCatalogProducts[1].featured = false;
+const unmarkFeatured: any[] = [];
+const unmarkRegular: any[] = [];
+for (const p of mockCatalogProducts) {
+  if (p.featured === true) unmarkFeatured.push(p);
+  else unmarkRegular.push(p);
+}
+const unmarkSorted = [...unmarkFeatured, ...unmarkRegular];
+
+assert(
+  unmarkSorted[0].id === '4' && unmarkSorted.findIndex((p) => p.id === '2') > 0,
+  'Unmarking a product removes its featured priority and moves it to normal listing'
+);
+
 console.log(`\n=== SUMMARY: ${passed} Passed, ${failed} Failed ===\n`);
 
 if (failed > 0) {

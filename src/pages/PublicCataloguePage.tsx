@@ -116,9 +116,9 @@ export const PublicCataloguePage: React.FC = () => {
     return Array.from(set);
   }, [products]);
 
-  // Synchronized Filter & Search
+  // Synchronized Filter & Search with Featured Product Priority Display
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    const matched = products.filter((product) => {
       // Category filter
       if (selectedCategory !== 'All Equipment' && product.category !== selectedCategory) {
         return false;
@@ -148,6 +148,22 @@ export const PublicCataloguePage: React.FC = () => {
 
       return true;
     });
+
+    // Featured Products Priority Display:
+    // Any product marked with featured: true appears first at the top of the landing page,
+    // followed by all non-featured products, preserving relative order within each group.
+    const featuredList: Product[] = [];
+    const regularList: Product[] = [];
+
+    for (const p of matched) {
+      if (p.featured === true || (p as any).featured === 'true') {
+        featuredList.push(p);
+      } else {
+        regularList.push(p);
+      }
+    }
+
+    return [...featuredList, ...regularList];
   }, [products, selectedCategory, searchQuery]);
 
   return (

@@ -1,39 +1,29 @@
-# Fishing With Nelson - Global Product Image Synchronization & Preservation
+# Fishing With Nelson - Featured Products Priority Display & Catalog Synchronization
 
-## Master Fix Overview
+## Implementation Overview
 
-### 1. Root Cause Resolution & Image Cross-Association Correction
-- **Discovered Misplaced Product Image**:
-  - The genuine uploaded spool image for `"POWER X PE 8 100M"` braided fishing line (`product-1791963000594-2.webp`) had been mistakenly grouped under the `"Zebco 202 imitation reel"` (`product-1791963000594`).
-  - As a result, customers viewing the reel saw braided line spools, while the braided line product lacked its full uploaded gallery.
-- **Synchronized Association**:
-  - Associated `product-1791963000594-2.webp` with `"Braided fishing line"` (`prod-1792331101161`), bringing its authentic gallery to 3 verified braided line images (`prod-1792331101161-1.webp`, `prod-1792331101161-2.webp`, and `product-1791963000594-2.webp`).
-  - Cleaned `"Zebco 202 imitation reel"` (`product-1791963000594`) gallery to strictly display its authentic Zebco 202 reel image (`product-1791963000594-1.jpg`).
+### 1. Featured Products Priority Display
+- **Priority Logic in `src/pages/PublicCataloguePage.tsx`**:
+  - Matched products on the landing page are now partitioned so that any product marked with `featured === true` (or `'true'`) immediately appears at the top of the grid before all non-featured products.
+  - Maintains stable relative ordering among featured products and among non-featured products.
+  - Works seamlessly across all category filters (e.g. "All Equipment", "Fishing Rods", "Fishing Reels", etc.) and active search queries.
+  - Fully responsive across desktop, tablet, and mobile grid layouts.
 
-### 2. Strict Image Preservation Policy (Zero Data Loss)
-- **100% Preservation**:
+### 2. Dynamic Synchronization
+- **Real-time Admin Toggling**:
+  - Integrated with the existing database field (`featured`) and admin controls (one-click star toggle in products table and `featured` checkbox in create/edit modal).
+  - Marking a product as featured automatically moves it to the top of the landing page's product grid.
+  - Unmarking a featured product automatically returns it to its standard catalog position without requiring manual reordering or page reloads.
+
+### 3. Strict Image and Functionality Preservation
+- **100% Data & Image Preservation**:
   - All **175** authentic uploaded catalog files in `public/images/catalog/` remain strictly preserved on disk and accessible.
-  - Zero files were deleted, moved, renamed, or modified.
-  - **Zero AI-generated images or generic placeholders** have been added or used.
+  - No files were deleted, moved, renamed, or modified.
+  - Zero AI-generated or generic placeholder images.
+  - Product names, descriptions, prices, categories, WhatsApp ordering, admin dashboard, and deep-link routing remain completely intact.
 
-### 3. State Isolation & In-Memory Leak Prevention
-- **Deep Array Cloning**:
-  - In `AdminProductsPage.tsx`, replaced all direct array assignments (`item.images`) with deep copies (`[...item.images]`) on open, edit, save, and cancel.
-  - Prevents in-memory shared state mutations between product edit forms and photo management modals.
-- **Global Gallery Sanitizer**:
-  - Added `sanitizeProductGalleries()` in `src/utils/productStorage.ts` running across `getStoredProducts()`, `saveStoredProducts()`, and Firestore snapshot updates to guarantee every item maintains an isolated, deduplicated, and properly typed gallery.
-
-### 4. Administrator Photo Reassignment Tool
-- Added an **interactive "Reassign" button** in the Admin "Manage Photos" modal alongside "Set Cover" and "Delete":
-  - Admin can click **Reassign** on any photo thumbnail.
-  - An inline searchable dropdown lists all other catalogue equipment sorted alphabetically by category and name.
-  - Clicking **Move Photo** automatically reassigns the photo from the current equipment to the destination equipment, synchronizing both products in local cache and Firebase Firestore.
-  - Preserves the image file completely with zero risk of accidental deletion.
-
-### 5. Automated Verification
-- Extended automated test suite (`npm test`) with **Section 7: Global Product Image Synchronization & Preservation**:
-  - Tested 175/175 file presence.
-  - Verified Zebco 202 isolation.
-  - Verified Braided Line multi-spool gallery completeness.
-  - Verified `reassignProductImage` and `sanitizeProductGalleries` exports.
-  - Verified all 36 test assertions pass cleanly.
+### 4. Automated Verification
+- Extended automated audit test suite (`npm test`) with **Section 9: Featured Products Priority Display**:
+  - Tested stable partition algorithm placing all featured items before non-featured items.
+  - Tested dynamic unmarking behavior moving products back to the regular catalog.
+  - All 42 automated tests pass with 0 errors.

@@ -28,23 +28,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onAddToCart,
   inCartCount,
 }) => {
-  if (!product) return null;
-
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
 
   const productImages =
-    product.images && Array.isArray(product.images) && product.images.length > 0
+    product && product.images && Array.isArray(product.images) && product.images.length > 0
       ? product.images
-      : product.imageUrl
+      : product && product.imageUrl
       ? [product.imageUrl]
       : [];
 
   // Reset active photo index when product changes
   useEffect(() => {
     setActivePhotoIdx(0);
+    setIsLightboxOpen(false);
+    setQuantity(1);
   }, [product?.id]);
 
   // Instant photo preloading for seamless switching without glitches
@@ -58,6 +58,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       });
     }
   }, [productImages]);
+
+  // Safe early return after all React hooks have run
+  if (!product) return null;
 
   const directWhatsAppUrl = buildSingleProductWhatsAppUrl(product as Product);
 

@@ -1,4 +1,5 @@
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { safeOnSnapshot } from '../utils/firestoreSafe';
 import { db } from '../firebase';
 import { SocialShareSettings } from '../types/admin';
 import { ADMIN_KEY } from '../utils/adminConstants';
@@ -153,7 +154,7 @@ export function subscribeToSocialShareSettings(
 ): () => void {
   try {
     const docRef = doc(db, 'settings', 'socialShare');
-    return onSnapshot(
+    return safeOnSnapshot(
       docRef,
       (snap) => {
         if (snap.exists()) {

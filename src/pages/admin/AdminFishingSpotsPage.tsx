@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   collection,
-  onSnapshot,
   doc,
   setDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { safeOnSnapshot } from '../../utils/firestoreSafe';
 import { db } from '../../firebase';
 import { FishingSpotItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
@@ -69,7 +69,7 @@ export const AdminFishingSpotsPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'fishingSpots'),
       (snapshot) => {
         const list: FishingSpotItem[] = [];
@@ -80,7 +80,7 @@ export const AdminFishingSpotsPage: React.FC = () => {
         setLoading(false);
       },
       (err) => {
-        console.error('Failed to load fishing spots:', err);
+        console.warn('Notice: fishing spots subscription fallback:', err?.message || err);
         setLoading(false);
       }
     );

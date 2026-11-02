@@ -15,6 +15,7 @@ import {
   subscribeToProducts,
   saveStoredProducts,
   deleteProductImage,
+  reassignProductImage,
 } from '../../utils/productStorage';
 import { saveCustomImage } from '../../utils/imageStorage';
 import { AdminMultiImageUploader } from '../../components/admin/AdminMultiImageUploader';
@@ -36,6 +37,7 @@ import {
   Loader2,
   Filter,
   ImageIcon,
+  ArrowRightLeft,
 } from 'lucide-react';
 
 export const AdminProductsPage: React.FC = () => {
@@ -60,6 +62,9 @@ export const AdminProductsPage: React.FC = () => {
   const [managingPhotosProduct, setManagingPhotosProduct] = useState<ProductItem | null>(null);
   const [photoDeleteConfirmIdx, setPhotoDeleteConfirmIdx] = useState<number | null>(null);
   const [isPhotoDeleting, setIsPhotoDeleting] = useState(false);
+  const [photoReassignIdx, setPhotoReassignIdx] = useState<number | null>(null);
+  const [reassignTargetProductId, setReassignTargetProductId] = useState<string>('');
+  const [isReassigningPhoto, setIsReassigningPhoto] = useState(false);
 
   // Form Fields
   const [formData, setFormData] = useState<{
@@ -119,8 +124,71 @@ export const AdminProductsPage: React.FC = () => {
 
   const openManagePhotosModal = (item: ProductItem) => {
     const current = products.find((p) => p.id === item.id) || item;
-    setManagingPhotosProduct(current);
+    setManagingPhotosProduct({
+      ...current,
+      images: current.images && Array.isArray(current.images) ? [...current.images] : (current.imageUrl ? [current.imageUrl] : []),
+    });
     setPhotoDeleteConfirmIdx(null);
+    setPhotoReassignIdx(null);
+    setReassignTargetProductId('');
+  };
+
+  const handleReassignProductPhoto = async (
+    sourceProductId: string,
+    photoIdx: number,
+    targetProductId: string
+  ) => {
+    if (!targetProductId) {
+      setStatusAlert({
+        type: 'error',
+        text: 'Please select a destination product to reassign this photo to.',
+      });
+      return;
+    }
+
+    const target = products.find((p) => p.id === targetProductId);
+    const targetName = target ? target.name : targetProductId;
+
+    try {
+      setIsReassigningPhoto(true);
+      const res = await reassignProductImage(sourceProductId, photoIdx, targetProductId);
+
+      // Update state for all products with new isolated galleries
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (p.id === sourceProductId) {
+            return { ...p, images: res.sourceImages, imageUrl: res.sourceImages[0] || '' };
+          }
+          if (p.id === targetProductId) {
+            return { ...p, images: res.targetImages, imageUrl: p.imageUrl || res.targetImages[0] || '' };
+          }
+          return p;
+        })
+      );
+
+      // Update active managing product in modal
+      if (managingPhotosProduct && managingPhotosProduct.id === sourceProductId) {
+        setManagingPhotosProduct({
+          ...managingPhotosProduct,
+          images: res.sourceImages,
+          imageUrl: res.sourceImages[0] || '',
+        });
+      }
+
+      setPhotoReassignIdx(null);
+      setReassignTargetProductId('');
+      setStatusAlert({
+        type: 'success',
+        text: `Photo successfully reassigned to "${targetName}". Both products are now synchronized without any image file deletion.`,
+      });
+    } catch (err: any) {
+      setStatusAlert({
+        type: 'error',
+        text: `Failed to reassign photo: ${err?.message || err}`,
+      });
+    } finally {
+      setIsReassigningPhoto(false);
+    }
   };
 
   const handleDeleteProductPhoto = async (productId: string, index: number) => {
@@ -230,7 +298,7 @@ export const AdminProductsPage: React.FC = () => {
     setModalError(null);
     const existingImages =
       item.images && Array.isArray(item.images) && item.images.length > 0
-        ? item.images
+        ? [...item.images]
         : item.imageUrl
         ? [item.imageUrl]
         : [];
@@ -243,9 +311,9 @@ export const AdminProductsPage: React.FC = () => {
       description: item.description || '',
       price: item.price !== undefined ? Math.max(0, Number(item.price)) : 0,
       imageUrl: item.imageUrl || existingImages[0] || '',
-      images: existingImages,
+      images: [...existingImages],
       storagePath: item.storagePath || '',
-      specs: item.specs && item.specs.length > 0 ? item.specs : [{ label: 'Specification', value: '' }],
+      specs: item.specs && item.specs.length > 0 ? item.specs.map((s) => ({ ...s })) : [{ label: 'Specification', value: '' }],
       published: item.published !== false,
       featured: Boolean(item.featured),
     });
@@ -1170,60 +1238,149 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
 
                           {/* Action Controls for this Photo */}
-                          <div className="p-2.5 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between gap-2">
-                            {!isCover ? (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const currentImages = (managingPhotosProduct.images && managingPhotosProduct.images.length > 0)
-                                    ? [...managingPhotosProduct.images]
-                                    : [managingPhotosProduct.imageUrl || ''];
-                                  const item = currentImages[idx];
-                                  const rest = currentImages.filter((_, i) => i !== idx);
-                                  handleUpdateProductPhotos(managingPhotosProduct.id, [item, ...rest]);
-                                }}
-                                className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-colors flex items-center gap-1 cursor-pointer"
-                                title="Make this the primary catalogue cover"
-                              >
-                                <Star className="w-3 h-3 text-amber-400" />
-                                <span>Set Cover</span>
-                              </button>
-                            ) : (
-                              <span className="text-[10px] text-amber-400 font-mono font-medium">Cover Image</span>
-                            )}
-
-                            {/* Delete Photo Button & Confirmation */}
-                            {isConfirming ? (
-                              <div className="flex items-center gap-1">
+                          {photoReassignIdx === idx ? (
+                            <div className="p-2.5 bg-slate-900 border-t border-amber-500/40 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-semibold text-amber-400 flex items-center gap-1">
+                                  <ArrowRightLeft className="w-3 h-3" />
+                                  <span>Reassign to Product</span>
+                                </span>
                                 <button
                                   type="button"
-                                  disabled={isPhotoDeleting}
-                                  onClick={() => handleDeleteProductPhoto(managingPhotosProduct.id, idx)}
-                                  className="px-2 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold transition-colors cursor-pointer"
+                                  onClick={() => {
+                                    setPhotoReassignIdx(null);
+                                    setReassignTargetProductId('');
+                                  }}
+                                  className="text-slate-400 hover:text-white text-[10px] cursor-pointer"
                                 >
-                                  {isPhotoDeleting ? 'Deleting...' : 'Confirm'}
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              <p className="text-[10px] text-slate-400">
+                                Move this photo to another equipment without deleting the file.
+                              </p>
+                              <select
+                                value={reassignTargetProductId}
+                                onChange={(e) => setReassignTargetProductId(e.target.value)}
+                                className="w-full text-[11px] bg-slate-950 border border-slate-700 rounded px-2 py-1 text-slate-200 focus:outline-none focus:border-amber-500"
+                              >
+                                <option value="">-- Select destination product --</option>
+                                {products
+                                  .filter((p) => p.id !== managingPhotosProduct.id)
+                                  .sort((a, b) => a.name.localeCompare(b.name))
+                                  .map((target) => (
+                                    <option key={target.id} value={target.id}>
+                                      [{target.category}] {target.name}
+                                    </option>
+                                  ))}
+                              </select>
+                              <div className="flex items-center justify-end gap-1.5 pt-1">
+                                <button
+                                  type="button"
+                                  disabled={isReassigningPhoto || !reassignTargetProductId}
+                                  onClick={() => handleReassignProductPhoto(managingPhotosProduct.id, idx, reassignTargetProductId)}
+                                  className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold rounded text-[10px] transition-colors flex items-center gap-1 cursor-pointer"
+                                >
+                                  {isReassigningPhoto ? (
+                                    <>
+                                      <Loader2 className="w-3 h-3 animate-spin" />
+                                      <span>Moving...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ArrowRightLeft className="w-3 h-3" />
+                                      <span>Move Photo</span>
+                                    </>
+                                  )}
                                 </button>
                                 <button
                                   type="button"
-                                  disabled={isPhotoDeleting}
-                                  onClick={() => setPhotoDeleteConfirmIdx(null)}
-                                  className="px-1.5 py-1 text-slate-400 hover:text-white text-[10px] transition-colors cursor-pointer"
+                                  disabled={isReassigningPhoto}
+                                  onClick={() => {
+                                    setPhotoReassignIdx(null);
+                                    setReassignTargetProductId('');
+                                  }}
+                                  className="px-2 py-1 text-slate-400 hover:text-white text-[10px] cursor-pointer"
                                 >
                                   Cancel
                                 </button>
                               </div>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() => setPhotoDeleteConfirmIdx(idx)}
-                                className="px-2 py-1 bg-red-950/70 hover:bg-red-900 text-red-300 hover:text-red-100 border border-red-800/80 rounded text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
-                                title="Delete this image from product"
-                              >
-                                <Trash2 className="w-3 h-3 text-red-400" />
-                                <span>Delete Photo</span>
-                              </button>
-                            )}
-                          </div>
+                            </div>
+                          ) : (
+                            <div className="p-2.5 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between gap-1.5 flex-wrap">
+                              <div className="flex items-center gap-1.5">
+                                {!isCover ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const currentImages = (managingPhotosProduct.images && managingPhotosProduct.images.length > 0)
+                                        ? [...managingPhotosProduct.images]
+                                        : [managingPhotosProduct.imageUrl || ''];
+                                      const item = currentImages[idx];
+                                      const rest = currentImages.filter((_, i) => i !== idx);
+                                      handleUpdateProductPhotos(managingPhotosProduct.id, [item, ...rest]);
+                                    }}
+                                    className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-colors flex items-center gap-1 cursor-pointer"
+                                    title="Make this the primary catalogue cover"
+                                  >
+                                    <Star className="w-3 h-3 text-amber-400" />
+                                    <span>Set Cover</span>
+                                  </button>
+                                ) : (
+                                  <span className="text-[10px] text-amber-400 font-mono font-medium">Cover Image</span>
+                                )}
+
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setPhotoReassignIdx(idx);
+                                    setPhotoDeleteConfirmIdx(null);
+                                    setReassignTargetProductId('');
+                                  }}
+                                  className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-amber-300 border border-slate-700 rounded text-[10px] font-medium flex items-center gap-1 transition-colors cursor-pointer"
+                                  title="Reassign this photo to another equipment"
+                                >
+                                  <ArrowRightLeft className="w-3 h-3 text-amber-400" />
+                                  <span>Reassign</span>
+                                </button>
+                              </div>
+
+                              {/* Delete Photo Button & Confirmation */}
+                              {isConfirming ? (
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    disabled={isPhotoDeleting}
+                                    onClick={() => handleDeleteProductPhoto(managingPhotosProduct.id, idx)}
+                                    className="px-2 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold transition-colors cursor-pointer"
+                                  >
+                                    {isPhotoDeleting ? 'Deleting...' : 'Confirm'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={isPhotoDeleting}
+                                    onClick={() => setPhotoDeleteConfirmIdx(null)}
+                                    className="px-1.5 py-1 text-slate-400 hover:text-white text-[10px] transition-colors cursor-pointer"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setPhotoDeleteConfirmIdx(idx);
+                                    setPhotoReassignIdx(null);
+                                  }}
+                                  className="px-2 py-1 bg-red-950/70 hover:bg-red-900 text-red-300 hover:text-red-100 border border-red-800/80 rounded text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                                  title="Delete this image from product"
+                                >
+                                  <Trash2 className="w-3 h-3 text-red-400" />
+                                  <span>Delete</span>
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                       );
                     })}

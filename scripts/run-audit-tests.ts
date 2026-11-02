@@ -216,6 +216,57 @@ assert(
   'AdminMultiImageUploader has visible quick-delete controls for every product photo'
 );
 
+// 7. Global Product Image Synchronization & Preservation
+console.log('\n7. Global Product Image Synchronization & Preservation');
+const catalogFiles = fs.readdirSync(path.resolve(process.cwd(), 'public/images/catalog'));
+assert(
+  catalogFiles.length === 175,
+  `All 175 authentic uploaded image files preserved in catalog (found ${catalogFiles.length})`
+);
+
+const zebcoReel = PRODUCTS.find((p) => p.id === 'product-1791963000594');
+assert(
+  Boolean(zebcoReel && zebcoReel.images?.every((img) => !img.includes('product-1791963000594-2.webp'))),
+  'Zebco 202 imitation reel does not contain braided line image'
+);
+
+const braidedLine = PRODUCTS.find((p) => p.id === 'prod-1792331101161');
+assert(
+  Boolean(braidedLine && braidedLine.images?.includes('/images/catalog/product-1791963000594-2.webp')),
+  'Braided fishing line product includes the authentic braided line spool image'
+);
+
+import { reassignProductImage, sanitizeProductGalleries } from '../src/utils/productStorage';
+assert(
+  typeof reassignProductImage === 'function',
+  'reassignProductImage utility function is exported for admin manual image reassignment'
+);
+
+assert(
+  typeof sanitizeProductGalleries === 'function',
+  'sanitizeProductGalleries utility function is exported for global catalogue isolation'
+);
+
+assert(
+  adminProductsContent.includes('handleReassignProductPhoto') &&
+    adminProductsContent.includes('Reassign to Product'),
+  'AdminProductsPage provides dedicated photo reassignment control for equipment'
+);
+
+// 8. Resilient Firestore Listeners & Quota Handling
+console.log('\n8. Resilient Firestore Listeners & Quota Handling');
+import { safeOnSnapshot } from '../src/utils/firestoreSafe';
+assert(
+  typeof safeOnSnapshot === 'function',
+  'safeOnSnapshot utility function is exported for bulletproof listener error handling'
+);
+
+const overviewContent = fs.readFileSync(path.resolve(process.cwd(), 'src/pages/admin/AdminDashboardOverview.tsx'), 'utf-8');
+assert(
+  overviewContent.includes('safeOnSnapshot') && !overviewContent.includes('onSnapshot('),
+  'AdminDashboardOverview routes all real-time counter listeners through safeOnSnapshot'
+);
+
 console.log(`\n=== SUMMARY: ${passed} Passed, ${failed} Failed ===\n`);
 
 if (failed > 0) {

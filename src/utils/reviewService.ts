@@ -2,12 +2,12 @@ import {
   collection,
   query,
   where,
-  onSnapshot,
   addDoc,
   deleteDoc,
   doc,
   Unsubscribe,
 } from 'firebase/firestore';
+import { safeOnSnapshot } from './firestoreSafe';
 import { db } from '../firebase';
 import { ProductReview, SiteReview } from '../types/admin';
 
@@ -22,7 +22,7 @@ export function subscribeToSiteReviews(
 ): Unsubscribe {
   const colRef = collection(db, COLLECTION_NAME);
 
-  return onSnapshot(
+  return safeOnSnapshot(
     colRef,
     (snapshot) => {
       const list: SiteReview[] = [];
@@ -35,7 +35,7 @@ export function subscribeToSiteReviews(
       onUpdate(list);
     },
     (err) => {
-      console.warn('Firestore reviews listener error:', err);
+      console.warn('Firestore reviews listener notice:', err?.message || err);
       onUpdate([]);
     }
   );
@@ -57,7 +57,7 @@ export function subscribeToProductReviews(
     where('productId', '==', productId)
   );
 
-  return onSnapshot(
+  return safeOnSnapshot(
     q,
     (snapshot) => {
       const list: ProductReview[] = [];

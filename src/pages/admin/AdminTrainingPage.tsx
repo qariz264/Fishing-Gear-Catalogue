@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   collection,
-  onSnapshot,
   doc,
   setDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { safeOnSnapshot } from '../../utils/firestoreSafe';
 import { db } from '../../firebase';
 import { TrainingItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
@@ -73,7 +73,7 @@ export const AdminTrainingPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'training'),
       (snapshot) => {
         const list: TrainingItem[] = [];
@@ -84,7 +84,7 @@ export const AdminTrainingPage: React.FC = () => {
         setLoading(false);
       },
       (err) => {
-        console.error('Failed to load training:', err);
+        console.warn('Notice: training subscription fallback:', err?.message || err);
         setLoading(false);
       }
     );

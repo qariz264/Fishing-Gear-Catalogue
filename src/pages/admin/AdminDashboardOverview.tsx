@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
+import { safeOnSnapshot } from '../../utils/firestoreSafe';
 import { db } from '../../firebase';
 import {
   Package,
@@ -58,7 +59,7 @@ export const AdminDashboardOverview: React.FC = () => {
       publishedProducts: initialPublished,
     }));
 
-    const unsubProducts = onSnapshot(
+    const unsubProducts = safeOnSnapshot(
       collection(db, 'products'),
       (snap) => {
         let published = 0;
@@ -68,32 +69,56 @@ export const AdminDashboardOverview: React.FC = () => {
         setCounts((prev) => ({ ...prev, products: snap.size, publishedProducts: published }));
       },
       (err) => {
-        console.warn('Notice: products subscription fallback:', err);
+        console.warn('Notice: products subscription fallback:', err?.message || err);
         const stored = getStoredProducts();
         const published = stored.filter((p) => p.published !== false).length;
         setCounts((prev) => ({ ...prev, products: stored.length, publishedProducts: published }));
       }
     );
 
-    const unsubBlogs = onSnapshot(collection(db, 'blogs'), (snap) => {
-      let published = 0;
-      snap.forEach((d) => {
-        if (d.data().published === true) published++;
-      });
-      setCounts((prev) => ({ ...prev, blogs: snap.size, publishedBlogs: published }));
-    });
+    const unsubBlogs = safeOnSnapshot(
+      collection(db, 'blogs'),
+      (snap) => {
+        let published = 0;
+        snap.forEach((d) => {
+          if (d.data().published === true) published++;
+        });
+        setCounts((prev) => ({ ...prev, blogs: snap.size, publishedBlogs: published }));
+      },
+      (err) => {
+        console.warn('Notice: blogs count fallback:', err?.message || err);
+      }
+    );
 
-    const unsubEvents = onSnapshot(collection(db, 'events'), (snap) => {
-      setCounts((prev) => ({ ...prev, events: snap.size }));
-    });
+    const unsubEvents = safeOnSnapshot(
+      collection(db, 'events'),
+      (snap) => {
+        setCounts((prev) => ({ ...prev, events: snap.size }));
+      },
+      (err) => {
+        console.warn('Notice: events count fallback:', err?.message || err);
+      }
+    );
 
-    const unsubTraining = onSnapshot(collection(db, 'training'), (snap) => {
-      setCounts((prev) => ({ ...prev, training: snap.size }));
-    });
+    const unsubTraining = safeOnSnapshot(
+      collection(db, 'training'),
+      (snap) => {
+        setCounts((prev) => ({ ...prev, training: snap.size }));
+      },
+      (err) => {
+        console.warn('Notice: training count fallback:', err?.message || err);
+      }
+    );
 
-    const unsubSpots = onSnapshot(collection(db, 'fishingSpots'), (snap) => {
-      setCounts((prev) => ({ ...prev, spots: snap.size }));
-    });
+    const unsubSpots = safeOnSnapshot(
+      collection(db, 'fishingSpots'),
+      (snap) => {
+        setCounts((prev) => ({ ...prev, spots: snap.size }));
+      },
+      (err) => {
+        console.warn('Notice: spots count fallback:', err?.message || err);
+      }
+    );
 
     const unsubSocial = subscribeToSocialShareSettings((loaded) => {
       setSocialSettings(loaded);

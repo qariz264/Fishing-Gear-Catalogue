@@ -238,12 +238,14 @@ export const PublicCataloguePage: React.FC = () => {
       />
 
       {/* Product Detail Modal */}
-      <ProductDetailModal
-        product={selectedProduct}
-        onClose={handleCloseDetailModal}
-        onAddToCart={(p, qty, v) => addToCart(p, qty, v)}
-        inCartCount={selectedProduct ? getInCartCount(selectedProduct.id) : 0}
-      />
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={handleCloseDetailModal}
+          onAddToCart={(p, qty, v) => addToCart(p, qty, v)}
+          inCartCount={getInCartCount(selectedProduct.id)}
+        />
+      )}
 
       {/* Floating Order / WhatsApp Action */}
       <aside aria-label="Quick contact" className="fixed bottom-4 right-4 z-40 flex items-center gap-2">

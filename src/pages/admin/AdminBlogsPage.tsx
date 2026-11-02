@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   collection,
-  onSnapshot,
   doc,
   setDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { safeOnSnapshot } from '../../utils/firestoreSafe';
 import { db } from '../../firebase';
 import { BlogItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
@@ -74,7 +74,7 @@ export const AdminBlogsPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'blogs'),
       (snapshot) => {
         const list: BlogItem[] = [];
@@ -85,7 +85,7 @@ export const AdminBlogsPage: React.FC = () => {
         setLoading(false);
       },
       (err) => {
-        console.error('Failed to load blogs:', err);
+        console.warn('Notice: blogs subscription fallback:', err?.message || err);
         setLoading(false);
       }
     );

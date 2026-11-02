@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
+import { safeOnSnapshot } from '../utils/firestoreSafe';
 import { db } from '../firebase';
 import { EventItem } from '../types/admin';
 import { Header } from '../components/Header';
@@ -39,7 +40,7 @@ export const PublicEventsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'events'),
       (snapshot) => {
         const list: EventItem[] = [];

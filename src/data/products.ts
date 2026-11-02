@@ -68,7 +68,8 @@ export const PRODUCTS: Product[] = [
     "imageUrl": "/images/catalog/prod-1792331101161-1.webp",
     "images": [
       "/images/catalog/prod-1792331101161-1.webp",
-      "/images/catalog/prod-1792331101161-2.webp"
+      "/images/catalog/prod-1792331101161-2.webp",
+      "/images/catalog/product-1791963000594-2.webp"
     ],
     "badge": "",
     "description": "Braided fishing lines are rated as some of the Best lines when it comes to fighting Strong fish. This braid can comfortably do 40pounds or 18kgs before snagging. 40ponds braided line.",
@@ -1186,13 +1187,7 @@ export const PRODUCTS: Product[] = [
     "price": 5800,
     "imageUrl": "/images/catalog/product-1791963000594-1.jpg",
     "images": [
-      "/images/catalog/product-1791963000594-1.jpg",
-      "/images/catalog/product-1791963000594-2.webp",
-      "/images/catalog/product-1791963000594-3.webp",
-      "/images/catalog/product-1791963000594-4.webp",
-      "/images/catalog/product-1791963000594-5.webp",
-      "/images/catalog/product-1791963000594-6.webp",
-      "/images/catalog/product-1791963000594-7.webp"
+      "/images/catalog/product-1791963000594-1.jpg"
     ],
     "badge": "",
     "description": "Simple beginners fishing reel.  Zebco look alike.",

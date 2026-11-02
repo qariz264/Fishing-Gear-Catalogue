@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   collection,
-  onSnapshot,
   doc,
   setDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { safeOnSnapshot } from '../../utils/firestoreSafe';
 import { db } from '../../firebase';
 import { EventItem } from '../../types/admin';
 import { AdminImageUploader } from '../../components/admin/AdminImageUploader';
@@ -70,7 +70,7 @@ export const AdminEventsPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'events'),
       (snapshot) => {
         const list: EventItem[] = [];
@@ -81,7 +81,7 @@ export const AdminEventsPage: React.FC = () => {
         setLoading(false);
       },
       (err) => {
-        console.error('Failed to load events:', err);
+        console.warn('Notice: events subscription fallback:', err?.message || err);
         setLoading(false);
       }
     );

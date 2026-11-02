@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
+import { safeOnSnapshot } from '../utils/firestoreSafe';
 import { db } from '../firebase';
 import { EventItem } from '../types/admin';
 import {
@@ -65,7 +66,7 @@ export const TopEventsBanner: React.FC = () => {
   // Real-time listener for Firestore events collection
   // When an event is deleted from Firestore, onSnapshot immediately fires and the advert disappears
   useEffect(() => {
-    const unsub = onSnapshot(
+    const unsub = safeOnSnapshot(
       collection(db, 'events'),
       (snapshot) => {
         const list: EventItem[] = [];

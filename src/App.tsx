@@ -115,8 +115,11 @@ export default function App() {
       <AdminAuthProvider>
         <CartProvider>
           <Routes>
-            {/* Direct Instant Load Route */}
+            {/* Direct Instant Load Route & Deep Links */}
             <Route path="/" element={<PublicCataloguePage />} />
+            <Route path="/products" element={<PublicCataloguePage />} />
+            <Route path="/product/:productId" element={<PublicCataloguePage />} />
+            <Route path="/products/:productId" element={<PublicCataloguePage />} />
 
             {/* Code-split Public Secondary Routes with Fast Fallback */}
             <Route

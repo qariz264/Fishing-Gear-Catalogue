@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import { Product } from '../data/products';
 import { ProductItem } from '../types/admin';
 import { Header } from '../components/Header';
@@ -20,6 +20,7 @@ import { setPageSeo } from '../utils/seo';
 
 export const PublicCataloguePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { productId: pathProductId } = useParams<{ productId?: string }>();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All Equipment');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -68,16 +69,30 @@ export const PublicCataloguePage: React.FC = () => {
     }
   }, [selectedProduct]);
 
-  // Automatically select and open product modal when deep-linked via URL (e.g. ?product=rod-1)
+  // Automatically select and open product modal when deep-linked via URL (e.g. ?product=rod-1 or /product/rod-1)
   useEffect(() => {
-    const productId = searchParams.get('product') || searchParams.get('p');
-    if (productId && products.length > 0) {
-      const match = products.find((p) => p.id === productId);
+    const rawId = pathProductId || searchParams.get('product') || searchParams.get('p');
+    if (rawId && products.length > 0) {
+      const decoded = decodeURIComponent(rawId).trim().toLowerCase();
+      const match = products.find(
+        (p) =>
+          p.id.toLowerCase() === decoded ||
+          p.id.toLowerCase() === rawId.toLowerCase() ||
+          (p as any).slug?.toLowerCase() === decoded ||
+          p.name.toLowerCase() === decoded
+      );
       if (match) {
         setSelectedProduct(match);
       }
     }
-  }, [searchParams, products]);
+  }, [searchParams, pathProductId, products]);
+
+  const handleSelectProduct = (product: Product | ProductItem) => {
+    setSelectedProduct(product);
+    const next = new URLSearchParams(searchParams);
+    next.set('product', product.id);
+    setSearchParams(next, { replace: true });
+  };
 
   const handleCloseDetailModal = () => {
     setSelectedProduct(null);
@@ -205,7 +220,7 @@ export const PublicCataloguePage: React.FC = () => {
                 key={product.id}
                 product={product}
                 priority={idx < 8}
-                onSelect={(p) => setSelectedProduct(p)}
+                onSelect={(p) => handleSelectProduct(p)}
                 onAddToCart={(p, qty) => addToCart(p, qty)}
                 inCartCount={getInCartCount(product.id)}
               />

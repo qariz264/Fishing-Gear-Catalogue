@@ -14,6 +14,7 @@ import {
   getStoredProducts,
   subscribeToProducts,
   saveStoredProducts,
+  deleteProductImage,
 } from '../../utils/productStorage';
 import { saveCustomImage } from '../../utils/imageStorage';
 import { AdminMultiImageUploader } from '../../components/admin/AdminMultiImageUploader';
@@ -54,6 +55,11 @@ export const AdminProductsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+
+  // Manage Photos Modal State
+  const [managingPhotosProduct, setManagingPhotosProduct] = useState<ProductItem | null>(null);
+  const [photoDeleteConfirmIdx, setPhotoDeleteConfirmIdx] = useState<number | null>(null);
+  const [isPhotoDeleting, setIsPhotoDeleting] = useState(false);
 
   // Form Fields
   const [formData, setFormData] = useState<{
@@ -110,6 +116,91 @@ export const AdminProductsPage: React.FC = () => {
       setSearchParams({});
     }
   }, [searchParams, setSearchParams]);
+
+  const openManagePhotosModal = (item: ProductItem) => {
+    const current = products.find((p) => p.id === item.id) || item;
+    setManagingPhotosProduct(current);
+    setPhotoDeleteConfirmIdx(null);
+  };
+
+  const handleDeleteProductPhoto = async (productId: string, index: number) => {
+    try {
+      setIsPhotoDeleting(true);
+      const res = await deleteProductImage(productId, index);
+
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId
+            ? { ...p, images: res.remainingImages, imageUrl: res.newCoverUrl }
+            : p
+        )
+      );
+
+      if (managingPhotosProduct && managingPhotosProduct.id === productId) {
+        setManagingPhotosProduct({
+          ...managingPhotosProduct,
+          images: res.remainingImages,
+          imageUrl: res.newCoverUrl,
+        });
+      }
+
+      setPhotoDeleteConfirmIdx(null);
+      setStatusAlert({
+        type: 'success',
+        text: `Photo deleted successfully. ${res.remainingImages.length} photo(s) remain on this product.`,
+      });
+    } catch (err: any) {
+      setStatusAlert({
+        type: 'error',
+        text: `Failed to delete photo: ${err?.message || err}`,
+      });
+    } finally {
+      setIsPhotoDeleting(false);
+    }
+  };
+
+  const handleUpdateProductPhotos = async (productId: string, newImages: string[]) => {
+    try {
+      const current = getStoredProducts();
+      const newCover = newImages[0] || '';
+      const updated = current.map((p) =>
+        p.id === productId
+          ? { ...p, images: newImages, imageUrl: newCover, updatedAt: new Date().toISOString() }
+          : p
+      );
+      saveStoredProducts(updated);
+      setProducts(updated as ProductItem[]);
+
+      if (managingPhotosProduct && managingPhotosProduct.id === productId) {
+        setManagingPhotosProduct({
+          ...managingPhotosProduct,
+          images: newImages,
+          imageUrl: newCover,
+        });
+      }
+
+      await setDoc(
+        doc(db, 'products', productId),
+        {
+          images: newImages,
+          imageUrl: newCover,
+          updatedAt: new Date().toISOString(),
+          adminKey: ADMIN_KEY,
+        },
+        { merge: true }
+      );
+
+      setStatusAlert({
+        type: 'success',
+        text: `Photos updated successfully (${newImages.length} photos).`,
+      });
+    } catch (err: any) {
+      setStatusAlert({
+        type: 'error',
+        text: `Failed to update photos: ${err?.message || err}`,
+      });
+    }
+  };
 
   const openCreateModal = () => {
     setEditingProduct(null);
@@ -497,27 +588,31 @@ export const AdminProductsPage: React.FC = () => {
                     {/* Item & Image */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <div
+                          onClick={() => openManagePhotosModal(item)}
+                          className="relative w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0 cursor-pointer group/thumb hover:border-amber-500 transition-colors"
+                          title="Click to manage & delete product photos"
+                        >
                           {item.imageUrl || (item.images && item.images.length > 0) ? (
                             <img
                               src={item.imageUrl || item.images![0]}
                               alt={item.name}
                               loading="lazy"
                               decoding="async"
-                              className="max-h-full max-w-full w-auto h-auto object-contain transition-opacity duration-150"
+                              className="max-h-full max-w-full w-auto h-auto object-contain transition-opacity duration-150 group-hover/thumb:scale-105"
                             />
                           ) : (
                             <Package className="w-5 h-5 text-slate-600" />
                           )}
-                          {item.images && item.images.length > 1 && (
+                          {(item.images && item.images.length > 0) || item.imageUrl ? (
                             <span
                               className="absolute bottom-0 right-0 bg-slate-900/90 text-amber-400 text-[9px] font-mono font-bold px-1 rounded-tl-sm border-t border-l border-slate-700 flex items-center gap-0.5"
-                              title={`${item.images.length} photos uploaded`}
+                              title={`${item.images?.length || 1} photo(s) - click to manage & delete`}
                             >
                               <ImageIcon className="w-2.5 h-2.5" />
-                              <span>{item.images.length}</span>
+                              <span>{item.images?.length || 1}</span>
                             </span>
-                          )}
+                          ) : null}
                         </div>
                         <div className="min-w-0 max-w-xs">
                           <span className="font-semibold text-white block truncate">{item.name}</span>
@@ -641,6 +736,15 @@ export const AdminProductsPage: React.FC = () => {
 
                     {/* Action buttons */}
                     <td className="py-3 px-4 text-right whitespace-nowrap space-x-1">
+                      <button
+                        onClick={() => openManagePhotosModal(item)}
+                        className="p-1.5 text-slate-400 hover:text-amber-400 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors inline-flex items-center gap-1"
+                        title="Manage & delete product photos"
+                      >
+                        <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                        <span className="text-[10px] hidden sm:inline">Photos</span>
+                      </button>
+
                       <button
                         onClick={() => openEditModal(item)}
                         className="p-1.5 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
@@ -960,6 +1064,185 @@ export const AdminProductsPage: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Dedicated Manage & Delete Product Photos Modal */}
+      {managingPhotosProduct && (
+        <div
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setManagingPhotosProduct(null)}
+        >
+          <div
+            className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl my-8 text-left flex flex-col max-h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4 text-amber-500" />
+                  <span>Manage Photos — {managingPhotosProduct.name}</span>
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  {managingPhotosProduct.category} · {managingPhotosProduct.brand} ·{' '}
+                  <span className="font-mono text-amber-400">
+                    {(managingPhotosProduct.images?.length || (managingPhotosProduct.imageUrl ? 1 : 0))} photo(s)
+                  </span>
+                </p>
+              </div>
+              <button
+                onClick={() => setManagingPhotosProduct(null)}
+                className="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto space-y-6 flex-1">
+              {/* Image Gallery with Individual Delete Buttons */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider font-mono">
+                    Current Attached Photos
+                  </h3>
+                  <span className="text-[11px] text-slate-400">
+                    Delete unwanted images or set a new cover photo
+                  </span>
+                </div>
+
+                {(!managingPhotosProduct.images || managingPhotosProduct.images.length === 0) &&
+                !managingPhotosProduct.imageUrl ? (
+                  <div className="p-8 border border-dashed border-slate-800 rounded-xl text-center bg-slate-950/50">
+                    <ImageIcon className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+                    <p className="text-xs text-slate-400 font-medium">No photos currently attached to this equipment.</p>
+                    <p className="text-[11px] text-slate-500 mt-1">Upload photos below to add them to the catalogue.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {((managingPhotosProduct.images && managingPhotosProduct.images.length > 0)
+                      ? managingPhotosProduct.images
+                      : (managingPhotosProduct.imageUrl ? [managingPhotosProduct.imageUrl] : [])
+                    ).map((imgUrl, idx) => {
+                      const isCover = idx === 0;
+                      const isConfirming = photoDeleteConfirmIdx === idx;
+
+                      return (
+                        <div
+                          key={`${imgUrl}-${idx}`}
+                          className={`relative rounded-xl overflow-hidden border bg-slate-950 flex flex-col justify-between transition-all ${
+                            isCover ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-800'
+                          }`}
+                        >
+                          {/* Image Thumbnail */}
+                          <div className="relative aspect-4/3 bg-slate-950 flex items-center justify-center overflow-hidden p-2">
+                            <img
+                              src={imgUrl}
+                              alt={`Product Photo ${idx + 1}`}
+                              className="max-h-full max-w-full w-auto h-auto object-contain"
+                            />
+                            {isCover && (
+                              <span className="absolute top-2 left-2 bg-amber-500 text-slate-950 font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1 shadow-md">
+                                <Star className="w-2.5 h-2.5 fill-slate-950" />
+                                <span>Primary Cover</span>
+                              </span>
+                            )}
+                            <span className="absolute bottom-2 left-2 bg-slate-900/85 text-slate-300 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700">
+                              Photo #{idx + 1}
+                            </span>
+                          </div>
+
+                          {/* Action Controls for this Photo */}
+                          <div className="p-2.5 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between gap-2">
+                            {!isCover ? (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const currentImages = (managingPhotosProduct.images && managingPhotosProduct.images.length > 0)
+                                    ? [...managingPhotosProduct.images]
+                                    : [managingPhotosProduct.imageUrl || ''];
+                                  const item = currentImages[idx];
+                                  const rest = currentImages.filter((_, i) => i !== idx);
+                                  handleUpdateProductPhotos(managingPhotosProduct.id, [item, ...rest]);
+                                }}
+                                className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-colors flex items-center gap-1 cursor-pointer"
+                                title="Make this the primary catalogue cover"
+                              >
+                                <Star className="w-3 h-3 text-amber-400" />
+                                <span>Set Cover</span>
+                              </button>
+                            ) : (
+                              <span className="text-[10px] text-amber-400 font-mono font-medium">Cover Image</span>
+                            )}
+
+                            {/* Delete Photo Button & Confirmation */}
+                            {isConfirming ? (
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  disabled={isPhotoDeleting}
+                                  onClick={() => handleDeleteProductPhoto(managingPhotosProduct.id, idx)}
+                                  className="px-2 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold transition-colors cursor-pointer"
+                                >
+                                  {isPhotoDeleting ? 'Deleting...' : 'Confirm'}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isPhotoDeleting}
+                                  onClick={() => setPhotoDeleteConfirmIdx(null)}
+                                  className="px-1.5 py-1 text-slate-400 hover:text-white text-[10px] transition-colors cursor-pointer"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setPhotoDeleteConfirmIdx(idx)}
+                                className="px-2 py-1 bg-red-950/70 hover:bg-red-900 text-red-300 hover:text-red-100 border border-red-800/80 rounded text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                                title="Delete this image from product"
+                              >
+                                <Trash2 className="w-3 h-3 text-red-400" />
+                                <span>Delete Photo</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Add More Photos Uploader */}
+              <div className="pt-4 border-t border-slate-800">
+                <AdminMultiImageUploader
+                  images={
+                    (managingPhotosProduct.images && managingPhotosProduct.images.length > 0)
+                      ? managingPhotosProduct.images
+                      : (managingPhotosProduct.imageUrl ? [managingPhotosProduct.imageUrl] : [])
+                  }
+                  onChange={(imgs) => handleUpdateProductPhotos(managingPhotosProduct.id, imgs)}
+                  folder="products"
+                  label="Upload or Add More Photos for this Item"
+                  aspectHint="Upload high-res JPEG, PNG, or WebP images from your device or paste external URLs."
+                  maxImages={12}
+                />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 border-t border-slate-800 bg-slate-950/80 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setManagingPhotosProduct(null)}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}

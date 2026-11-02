@@ -9,7 +9,7 @@ import {
 import { db, auth } from '../firebase';
 import { Product, PRODUCTS as INITIAL_PRODUCTS } from '../data/products';
 import { ADMIN_KEY } from './adminConstants';
-import { getCustomImages, saveCustomImage } from './imageStorage';
+import { getCustomImages, saveCustomImage, removeCustomImage } from './imageStorage';
 
 const LOCAL_STORAGE_KEY = 'fishwithnelson_catalog_products';
 const COLLECTION_NAME = 'products';
@@ -97,16 +97,20 @@ export function getStoredProducts(): Product[] {
     const customImg = customImages[p.id];
     const resolvedPrice = cached && cached.price !== undefined ? Number(cached.price) : (p.price || 0);
 
-    // Keep ultra-fast static catalog URL; avoid slow/glitchy base64 strings from cache
-    const isCachedBase64 = typeof cached?.imageUrl === 'string' && cached.imageUrl.startsWith('data:');
-    const resolvedImage = customImg || (!isCachedBase64 && cached?.imageUrl ? cached.imageUrl : p.imageUrl || '');
-    const resolvedImages = customImg
-      ? [customImg]
-      : (p.images && p.images.length > 0
-          ? p.images
-          : (cached && cached.images && cached.images.length > 0 && !cached.images[0].startsWith('data:')
-              ? cached.images
-              : [resolvedImage]));
+    // If admin explicitly modified or deleted images in cached product, honor cached images
+    let resolvedImages: string[];
+    let resolvedImage: string;
+
+    if (cached && Array.isArray(cached.images)) {
+      resolvedImages = cached.images;
+      resolvedImage = cached.imageUrl !== undefined ? cached.imageUrl : (resolvedImages[0] || '');
+    } else if (customImg) {
+      resolvedImage = customImg;
+      resolvedImages = [customImg];
+    } else {
+      resolvedImages = p.images && p.images.length > 0 ? p.images : (p.imageUrl ? [p.imageUrl] : []);
+      resolvedImage = p.imageUrl || (resolvedImages[0] || '');
+    }
 
     return {
       ...p,
@@ -184,28 +188,22 @@ export function subscribeToProducts(
           ? Number(data.price) 
           : (initial?.price || 0);
 
-        // GLITCH FIX & SPEED ENHANCEMENT:
-        // Retain the pre-optimized, cached static file (/images/catalog/...) so browser
-        // doesn't flash/glitch when Firestore snapshot returns heavy raw base64 data URLs.
-        // Only accept remote http(s) URLs if an admin uploaded new assets to storage bucket.
-        const isDbRemote = typeof data.imageUrl === 'string' && (data.imageUrl.startsWith('http://') || data.imageUrl.startsWith('https://'));
-        let resolvedImage = initial?.imageUrl || '';
-        if (customImg) {
-          resolvedImage = customImg;
-        } else if (isDbRemote) {
-          resolvedImage = data.imageUrl!;
-        } else if (!resolvedImage && data.imageUrl) {
-          resolvedImage = data.imageUrl;
-        }
+        // If admin has saved or modified images array in Firestore, honor Firestore data
+        let resolvedImages: string[];
+        let resolvedImage: string;
 
-        // Multi-image array resolution: prefer pre-cached static array
-        let imgs = initial?.images && initial.images.length > 0 ? initial.images : [resolvedImage];
-        if (customImg) {
-          imgs = [customImg];
-        } else if (Array.isArray(data.images) && data.images.length > 0 && isDbRemote) {
-          imgs = data.images;
-        } else if (!imgs || imgs.length === 0) {
-          imgs = [resolvedImage];
+        if (Array.isArray(data.images)) {
+          resolvedImages = data.images;
+          resolvedImage = data.imageUrl !== undefined ? data.imageUrl : (resolvedImages[0] || '');
+        } else if (customImg) {
+          resolvedImage = customImg;
+          resolvedImages = [customImg];
+        } else if (data.imageUrl) {
+          resolvedImage = data.imageUrl;
+          resolvedImages = [data.imageUrl];
+        } else {
+          resolvedImages = initial?.images && initial.images.length > 0 ? initial.images : (initial?.imageUrl ? [initial.imageUrl] : []);
+          resolvedImage = initial?.imageUrl || (resolvedImages[0] || '');
         }
 
         productsFromDb.push({
@@ -214,7 +212,7 @@ export function subscribeToProducts(
           id: d.id,
           price: resolvedPrice,
           imageUrl: resolvedImage,
-          images: imgs,
+          images: resolvedImages,
         });
       });
 
@@ -291,4 +289,79 @@ export async function deleteProductFromFirestore(productId: string): Promise<voi
   } catch (error) {
     handleFirestoreError(error, OperationType.DELETE, docPath);
   }
+}
+
+/**
+ * Deletes a specific image from a product's gallery as requested by the administrator.
+ * Removes the image from the images array, updates primary cover image if necessary,
+ * and synchronizes with Firebase Firestore and local storage.
+ */
+export async function deleteProductImage(
+  productId: string,
+  imageIndexOrUrl: number | string
+): Promise<{ success: boolean; remainingImages: string[]; newCoverUrl: string }> {
+  const currentProducts = getStoredProducts();
+  const productIdx = currentProducts.findIndex((p) => p.id === productId);
+  if (productIdx === -1) {
+    throw new Error(`Product with ID "${productId}" not found.`);
+  }
+
+  const product = currentProducts[productIdx];
+  const currentImages = Array.isArray(product.images) && product.images.length > 0
+    ? [...product.images]
+    : (product.imageUrl ? [product.imageUrl] : []);
+
+  let targetIndex = -1;
+  if (typeof imageIndexOrUrl === 'number') {
+    targetIndex = imageIndexOrUrl;
+  } else {
+    targetIndex = currentImages.indexOf(imageIndexOrUrl);
+  }
+
+  if (targetIndex < 0 || targetIndex >= currentImages.length) {
+    throw new Error(`Target image not found or index ${targetIndex} is out of bounds for product "${productId}".`);
+  }
+
+  const deletedImage = currentImages[targetIndex];
+  const remainingImages = currentImages.filter((_, idx) => idx !== targetIndex);
+  const newCoverUrl = remainingImages[0] || '';
+
+  // Clean up custom image cache if it matches the deleted image
+  const customImages = getCustomImages();
+  if (customImages[productId] === deletedImage) {
+    removeCustomImage(productId);
+  }
+
+  // Update in local cache immediately
+  const updatedProduct: Product = {
+    ...product,
+    images: remainingImages,
+    imageUrl: newCoverUrl,
+    updatedAt: new Date().toISOString(),
+  };
+  currentProducts[productIdx] = updatedProduct;
+  saveStoredProducts(currentProducts);
+
+  // Synchronize update to Firebase Firestore
+  try {
+    const docRef = doc(db, COLLECTION_NAME, productId);
+    await setDoc(
+      docRef,
+      {
+        images: remainingImages,
+        imageUrl: newCoverUrl,
+        updatedAt: new Date().toISOString(),
+        adminKey: ADMIN_KEY,
+      },
+      { merge: true }
+    );
+  } catch (err) {
+    console.warn('Firestore sync notice for image deletion:', err);
+  }
+
+  return {
+    success: true,
+    remainingImages,
+    newCoverUrl,
+  };
 }

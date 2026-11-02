@@ -11,18 +11,36 @@ export const WHATSAPP_PHONE_RAW = '0702782946';
 export const WHATSAPP_PHONE_INTERNATIONAL = '254702782946';
 export const WHATSAPP_PHONE_FORMATTED = '+254 702 782946';
 
+export const CANONICAL_SITE_URL = 'https://www.fishingwithnelson.co.ke';
+
 /**
  * Returns the direct web URL for a specific product for easy customer and seller reference.
+ * Points accurately to the product so Nelson or the customer can tap and immediately view the item.
  */
 export function getProductReferenceUrl(productId: string): string {
+  if (!productId) return CANONICAL_SITE_URL;
+  const cleanId = encodeURIComponent(productId.trim());
+
+  let baseUrl = CANONICAL_SITE_URL;
   try {
     if (typeof window !== 'undefined' && window.location?.origin) {
-      return `${window.location.origin}/?product=${encodeURIComponent(productId)}`;
+      const hostname = window.location.hostname;
+      // If browsing directly on the verified live domain or vercel deployment, preserve that origin.
+      // If testing in localhost or preview sandbox, prioritize canonical production domain
+      // so when WhatsApp sends the message to Nelson's phone (+254 702 782946), Nelson gets a working link!
+      if (
+        hostname === 'www.fishingwithnelson.co.ke' ||
+        hostname === 'fishingwithnelson.co.ke' ||
+        hostname.endsWith('.vercel.app')
+      ) {
+        baseUrl = window.location.origin;
+      }
     }
   } catch {
-    // fallback if window is unavailable
+    baseUrl = CANONICAL_SITE_URL;
   }
-  return `https://www.fishingwithnelson.co.ke/?product=${encodeURIComponent(productId)}`;
+
+  return `${baseUrl}/?product=${cleanId}`;
 }
 
 /**

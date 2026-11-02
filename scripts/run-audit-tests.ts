@@ -4,9 +4,15 @@
  * and routing constraints.
  */
 
-import { buildCartWhatsAppUrl, buildSingleProductWhatsAppUrl, CartItem } from '../src/utils/whatsapp';
+import {
+  buildCartWhatsAppUrl,
+  buildSingleProductWhatsAppUrl,
+  getProductReferenceUrl,
+  CartItem,
+} from '../src/utils/whatsapp';
 import { PRODUCTS } from '../src/data/products';
 import { ADMIN_USERNAME, ADMIN_PASSWORD } from '../src/utils/adminConstants';
+import { deleteProductImage, getStoredProducts } from '../src/utils/productStorage';
 
 let passed = 0;
 let failed = 0;
@@ -47,6 +53,15 @@ assert(
   singleUrl.includes(encodeURIComponent('?product=' + sampleProduct.id)) ||
     singleUrl.includes(encodeURIComponent('product=' + sampleProduct.id)),
   'Single product WhatsApp enquiry is accompanied by product reference link'
+);
+const refUrl = getProductReferenceUrl(sampleProduct.id);
+assert(
+  refUrl.includes('fishingwithnelson.co.ke/?product=' + encodeURIComponent(sampleProduct.id)),
+  'Product reference URL points to live domain with product query parameter'
+);
+assert(
+  singleUrl.includes(encodeURIComponent(refUrl)),
+  'Single product WhatsApp enquiry embeds the exact canonical product reference URL'
 );
 assert(
   singleUrl.includes(encodeURIComponent('FISHING WITH NELSON')),
@@ -173,6 +188,32 @@ const appTsxContent = fs.readFileSync(path.resolve(process.cwd(), 'src/App.tsx')
 assert(
   appTsxContent.includes('path="/events"') && appTsxContent.includes('<PublicEventsPage />'),
   'src/App.tsx registers /events route pointing to PublicEventsPage'
+);
+
+// 6. Admin Product Image Management & Deep-Linking
+console.log('\n6. Admin Product Image Management & Deep-Linking');
+assert(
+  typeof deleteProductImage === 'function',
+  'deleteProductImage utility function is exported for admin image deletion'
+);
+
+assert(
+  appTsxContent.includes('path="/product/:productId"') &&
+    appTsxContent.includes('path="/products/:productId"'),
+  'src/App.tsx supports direct /product/:id deep-link routes'
+);
+
+const adminProductsContent = fs.readFileSync(path.resolve(process.cwd(), 'src/pages/admin/AdminProductsPage.tsx'), 'utf-8');
+assert(
+  adminProductsContent.includes('openManagePhotosModal') &&
+    adminProductsContent.includes('handleDeleteProductPhoto'),
+  'AdminProductsPage provides dedicated photo manager modal and delete photo action'
+);
+
+const multiUploaderContent = fs.readFileSync(path.resolve(process.cwd(), 'src/components/admin/AdminMultiImageUploader.tsx'), 'utf-8');
+assert(
+  multiUploaderContent.includes('Trash2') && multiUploaderContent.includes('Delete this image'),
+  'AdminMultiImageUploader has visible quick-delete controls for every product photo'
 );
 
 console.log(`\n=== SUMMARY: ${passed} Passed, ${failed} Failed ===\n`);

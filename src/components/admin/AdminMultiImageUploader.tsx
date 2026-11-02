@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   AlertCircle,
+  Trash2,
 } from 'lucide-react';
 
 interface AdminMultiImageUploaderProps {
@@ -296,25 +297,43 @@ export const AdminMultiImageUploader: React.FC<AdminMultiImageUploaderProps> = (
 
                   {/* Cover Badge */}
                   {isCover && (
-                    <span className="absolute top-1.5 left-1.5 bg-amber-500 text-slate-950 font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1 shadow-md">
+                    <span className="absolute top-1.5 left-1.5 bg-amber-500 text-slate-950 font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1 shadow-md z-10">
                       <Star className="w-2.5 h-2.5 fill-slate-950" />
                       <span>Cover</span>
                     </span>
                   )}
 
-                  {/* Hover Control Overlay */}
-                  <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
+                  {/* Always Visible Quick Delete Button on Mobile / Top Right */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemove(index);
+                    }}
+                    className="absolute top-1.5 right-1.5 z-10 p-1 rounded-md bg-red-600/90 hover:bg-red-600 text-white shadow-md transition-transform active:scale-95"
+                    title="Delete this image"
+                    aria-label={`Delete photo ${index + 1}`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+
+                  {/* Full Control Overlay on Hover / Focus */}
+                  <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-2xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2 z-20">
                     <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-mono text-slate-400">
-                        #{index + 1}
+                      <span className="text-[10px] font-mono text-slate-300 bg-slate-900/80 px-1.5 py-0.5 rounded">
+                        Photo #{index + 1}
                       </span>
                       <button
                         type="button"
-                        onClick={() => handleRemove(index)}
-                        className="p-1 rounded-md bg-red-600/80 hover:bg-red-600 text-white transition-colors"
-                        title="Remove image"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemove(index);
+                        }}
+                        className="px-2 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white text-[10px] font-semibold flex items-center gap-1 transition-colors shadow-sm"
+                        title="Delete image from product"
                       >
-                        <X className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3 h-3" />
+                        <span>Delete</span>
                       </button>
                     </div>
 
@@ -358,7 +377,7 @@ export const AdminMultiImageUploader: React.FC<AdminMultiImageUploaderProps> = (
             })}
           </div>
           <p className="text-[10px] font-mono text-slate-500">
-            Tip: Hover over any photo to set it as Cover, reorder, or delete it.
+            Tip: Click the red trash button to delete any photo. Use arrows to reorder or &ldquo;Make Cover&rdquo; to set the primary catalogue picture.
           </p>
         </div>
       )}

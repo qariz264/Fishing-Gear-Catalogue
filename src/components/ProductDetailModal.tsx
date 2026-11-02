@@ -170,7 +170,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           : 'border-slate-200 opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt={`Thumb ${idx + 1}`} className="w-full h-full object-contain p-1" />
+                      <img
+                        src={img}
+                        alt={`Thumb ${idx + 1}`}
+                        onError={(e) => {
+                          const el = e.currentTarget;
+                          if (el.src.includes('-1.webp')) el.src = el.src.replace('-1.webp', '-1.jpg');
+                        }}
+                        className="w-full h-full object-contain p-1"
+                      />
                     </button>
                   ))}
                 </div>
@@ -331,6 +339,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <img
                 src={productImages[activePhotoIdx]}
                 alt={`${product.name} - photo ${activePhotoIdx + 1}`}
+                onError={(e) => {
+                  const el = e.currentTarget;
+                  if (el.src.includes('-1.webp')) el.src = el.src.replace('-1.webp', '-1.jpg');
+                }}
                 className="max-h-[70vh] max-w-full object-contain rounded-xl shadow-2xl"
               />
             </div>
@@ -362,7 +374,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       : 'border-white/20 opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt="Thumb" className="w-full h-full object-contain bg-white p-0.5" />
+                  <img
+                    src={img}
+                    alt="Thumb"
+                    onError={(e) => {
+                      const el = e.currentTarget;
+                      if (el.src.includes('-1.webp')) el.src = el.src.replace('-1.webp', '-1.jpg');
+                    }}
+                    className="w-full h-full object-contain bg-white p-0.5"
+                  />
                 </button>
               ))}
             </div>

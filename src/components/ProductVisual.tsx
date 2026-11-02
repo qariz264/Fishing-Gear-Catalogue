@@ -61,10 +61,27 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
               src={targetImage}
               alt={product.name || 'Fishing gear item'}
               loading={priority ? 'eager' : 'lazy'}
-              fetchPriority={priority ? 'high' : 'auto'}
               decoding="async"
               onLoad={() => setIsLoaded(true)}
-              onError={() => setImageError(true)}
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src.includes('-1.webp')) {
+                  target.src = target.src.replace('-1.webp', '-1.jpg');
+                  return;
+                }
+                if (target.src.includes('.webp')) {
+                  target.src = target.src.replace('.webp', '.jpg');
+                  return;
+                }
+                if (Array.isArray(product.images) && product.images.length > 1) {
+                  const currentIdx = product.images.findIndex((url) => target.src.endsWith(url));
+                  if (currentIdx >= 0 && currentIdx < product.images.length - 1) {
+                    target.src = product.images[currentIdx + 1];
+                    return;
+                  }
+                }
+                setImageError(true);
+              }}
               className={`max-w-full max-h-full w-auto h-auto object-contain transition-opacity duration-200 ${
                 isLoaded ? 'opacity-100' : 'opacity-0'
               }`}

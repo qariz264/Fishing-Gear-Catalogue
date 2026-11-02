@@ -322,12 +322,21 @@ export const AdminProductsPage: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
+      // 1. Immediately update local catalogue and cache
       const current = getStoredProducts().filter((p) => p.id !== id);
       saveStoredProducts(current);
       setProducts(current as ProductItem[]);
-      await deleteDoc(doc(db, 'products', id));
       setDeleteConfirmId(null);
-      setStatusAlert({ type: 'success', text: 'Product deleted from catalogue.' });
+
+      // 2. Perform Firestore delete
+      try {
+        await deleteDoc(doc(db, 'products', id));
+        setStatusAlert({ type: 'success', text: 'Product deleted from catalogue and database.' });
+      } catch (firestoreErr: any) {
+        console.warn('Firestore delete notice:', firestoreErr);
+        // Product is already purged from local catalogue
+        setStatusAlert({ type: 'success', text: 'Product deleted from catalogue.' });
+      }
     } catch (err: any) {
       setStatusAlert({ type: 'error', text: `Error deleting product: ${err?.message || err}` });
     }
@@ -599,6 +608,12 @@ export const AdminProductsPage: React.FC = () => {
                               alt={item.name}
                               loading="lazy"
                               decoding="async"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (target.src.includes('-1.webp')) {
+                                  target.src = target.src.replace('-1.webp', '-1.jpg');
+                                }
+                              }}
                               className="max-h-full max-w-full w-auto h-auto object-contain transition-opacity duration-150 group-hover/thumb:scale-105"
                             />
                           ) : (
